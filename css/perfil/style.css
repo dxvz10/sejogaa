@@ -16,7 +16,7 @@
 .perfil-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 16px;
+    gap: 24px;
     align-items: start;
     max-width: 1100px;
     margin: 0 auto;
@@ -29,15 +29,12 @@
     padding: 32px;
 }
 
-/* Cabeçalho de seção do DS dentro da caixa. */
+/* Cabeçalho de seção do DS: título e linha embaixo. */
 .caixa-perfil > h2 {
-    font-family: var(--fonte-display);
-    font-weight: 400;
     font-size: 20px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    font-weight: 400;
     padding-bottom: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     border-bottom: 1px solid var(--borda);
 }
 
@@ -66,23 +63,24 @@
 .perfil-identidade {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     min-width: 0;
 }
 
 .perfil-identidade strong {
-    font-family: var(--fonte-display);
-    font-weight: 700;
+    font-family: var(--fonte-titulo);
     font-size: 22px;
-    line-height: 1.1;
     text-transform: uppercase;
     color: var(--texto-forte);
+    line-height: 1.1;
 }
 
-/* O @login fica como a "etiqueta" do DS: mono, no acento. */
+/* O login aparece como "kicker" verde. */
 .perfil-identidade > span {
+    color: var(--sinal-texto);
     font-size: 12px;
-    color: var(--acento-texto);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .perfil-foto-acoes {
@@ -93,15 +91,15 @@
 }
 
 .perfil-foto-acoes:has(input:focus-visible) .botao-foto {
-    outline: 2px solid var(--acento);
+    outline: 2px solid var(--sinal);
     outline-offset: 2px;
 }
 
-/* Campo que só mostra (CPF): apagado e tracejado, para ficar claro
-   que não edita. */
+/* Campo que só mostra (CPF): tracejado, para ficar claro que não
+   edita. */
 .formulario-perfil input[readonly] {
-    color: var(--texto-apagado);
     border-bottom-style: dashed;
+    color: var(--texto-suave);
     cursor: not-allowed;
 }
 
@@ -109,42 +107,40 @@
 /* ===== AGENDA ===== */
 
 .agenda-subtitulo {
-    font-size: 10px;
-    font-weight: normal;
+    font-family: var(--fonte-texto);
+    font-size: 11px;
+    font-weight: bold;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
     margin: 8px 0 16px;
 }
 
 #agenda-passados .agenda-subtitulo {
     margin-top: 40px;
+    color: var(--texto-apagado);
 }
 
-/* Eventos que já passaram: apagados e sem cor, como as fotos do DS
-   antes do hover. */
+/* Eventos que já passaram: apagados e em preto e branco. */
 .cards-passados .card {
     opacity: 0.6;
-    filter: saturate(0);
-    transition: opacity 0.3s, filter 0.3s, background-color 0.15s, border-color 0.15s;
+    filter: grayscale(1);
 }
 
-.cards-passados .card:hover {
-    opacity: 1;
-    filter: saturate(1);
-}
-
+/* Agenda vazia: moldura tracejada (a "ring tile" do DS). */
 .agenda-vazia {
-    padding: 48px 24px;
-    border: 1px dashed var(--texto-mudo);
+    padding: 40px 24px;
     border-radius: var(--raio);
     text-align: center;
     color: var(--texto-suave);
-    font-size: 13px;
+    border: 1px dashed var(--borda-forte);
 }
 
 .agenda-vazia p {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+}
+
+.agenda-vazia .botao-cadastro {
+    display: inline-flex;
 }
 
 
@@ -159,7 +155,7 @@
 
 @media (max-width: 500px) {
     .caixa-perfil {
-        padding: 20px;
+        padding: 20px 16px;
     }
 
     .perfil-cartao {

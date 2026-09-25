@@ -1,10 +1,13 @@
 /* ============================================
    SEJOGA — Estilos globais
-   Design System aplicado: YOZELEN (creative-event-13).
-   Fundo quase preto, um único acento neon (#3DF604), títulos em
-   Unbounded (display, caixa alta) e texto em Space Mono (mono).
-   Cantos quase retos (2px) em blocos e "pílulas" em botões.
+   Design system: "Yozelen" (creative-event-13).
    Toda página importa este arquivo.
+
+   A identidade do DS em quatro ideias:
+   1. Fundo quase preto, com uma grade fininha por cima.
+   2. Um único verde neon (#3DF604) para ação e destaque.
+   3. Títulos em Unbounded, CAIXA ALTA; texto em Space Mono.
+   4. Cantos retos (2px) nas caixas e pílulas nos botões.
    ============================================ */
 
 /* RESET — zera as opiniões padrão do navegador */
@@ -14,78 +17,82 @@
     box-sizing: border-box;
 }
 
-/* TOKENS — todas as cores, fontes e raios do site moram aqui.
+/* Campos e botões NÃO herdam a fonte da página por padrão —
+   cada navegador usa a sua. "font: inherit" corrige isso de uma vez. */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+/* PALETA — todas as cores do site moram aqui.
    :root significa "o topo do documento", então estas variáveis
-   ficam disponíveis em qualquer regra de qualquer arquivo.
+   ficam disponíveis em qualquer regra de qualquer arquivo CSS.
 
-   O Design System é escuro, então o :root guarda o TEMA ESCURO,
-   que é o padrão. O tema claro (Desafio Plus) só troca os valores
-   lá embaixo, em html[data-tema="claro"]. Nenhuma regra usa cor
-   fixa: por isso a troca de tema funciona no site inteiro. */
+   O DS nasceu escuro, então o :root JÁ É o tema escuro. O tema
+   claro (lá embaixo) só troca os valores destas mesmas variáveis. */
 :root {
-    /* Acento — a única cor "de marca" do DS */
-    --acento:          #3DF604;   /* preenchimentos: botões, hover, seleção */
-    --acento-texto:    #3DF604;   /* o acento usado como COR DE TEXTO */
-    --sobre-acento:    #000000;   /* texto em cima do acento */
+    /* Fontes. A segunda da lista é o "plano B" se a primeira
+       não carregar (sem internet, por exemplo). */
+    --fonte-titulo: 'Unbounded', 'Arial Black', sans-serif;
+    --fonte-texto:  'Space Mono', ui-monospace, 'Courier New', monospace;
 
-    /* Superfícies — a elevação é dada pela claridade, não por sombra */
-    --fundo:            #050505;  /* página */
-    --faixa:            #0A0A0A;  /* faixas, modais, formulários */
-    --superficie:       #111111;  /* cards */
-    --superficie-hover: #1A1A1A;  /* card com o mouse em cima */
+    /* Superfícies — a "altura" de uma caixa é indicada pela
+       claridade: quanto mais clara, mais "perto" do usuário. */
+    --fundo:             #050505;   /* página */
+    --faixa:             #0A0A0A;   /* faixas, modais, painéis */
+    --superficie:        #111111;   /* cards */
+    --superficie-hover:  #1A1A1A;   /* card com o mouse em cima */
 
     /* Texto */
-    --texto-forte:   #FFFFFF;     /* títulos */
-    --texto:         #EAEAEA;     /* corpo */
-    --texto-suave:   #9CA3AF;     /* parágrafos secundários, legendas */
-    --texto-apagado: #6B7280;     /* rótulos, ícones */
-    --texto-mudo:    #4B5563;     /* avisos legais */
+    --texto-forte:   #FFFFFF;   /* títulos */
+    --texto:         #EAEAEA;   /* corpo */
+    --texto-suave:   #9CA3AF;   /* parágrafos secundários, legendas */
+    --texto-apagado: #8A919C;   /* rótulos. O DS usa #6B7280, mas ele
+                                   fica abaixo de 4,5:1 no fundo preto
+                                   (WCAG); clareamos um pouco. */
 
     /* Linhas e vidro */
-    --borda:       rgba(255, 255, 255, 0.10);
-    --borda-forte: rgba(255, 255, 255, 0.20);
-    --grafite:     #333333;       /* contorno de texto, barra de rolagem */
-    --vidro:       rgba(255, 255, 255, 0.05);
-    --vidro-forte: rgba(255, 255, 255, 0.10);
-    --grade:       rgba(255, 255, 255, 0.03);  /* linhas da textura de fundo */
+    --borda:        rgba(255, 255, 255, 0.10);
+    --borda-forte:  rgba(255, 255, 255, 0.20);
+    --vidro:        rgba(255, 255, 255, 0.05);   /* pílula do menu */
+    --vidro-forte:  rgba(255, 255, 255, 0.10);   /* botão-ícone */
+    --grade:        rgba(255, 255, 255, 0.03);   /* textura da página */
+    --grafite:      #333333;                     /* texto vazado */
 
-    /* "Inverso": o hover do botão principal e dos chips.
-       No escuro é branco; no claro, preto. */
-    --inverso:       #FFFFFF;
-    --sobre-inverso: #000000;
+    /* O verde do DS. Dois nomes porque, no tema claro, verde neon
+       como COR DE TEXTO fica ilegível no branco — lá o
+       --sinal-texto vira um verde escuro, e o --sinal continua
+       neon como FUNDO (sempre com texto preto em cima). */
+    --sinal:        #3DF604;
+    --sinal-texto:  #3DF604;
+    --sobre-sinal:  #000000;    /* texto em cima do verde */
 
-    /* Véu por cima das fotos de fundo, para o texto aparecer */
-    --veu-topo:  rgba(5, 5, 5, 0.78);
-    --veu-base:  rgba(5, 5, 5, 0.96);
+    /* Véus: a camada escura por cima das fotos de fundo. */
+    --veu:          rgba(5, 5, 5, 0.86);
+    --opacidade-foto: 0.18;     /* foto do topo das páginas internas */
+    --veu-modal:    rgba(5, 5, 5, 0.92);
+    --cabecalho-fundo: rgba(5, 5, 5, 0.80);
 
-    /* Sinalização de evento — as 4 cores de status.
-       O verde de "disponível" é o próprio acento do DS. */
-    --status-disponivel: #3DF604;
-    --status-perto:      #FACC15;   /* amarelo */
-    --status-esgotado:   #FF5A5A;   /* vermelho */
-    --status-realizado:  #6B7280;   /* cinza */
+    /* Sinalização de evento — as 4 cores de status (regra do
+       enunciado). O DS não tem cores de status; estas foram
+       escolhidas para ler bem no fundo preto. O "disponível" é o
+       próprio verde do DS. */
+    --status-disponivel: #3DF604;   /* verde  */
+    --status-perto:      #FFC53D;   /* âmbar  */
+    --status-esgotado:   #FF5A4E;   /* vermelho */
+    --status-realizado:  #8A919C;   /* cinza  */
 
-    /* Tipografia */
-    --fonte-display: 'Unbounded', 'Arial Black', sans-serif;
-    --fonte-texto:   'Space Mono', ui-monospace, 'Courier New', monospace;
+    /* Fundos de aviso (sucesso/erro) — a cor do status bem fraca. */
+    --fundo-sucesso: rgba(61, 246, 4, 0.08);
+    --fundo-erro:    rgba(255, 90, 78, 0.10);
 
-    /* Raios: 2px nos blocos, pílula nos botões */
-    --raio:        2px;
-    --raio-pilula: 999px;
-
-    /* Textura quadriculada do DS (linhas de 1px a cada 40px).
-       Guardada numa variável porque é usada em várias seções,
-       sempre como PRIMEIRA camada do background-image. */
-    --textura-grade:
-        linear-gradient(to right, var(--grade) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grade) 1px, transparent 1px);
-
-    /* Camada que tira a cor das fotos de fundo (o "saturate-0" do DS).
-       Sozinha é só preto; o truque é o background-blend-mode:
-       saturation nela, que pega a saturação do preto (zero) e aplica
-       na foto de baixo — a foto fica em preto e branco. Assim as
-       fotos roxas não brigam com o acento verde. */
-    --tira-cor: linear-gradient(#000000, #000000);
+    /* Medidas que se repetem */
+    --raio:         2px;        /* caixas: quase retas, como no DS */
+    --raio-pilula:  999px;      /* botões e selos */
+    --largura-max:  1100px;
 
     /* Pede ao navegador os controles nativos escuros: barra de
        rolagem, calendário do campo de data, caixas de marcar. */
@@ -98,100 +105,81 @@ html {
 
 body {
     background-color: var(--fundo);
-    background-image: var(--textura-grade);
-    background-size: 40px 40px;
-    background-attachment: fixed;
     color: var(--texto);
     font-family: var(--fonte-texto);
+    font-size: 14px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-/* Botões e campos não herdam a fonte sozinhos: forçamos aqui
-   uma vez só, em vez de repetir em cada regra. */
-button, input, textarea, select {
-    font-family: inherit;
+/* TEXTURA DE GRADE — a marca registrada do DS.
+   Um pseudo-elemento "fixed" cobre a tela inteira e fica ATRÁS de
+   tudo (z-index: -1). Duas linhas de gradiente de 1px, repetidas a
+   cada 40px, desenham a grade. pointer-events: none deixa os
+   cliques passarem direto por ela. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, var(--grade) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grade) 1px, transparent 1px);
 }
 
-/* Seleção de texto e barra de rolagem no acento, como no DS. */
+/* Texto selecionado com o mouse: verde com letra preta. */
 ::selection {
-    background-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
-::-webkit-scrollbar { width: 6px; }
+/* Barra de rolagem fina (Chrome, Edge, Safari). */
+::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--fundo); }
 ::-webkit-scrollbar-thumb { background: var(--grafite); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--acento); }
+::-webkit-scrollbar-thumb:hover { background: var(--sinal); }
 
-/* Foco visível para quem navega pelo teclado — o DS não define,
-   então usamos o acento para manter a identidade. */
+/* Foco do teclado: o DS não define um, então criamos no verde da
+   marca. :focus-visible só aparece para quem navega pelo Tab —
+   quem clica com o mouse não vê o contorno. */
 :focus-visible {
-    outline: 2px solid var(--acento);
+    outline: 2px solid var(--sinal);
     outline-offset: 2px;
 }
 
-
-/* ===== PEÇAS REUTILIZÁVEIS DO DS ===== */
-
-/* Sobretítulo: texto minúsculo, espaçado, com o ponto que pulsa
-   (o "System Online" do DS). */
-.sobretitulo {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    font-size: 10px;
+/* Títulos: Unbounded e caixa alta em todo o site. */
+h1, h2, h3 {
+    font-family: var(--fonte-titulo);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--texto-suave);
-}
-
-.ponto-pulso {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--acento);
-    animation: pulso 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulso {
-    50% { opacity: 0.5; }
-}
-
-/* Palavra só com o contorno (o "Design" vazado do hero do DS). */
-.contorno {
-    color: transparent;
-    -webkit-text-stroke: 1px var(--texto-forte);
-}
-
-/* Palavra no acento, em itálico. */
-.destaque {
-    color: var(--acento-texto);
-    font-style: italic;
-    padding-right: 0.15em;   /* o itálico "sai" da caixa; isto compensa */
+    color: var(--texto-forte);
+    line-height: 1.1;
 }
 
 
 /* ===== CABEÇALHO ===== */
-/* Vidro escuro: o conteúdo passa por baixo desfocado. */
+/* Vidro escuro: fundo semitransparente + desfoque do que passa
+   por baixo (backdrop-filter). */
 .cabecalho {
     display: flex;
     justify-content: space-between;  /* logo na esquerda, botões na direita */
     align-items: center;
     gap: 16px;
-    background-color: rgba(5, 5, 5, 0.72);
+    background-color: var(--cabecalho-fundo);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--borda);
     padding: 8px 32px;
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 10;
 }
 
 .acoes-cabecalho {
     display: flex;
-    align-items: center;   /* sem isto os itens esticam até a altura do mais alto */
+    align-items: center;   /* sem isto os itens esticam até o mais alto */
     gap: 12px;
 }
 
@@ -201,7 +189,6 @@ button, input, textarea, select {
     text-decoration: none;
 }
 
-/* O PNG da logo tem muita margem transparente; o scale compensa. */
 .logo img {
     height: 56px;
     width: auto;
@@ -209,22 +196,24 @@ button, input, textarea, select {
     transform: scale(1.9);
 }
 
-/* A classe .menu está no <nav> E no <ul>. As regras de layout valem
-   para os dois; a "pílula de vidro" só para o <ul>, senão teríamos
-   uma pílula dentro da outra. */
-.menu {
+/* O HTML usa a classe .menu duas vezes: no <nav> e na <ul> de
+   dentro. Por isso separamos: o nav só organiza, e a ul é a
+   "pílula de vidro" do DS. */
+nav.menu {
     display: flex;
-    list-style: none;   /* tira as bolinhas da lista */
 }
 
 ul.menu {
+    display: flex;
+    align-items: center;
     gap: 4px;
+    list-style: none;                /* tira as bolinhas da lista */
     padding: 4px 8px;
     background-color: var(--vidro);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--borda);
     border-radius: var(--raio-pilula);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .menu a {
@@ -232,304 +221,192 @@ ul.menu {
     padding: 8px 16px;
     border-radius: var(--raio-pilula);
     color: var(--texto);
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     text-decoration: none;
-    white-space: nowrap;
     transition: background-color 0.15s, color 0.15s;
 }
 
-/* Página atual: vidro mais forte e um pontinho no acento. */
+/* Hover e página atual: a pílula acende em verde. */
+.menu a:hover,
 .menu a.ativo {
-    background-color: var(--vidro-forte);
-    color: var(--texto-forte);
-}
-
-.menu a.ativo::before {
-    content: "";
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-right: 8px;
-    border-radius: 50%;
-    background-color: var(--acento);
-    vertical-align: middle;
-}
-
-/* Hover do DS: a pílula enche de acento. */
-.menu a:hover {
-    background-color: var(--acento);
-    color: var(--sobre-acento);
-}
-
-.menu a:hover::before {
-    background-color: var(--sobre-acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 
 /* ===== BOTÕES ===== */
+/* Dois botões do DS:
+   - .botao-entrar  = "Outline CTA": contorno fino, acende no hover.
+   - .botao-cadastro = "Primary": verde cheio, fica branco no hover. */
 
-/* "Outline CTA" do DS: pílula vazada que enche de acento no hover. */
 .botao-entrar {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
+    background-color: transparent;
+    color: var(--texto);
     padding: 8px 18px;
     border: 1px solid var(--borda-forte);
     border-radius: var(--raio-pilula);
-    background-color: transparent;
-    color: var(--texto-forte);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .botao-entrar:hover {
-    background-color: var(--acento);
-    border-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    border-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
-/* "Primary" do DS: pílula cheia de acento, fonte display, e no
-   hover vira branca (o "inverso"). */
+/* A setinha "→" que empurra para a direita no hover (detalhe do DS).
+   Só nos botões de navegação — num botão "Fechar" ela não faria
+   sentido. */
+.acoes-cabecalho .botao-entrar::after,
+.cta-acoes .botao-entrar::after {
+    content: "→";
+    transition: transform 0.15s;
+}
+
+.acoes-cabecalho .botao-entrar:hover::after,
+.cta-acoes .botao-entrar:hover::after {
+    transform: translateX(4px);
+}
+
 .botao-cadastro {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    padding: 9px 20px;
-    border: 1px solid var(--acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
+    padding: 10px 22px;
+    border: none;
     border-radius: var(--raio-pilula);
-    background-color: var(--acento);
-    color: var(--sobre-acento);
-    font-family: var(--fonte-display);
+    font-family: var(--fonte-titulo);
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
-}
-
-.botao-cadastro:hover {
-    background-color: var(--inverso);
-    border-color: var(--inverso);
-    color: var(--sobre-inverso);
-}
-
-/* O botão de envio dos formulários é o "Primary" em tamanho cheio.
-   Uma regra só para contato, login, cadastro e perfil. */
-.secao-contato button,
-.caixa-login button,
-.caixa-cadastro button[type="submit"] {
-    align-self: flex-start;
-    margin-top: 24px;
-    padding: 12px 32px;
-    border: none;
-    border-radius: var(--raio-pilula);
-    background-color: var(--acento);
-    color: var(--sobre-acento);
-    font-family: var(--fonte-display);
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
     transition: background-color 0.15s, color 0.15s;
 }
 
-.secao-contato button:hover,
-.caixa-login button:hover,
-.caixa-cadastro button[type="submit"]:hover {
-    background-color: var(--inverso);
-    color: var(--sobre-inverso);
+.botao-cadastro:hover {
+    background-color: var(--texto-forte);
+    color: var(--fundo);
 }
 
 
-/* ===== CAMPOS NO ESTILO DO DS =====
-   O DS usa campos "sublinhados": sem caixa, só uma linha embaixo
-   que acende no acento quando o campo recebe foco. Uma regra só
-   para todos os formulários do site. */
-.secao-contato input,
-.secao-contato textarea,
-.caixa-login input,
-.caixa-cadastro input,
-.busca-topo input,
-.faixa-preco input {
-    width: 100%;
-    padding: 8px 0;
-    border: none;
-    border-bottom: 1px solid var(--borda-forte);
-    border-radius: 0;
-    background-color: transparent;
-    color: var(--texto-forte);
-    font-size: 14px;
-    transition: border-color 0.15s;
+/* ===== TÍTULOS DE SEÇÃO COM NÚMERO [01] =====
+   No DS, cada seção tem o título à esquerda e um índice em verde
+   à direita ("[01]", "[02]"...). Em vez de escrever o número no
+   HTML (e ter de renumerar tudo ao mudar a ordem), usamos um
+   CONTADOR do CSS: cada <section> do <main> soma 1, e o ::after
+   escreve o valor. decimal-leading-zero = "01", "02"... */
+main {
+    counter-reset: secao;
 }
 
-.secao-contato textarea {
-    resize: none;
+main > section {
+    counter-increment: secao;
 }
 
-.secao-contato input:focus,
-.secao-contato textarea:focus,
-.caixa-login input:focus,
-.caixa-cadastro input:focus,
-.busca-topo input:focus,
-.faixa-preco input:focus {
-    outline: none;                        /* a linha no acento já mostra o foco */
-    border-bottom-color: var(--acento);
-}
-
-::placeholder {
-    color: var(--texto-mudo);
-    opacity: 1;
-}
-
-/* Rótulo dos campos: pequeno, caixa alta, cinza — igual ao DS. */
-.secao-contato label,
-.caixa-login label,
-.caixa-cadastro label {
-    margin-top: 16px;
+.secao-categorias .titulo-secao::after,
+.sobre-texto > h2::after {
+    content: "[" counter(secao, decimal-leading-zero) "]";
+    font-family: var(--fonte-texto);
     font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--texto-apagado);
+    font-weight: normal;
+    color: var(--sinal-texto);
 }
 
 
-/* ===== CABEÇALHO DE SEÇÃO ===== */
-/* O padrão do DS: título à esquerda, etiqueta no acento à direita,
-   e uma linha fina embaixo. */
-.titulo-secao {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--borda);
-}
+/* ===== SEÇÃO EVENTOS (o "herói" da home) ===== */
 
-.titulo-secao h2 {
-    font-family: var(--fonte-display);
-    font-weight: 400;
-    font-size: 24px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-}
-
-.titulo-secao .subtitulo {
-    font-size: 12px;
-    color: var(--acento-texto);
-}
-
-
-/* =====  SEÇÃO EVENTOS (o "hero" da home) ===== */
-
-/* Várias camadas de fundo. A PRIMEIRA da lista fica POR CIMA:
-   textura quadriculada > véu escuro > foto. */
 .secao-eventos {
-    padding: 96px 32px 96px;
-    background-image: var(--textura-grade),
-                      linear-gradient(var(--veu-topo), var(--veu-base)),
-                      var(--tira-cor),
+    padding: 96px 24px 104px;
+
+    /* A foto do grupo continua, mas no estilo do DS: em preto e
+       branco e bem escurecida.
+       - background-blend-mode "luminosity" na FOTO mistura ela com
+         a cor de fundo (quase preta, sem cor): sobra só o claro/
+         escuro da foto — ela fica cinza.
+       - O gradiente (véu) vem por cima, com modo normal. */
+    background-color: var(--fundo);
+    background-image: linear-gradient(var(--veu), var(--veu)),
                       url("../assets/backgrounds/fundo-eventos.jpg");
-    background-size: 40px 40px, 40px 40px, cover, cover, cover;
-    background-blend-mode: normal, normal, normal, saturation, normal;
+    background-blend-mode: normal, luminosity;
+    background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    border-bottom: 1px solid var(--borda);
 }
 
 .secao-eventos .titulo-secao,
 .secao-eventos .carrossel-eventos {
-    max-width: 1100px;
+    max-width: var(--largura-max);
     margin-left: auto;
     margin-right: auto;
 }
 
-/* No hero o título não tem a linha do cabeçalho de seção. */
 .secao-eventos .titulo-secao {
-    display: block;
-    border-bottom: none;
+    display: flex;
+    flex-direction: column-reverse;   /* o subtítulo vira "etiqueta" EM CIMA do título */
+    gap: 20px;
     margin-bottom: 48px;
 }
 
-/* Heading 1 do DS: Unbounded 900, caixa alta, entrelinha apertada.
-   clamp(mínimo, ideal, máximo): cresce com a tela sem media query. */
+/* Título gigante do DS: peso 900, linhas coladas (0.9), letras
+   apertadas. clamp(mín, ideal, máx) faz a fonte crescer com a
+   largura da tela sem precisar de media query. */
 .secao-eventos .titulo-secao h1 {
-    font-family: var(--fonte-display);
     font-weight: 900;
-    font-size: clamp(2.5rem, 8vw, 6.5rem);
-    line-height: 0.88;
+    font-size: clamp(40px, 8vw, 104px);
+    line-height: 0.9;
     letter-spacing: -0.04em;
-    text-transform: uppercase;
-    color: var(--texto-forte);
 }
 
-/* Parágrafo de apoio: linha no acento à esquerda. */
-.secao-eventos .subtitulo {
-    max-width: 380px;
-    margin-top: 28px;
-    padding-left: 16px;
-    border-left: 2px solid var(--acento);
-    color: var(--texto-suave);
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-
-/* ===== FAIXA ROLANTE (marquee do DS) ===== */
-/* O conteúdo está DUAS vezes no HTML. A animação anda metade da
-   largura (-50%) e recomeça: como a segunda metade é igual à
-   primeira, o recomeço não aparece — parece infinito. */
-.faixa-rolante {
-    overflow: hidden;
-    padding: 16px 0;
-    background-color: var(--faixa);
-    border-top: 1px solid var(--borda);
-    border-bottom: 1px solid var(--borda);
-}
-
-.faixa-rolante-trilho {
-    display: flex;
-    width: max-content;
-    animation: rolar 20s linear infinite;
-}
-
-/* Espaço com padding-right, e não com gap: com gap a largura total
-   teria um espaço a menos que o dobro da metade, e o recomeço da
-   animação daria um "pulinho" visível. */
-.faixa-rolante span {
-    padding-right: 32px;
-    font-family: var(--fonte-display);
-    font-weight: 700;
-    font-size: clamp(2.25rem, 5vw, 3.75rem);
-    text-transform: uppercase;
-    white-space: nowrap;
+/* Palavra VAZADA: letra transparente com só o contorno. */
+.texto-contorno {
     color: transparent;
-    -webkit-text-stroke: 1px var(--grafite);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
 }
 
-.faixa-rolante .faixa-x {
-    color: var(--acento-texto);
-    -webkit-text-stroke: 0;
+/* Palavra em destaque: verde e itálico. */
+.texto-sinal {
+    color: var(--sinal-texto);
+    font-style: italic;
 }
 
-@keyframes rolar {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+/* Etiqueta com a bolinha verde piscando ("ao vivo"). */
+.secao-eventos .subtitulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--texto-suave);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
 }
 
-/* Quem pediu menos movimento no sistema vê a faixa parada. */
-@media (prefers-reduced-motion: reduce) {
-    .faixa-rolante-trilho,
-    .ponto-pulso {
-        animation: none;
-    }
+.secao-eventos .subtitulo::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--sinal);
+    animation: pulsar 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* A "respiração" da bolinha: some e volta. */
+@keyframes pulsar {
+    50% { opacity: 0.4; }
 }
 
 
@@ -556,14 +433,15 @@ ul.menu {
     flex: 0 0 70%;
     scroll-snap-align: center;
     transform: scale(0.9);
-    opacity: 0.4;
+    opacity: 0.5;
     transition: transform 0.35s, opacity 0.35s, border-color 0.35s;
 }
 
+/* O card do meio: tamanho cheio e borda verde. */
 .trilho-eventos .card-evento.ativo {
     transform: scale(1);
     opacity: 1;
-    border-color: var(--acento);
+    border-color: var(--sinal);
 }
 
 .trilho-eventos .card-evento:first-child {
@@ -575,8 +453,7 @@ ul.menu {
 }
 
 
-/* ===== SETAS ===== */
-/* "Glass Icon" do DS: círculo de vidro que enche de acento. */
+/* ===== SETAS (botão-ícone de vidro do DS) ===== */
 .seta {
     position: absolute;
     top: 50%;
@@ -585,14 +462,14 @@ ul.menu {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--borda);
-    border-radius: 50%;
     background-color: var(--vidro-forte);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     color: var(--texto-forte);
+    border: 1px solid var(--borda);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     transition: background-color 0.15s, color 0.15s;
 }
@@ -603,9 +480,8 @@ ul.menu {
 }
 
 .seta:hover {
-    background-color: var(--acento);
-    border-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 .seta-esquerda {
@@ -626,64 +502,52 @@ ul.menu {
     padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
-/* "Kicker" do DS: a categoria em cima do título, no acento. */
+/* A categoria vira o "kicker" do DS: verde, mono, espaçada. */
 .categoria {
-    color: var(--acento-texto);
-    font-size: 12px;
+    color: var(--sinal-texto);
+    font-size: 11px;
     font-weight: bold;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
+    letter-spacing: 0.2em;
 }
 
 .card-evento .titulo {
-    font-family: var(--fonte-display);
+    font-size: 28px;
     font-weight: 400;
-    font-size: 30px;
-    line-height: 1.1;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-}
-
-/* Linha de metadados: caixa alta, negrito, cinza. */
-.local, .data {
-    color: var(--texto-apagado);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.descricao {
-    color: var(--texto-suave);
-    font-size: 14px;
-    line-height: 1.6;
+    margin: 4px 0 8px;
 }
 
 .card-evento .descricao {
+    font-size: 13px;
+    line-height: 1.7;
     margin-top: 8px;
 }
 
-/* flex-wrap: em card estreito (busca com filtros ao lado) o selo
-   desce para a linha de baixo em vez de vazar para fora do card. */
+.local, .data, .descricao {
+    color: var(--texto-suave);
+    font-size: 13px;
+}
+
 .rodape-card {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap;     /* se preço + selo não couberem, o selo desce */
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-top: 16px;
-    padding-top: 16px;
+    margin-top: 18px;
+    padding-top: 18px;
     border-top: 1px solid var(--borda);
 }
 
+/* nowrap: "R$ 40,00" nunca quebra entre o "R$" e o número. */
 .preco {
-    font-family: var(--fonte-display);
+    font-family: var(--fonte-titulo);
     font-weight: 700;
     color: var(--texto-forte);
-    white-space: nowrap;          /* "R$ 40,00" nunca quebra no meio */
+    white-space: nowrap;
 }
 
 
@@ -691,9 +555,9 @@ ul.menu {
 /* A cor do selo é CALCULADA pelo eventos.js (calcularStatusEvento)
    — nunca escrita à mão no HTML, senão desatualiza.
 
-   No estilo do DS o selo é uma pílula vazada: a borda e o texto
-   usam currentColor, então basta definir "color" em cada status e
-   borda + bolinha acompanham sozinhas. */
+   Estilo do DS: pílula de contorno. "currentColor" = "a cor do
+   texto deste elemento". Assim cada selo só troca o "color", e a
+   borda e a bolinha acompanham sozinhas. */
 
 .selo-disponivel,
 .selo-perto,
@@ -707,8 +571,8 @@ ul.menu {
     border-radius: var(--raio-pilula);
     font-size: 10px;
     font-weight: bold;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
+    letter-spacing: 0.1em;
     white-space: nowrap;
 }
 
@@ -728,335 +592,104 @@ ul.menu {
 .selo-esgotado   { color: var(--status-esgotado); }
 .selo-realizado  { color: var(--status-realizado); }
 
-
-/* ===== CATEGORIAS (home) ===== */
-
-.secao-categorias {
-    padding: 128px 32px 96px;
-}
-
-.secao-categorias .titulo-secao {
-    max-width: 1100px;
-    margin: 0 auto 32px;
-}
-
-/* auto-fit + minmax: cinco colunas no computador, e vai quebrando
-   sozinho em telas menores — sem precisar de media query.
-   counter-reset prepara um contador para numerar os cartões. */
-.grade-categorias {
-    list-style: none;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 16px;
-    counter-reset: categoria;
-}
-
-/* "Ring tile" do DS: fundo sobe um tom e a borda acende no hover. */
-.cartao-categoria {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    height: 100%;
-    min-height: 200px;
-    padding: 24px;
-    border-radius: var(--raio);
-    border: 1px solid var(--borda);
-    background-color: var(--superficie);
-    color: var(--texto-forte);
-    text-decoration: none;
-    counter-increment: categoria;
-    transition: background-color 0.15s, border-color 0.15s;
-}
-
-/* O numeral "01, 02..." do DS, gerado pelo CSS: nenhum número
-   escrito no HTML. decimal-leading-zero põe o zero na frente. */
-.cartao-categoria::before {
-    content: counter(categoria, decimal-leading-zero);
-    font-family: var(--fonte-display);
-    font-size: 40px;
-    line-height: 1;
-    opacity: 0.2;
-    transition: opacity 0.15s, color 0.15s;
-}
-
-.cartao-categoria:hover,
-.cartao-categoria:focus-visible {
-    background-color: var(--superficie-hover);
-    border-color: var(--acento);
-    outline: none;
-}
-
-.cartao-categoria:hover::before,
-.cartao-categoria:focus-visible::before {
-    opacity: 1;
-    color: var(--acento-texto);
-}
-
-/* O emoji fica no canto, como o ícone dos cards do DS. */
-.icone-categoria {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    font-size: 28px;
-    line-height: 1;
-}
-
-.cartao-categoria strong {
-    margin-top: auto;              /* empurra nome e contagem para baixo */
-    font-family: var(--fonte-display);
-    font-weight: 400;
-    font-size: 18px;
-    text-transform: uppercase;
-}
-
-.qtd-categoria {
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--texto-suave);
+/* Só o "disponível" pisca: é o convite para ir. */
+.selo-disponivel::before {
+    animation: pulsar 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 
-/* ===== SOBRE NÓS ===== */
-.secao-sobre {
-    padding: 96px 32px;
-    background-image: var(--textura-grade),
-                      linear-gradient(var(--veu-topo), var(--veu-base)),
-                      var(--tira-cor),
-                      url("../assets/backgrounds/fundo-sobre.jpg");
-    background-size: 40px 40px, 40px 40px, cover, cover, cover;
-    background-blend-mode: normal, normal, normal, saturation, normal;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-.sobre-conteudo {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    /* minmax(0, ...) deixa as colunas encolherem de verdade;
-       sem o 0, um texto comprido pode alargar a coluna. */
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: 48px;
-    align-items: start;
-}
-
-.secao-sobre h2 {
-    font-family: var(--fonte-display);
-    font-weight: 900;
-    font-size: clamp(2.25rem, 5vw, 4rem);
-    line-height: 0.95;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-    margin-bottom: 32px;
-}
-
-.secao-sobre p {
-    color: var(--texto-suave);
-    margin-bottom: 16px;
-    line-height: 1.7;
-    font-size: 14px;
-}
-
-/* O primeiro parágrafo ganha a linha no acento do DS. */
-.sobre-texto > p:first-of-type {
-    padding-left: 16px;
-    border-left: 2px solid var(--acento);
-    color: var(--texto);
-}
-
-/* A lista vira o "arquivo" do DS: linhas divididas, numeradas,
-   que acendem e andam um pouco para a direita no hover. */
-.secao-sobre ul {
-    list-style: none;
-    margin: 32px 0;
-    border-top: 1px solid var(--borda-forte);
-    counter-reset: recurso;
-}
-
-.secao-sobre li {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--borda-forte);
-    line-height: 1.6;
-    color: var(--texto-suave);
-    cursor: pointer;
-    counter-increment: recurso;
-    transition: padding-left 0.3s, background-color 0.3s;
-}
-
-.secao-sobre li:hover,
-.secao-sobre li:focus {
-    padding-left: 8px;
-    outline: none;
-}
-
-.secao-sobre li strong {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    font-family: var(--fonte-display);
-    font-weight: 400;
-    font-size: 17px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-    transition: color 0.3s;
-}
-
-.secao-sobre li strong::before {
-    content: counter(recurso, decimal-leading-zero);
-    font-family: var(--fonte-texto);
-    font-size: 12px;
-    color: var(--acento-texto);
-}
-
-.secao-sobre li:hover strong,
-.secao-sobre li:focus strong {
-    color: var(--acento-texto);
-}
-
-/* O texto do item abre no hover (ou no foco, para o teclado). */
-.secao-sobre li span {
-    display: block;
+/* ===== FAIXA ROLANTE (marquee do DS) =====
+   As categorias passando sem parar. O truque do "loop infinito":
+   o texto está escrito DUAS vezes seguidas. A animação anda
+   exatamente metade (-50%) — quando a primeira cópia sai, a
+   segunda está no lugar dela, e a animação recomeça sem pulo. */
+.faixa-rolante {
     overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    font-size: 13px;
-    transition: max-height 0.35s, opacity 0.35s, margin-top 0.35s;
-}
-
-.secao-sobre li:hover span,
-.secao-sobre li:focus-within span,
-.secao-sobre li:focus span {
-    max-height: 120px;
-    opacity: 1;
-    margin-top: 8px;
-}
-
-.sobre-midia {
-    display: grid;
-    gap: 16px;
-
-    /* sticky: a coluna de imagens acompanha a rolagem enquanto o
-       texto ao lado ainda está passando. */
-    position: sticky;
-    top: 110px;
-}
-
-.sobre-midia img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--raio);
-    border: 1px solid var(--borda);
-    /* Filtro do DS: foto em preto e branco, que ganha cor no hover. */
-    filter: saturate(0);
-    transition: filter 0.7s;
-}
-
-.sobre-midia img:hover {
-    filter: saturate(1);
-}
-
-/* :empty = "não tem NADA dentro". Enquanto não houver imagem, uma
-   moldura tracejada mostra onde ela vai. Colocou a imagem, a
-   moldura some sozinha — nenhuma linha de CSS precisa mudar. */
-.sobre-midia:empty {
-    min-height: 380px;
-    border: 1px dashed var(--texto-mudo);
-    border-radius: var(--raio);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sobre-midia:empty::before {
-    content: "Espaço para as imagens";
-    color: var(--texto-apagado);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-}
-
-
-/* ===== CONTATO ===== */
-
-.secao-contato {
-    padding: 96px 32px;
-    border-top: 1px solid var(--borda);
-}
-
-/* Heading de chamada do DS ("Let's make some noise"). */
-.secao-contato h2 {
-    max-width: 1100px;
-    margin: 0 auto 16px;
-    font-family: var(--fonte-display);
-    font-weight: 900;
-    font-size: clamp(2.25rem, 6vw, 4.5rem);
-    line-height: 0.95;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-}
-
-.secao-contato > p {
-    max-width: 1100px;
-    margin: 0 auto 40px;
-    color: var(--texto-suave);
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-/* O formulário é a caixa do modal do DS. */
-.secao-contato form {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px;
+    padding: 28px 0;
     background-color: var(--faixa);
-    border: 1px solid var(--borda);
-    border-radius: var(--raio);
+    border-bottom: 1px solid var(--borda);
+}
+
+.faixa-rolante-trilho {
+    display: flex;
+    width: max-content;   /* largura do texto todo, não da tela */
+    animation: rolar 20s linear infinite;
+}
+
+/* padding-right em cada item, e não "gap" no trilho: com gap, a
+   última palavra fica sem espaço depois dela, as duas metades não
+   têm exatamente o mesmo tamanho e o loop dá um "pulinho". */
+.faixa-rolante span {
+    padding-right: 32px;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--grafite);
+}
+
+.faixa-rolante .faixa-x {
+    color: var(--sinal-texto);
+    -webkit-text-stroke: 0;
+}
+
+@keyframes rolar {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
 }
 
 
 /* ===== RODAPÉ FINAL ===== */
 
 .rodape {
-    border-top: 1px solid var(--borda);
+    background-color: var(--fundo);
     color: var(--texto-suave);
-    padding: 48px 32px 0;
+    padding: 64px 32px 0;
+    border-top: 1px solid var(--borda);
 }
 
 .rodape-conteudo {
-    max-width: 1100px;
+    max-width: var(--largura-max);
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 32px;
-    padding-bottom: 32px;
+    gap: 40px;
+    padding-bottom: 48px;
 }
 
-/* A primeira coluna leva o nome da marca em fonte display. */
+/* Os títulos das colunas viram rótulos pequenos... */
+.rodape-coluna h3 {
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    color: var(--texto-apagado);
+    margin-bottom: 16px;
+}
+
+/* ...menos o da primeira coluna, que é a "assinatura" SEJOGA. */
 .rodape-coluna:first-child h3 {
-    font-family: var(--fonte-display);
+    font-family: var(--fonte-titulo);
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    text-transform: none;
     color: var(--texto-forte);
-    margin-bottom: 12px;
 }
 
-.rodape-coluna h3 {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--texto-apagado);
-    margin-bottom: 12px;
+.rodape-coluna p {
+    line-height: 1.7;
+    font-size: 13px;
+    color: var(--texto-suave);
+    max-width: 320px;
+}
+
+.rodape-coluna ul {
+    list-style: none;
+    display: grid;
+    gap: 10px;
 }
 
 .rodape-coluna a {
@@ -1071,26 +704,20 @@ ul.menu {
     color: var(--texto-forte);
 }
 
-.rodape-coluna p {
-    line-height: 1.6;
-    font-size: 12px;
-    color: var(--texto-suave);
+/* Ícones das redes lado a lado, como no DS. */
+.rodape-coluna ul:has(img) {
+    display: flex;
+    gap: 16px;
 }
 
-.rodape-coluna ul {
-    list-style: none;
-    display: grid;
-    gap: 8px;
-}
-
-/* Os ícones são PNG: o filtro os deixa brancos (escuro) e meio
-   apagados; no hover acendem. */
+/* brightness(0) deixa o ícone preto; invert(1) inverte para branco.
+   A opacidade faz o "cinza" do DS; no hover ele acende. */
 .rodape-coluna ul img {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     display: block;
     filter: brightness(0) invert(1);
-    opacity: 0.5;
+    opacity: 0.55;
     transition: opacity 0.15s;
 }
 
@@ -1100,26 +727,25 @@ ul.menu {
 
 .rodape-base {
     border-top: 1px solid var(--borda);
-    padding: 16px 0;
+    padding: 20px 0;
     text-align: center;
     font-size: 10px;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--texto-mudo);
+    letter-spacing: 0.1em;
+    color: var(--texto-apagado);
 }
 
 
 /* ===== MODAL ===== */
-/* Fundo quase opaco com desfoque forte, caixa escura com borda
-   fina e sombra grande — o modal de contato do DS. */
+/* Fundo quase opaco e desfocado, caixa escura de cantos retos. */
 
 .modal {
     display: none;
     position: fixed;
     inset: 0;
-    background-color: rgba(5, 5, 5, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background-color: var(--veu-modal);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     z-index: 100;
     align-items: center;
     justify-content: center;
@@ -1133,33 +759,30 @@ ul.menu {
 
 .modal-caixa {
     position: relative;
-    width: 100%;
-    max-width: 480px;
     background-color: var(--faixa);
     border: 1px solid var(--borda);
     border-radius: var(--raio);
     padding: 48px 40px 40px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    max-width: 460px;
+    width: 100%;
     text-align: left;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
 .modal-caixa h2 {
-    font-family: var(--fonte-display);
-    font-weight: 700;
     font-size: 26px;
-    line-height: 1.1;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    font-weight: 700;
     margin-bottom: 20px;
+    padding-right: 32px;       /* não passa por baixo do X */
 }
 
+/* O texto do modal com a "régua" verde à esquerda, como no DS. */
 .modal-caixa p {
     color: var(--texto-suave);
-    font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 28px;
     padding-left: 16px;
-    border-left: 2px solid var(--acento);
+    border-left: 2px solid var(--sinal);
 }
 
 .modal-acoes {
@@ -1176,6 +799,7 @@ ul.menu {
     font-size: 32px;
     line-height: 1;
     color: var(--texto-suave);
+    text-decoration: none;
     background: none;
     border: none;
     cursor: pointer;
@@ -1183,7 +807,7 @@ ul.menu {
 }
 
 .modal-fechar:hover {
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 .modal-acoes a,
@@ -1201,15 +825,21 @@ ul.menu {
     font-size: 13px;
     line-height: 1.5;
     display: none;
-    background-color: var(--vidro);
-    border-left: 2px solid var(--texto-apagado);
-    color: var(--texto);
 }
 
 .aviso-form.visivel { display: block; }
 
-.aviso-form.sucesso { border-left-color: var(--status-disponivel); }
-.aviso-form.erro    { border-left-color: var(--status-esgotado); }
+.aviso-form.sucesso {
+    background-color: var(--fundo-sucesso);
+    color: var(--status-disponivel);
+    border-left: 2px solid var(--status-disponivel);
+}
+
+.aviso-form.erro {
+    background-color: var(--fundo-erro);
+    color: var(--status-esgotado);
+    border-left: 2px solid var(--status-esgotado);
+}
 
 
 /* ===== CABEÇALHO: ÁREA DE QUEM ESTÁ LOGADO =====
@@ -1223,7 +853,8 @@ ul.menu {
 
 /* A foto do usuário. Sem foto, o fundo é uma silhueta desenhada
    em SVG e embutida aqui mesmo (data URI) — sem arquivo nenhum.
-   Com foto, o JavaScript troca este background. */
+   Com foto, o JavaScript troca este background.
+   A silhueta é cinza (#9CA3AF): aparece nos dois temas. */
 .usuario-avatar {
     display: inline-block;
     width: 36px;
@@ -1237,11 +868,11 @@ ul.menu {
     background-position: center;
 }
 
-/* A versão grande, do cadastro e do perfil: anel no acento. */
+/* A versão grande, do cadastro e do perfil. */
 .avatar-grande {
     width: 88px;
     height: 88px;
-    border: 2px solid var(--acento);
+    border: 2px solid var(--sinal);
 }
 
 .usuario-nome {
@@ -1283,7 +914,7 @@ ul.menu {
 .botao-usuario:hover,
 .botao-icone[aria-expanded="true"],
 .botao-usuario[aria-expanded="true"] {
-    background-color: var(--vidro);
+    background-color: var(--vidro-forte);
     border-color: var(--borda);
 }
 
@@ -1309,9 +940,9 @@ ul.menu {
     height: 18px;
     padding: 0 5px;
     border-radius: var(--raio-pilula);
-    background-color: var(--acento);
+    background-color: var(--sinal);
     border: 2px solid var(--fundo);
-    color: var(--sobre-acento);
+    color: var(--sobre-sinal);
     font-size: 10px;
     font-weight: bold;
     line-height: 14px;
@@ -1340,23 +971,24 @@ ul.menu {
     z-index: 50;
     width: 280px;
     padding: 8px;
-    border: 1px solid var(--borda);
     border-radius: var(--raio);
+    border: 1px solid var(--borda);
     background-color: var(--faixa);
     color: var(--texto);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
     text-align: left;
 }
 
 .painel-notificacoes {
     width: 320px;
-    padding: 16px;
+    padding: 14px;
 }
 
 .painel-notificacoes h3 {
+    font-family: var(--fonte-texto);
     font-size: 10px;
+    font-weight: normal;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
     color: var(--texto-apagado);
     margin-bottom: 12px;
 }
@@ -1365,29 +997,30 @@ ul.menu {
     color: var(--texto-suave);
     font-size: 13px;
     line-height: 1.5;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
-/* "Underline link" do DS. */
+/* "Link sublinhado" do DS: linha embaixo, acende em verde. */
 .painel-link {
     display: inline-block;
-    padding-bottom: 2px;
-    border-bottom: 1px solid currentColor;
     color: var(--texto-forte);
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: bold;
     text-transform: uppercase;
     text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid currentColor;
     transition: color 0.15s;
 }
 
 .painel-link:hover {
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 .lista-notificacoes {
     list-style: none;
     display: grid;
-    gap: 4px;
+    gap: 6px;
     text-align: left;
 }
 
@@ -1396,28 +1029,28 @@ ul.menu {
     grid-template-columns: 1fr auto;
     gap: 2px 10px;
     padding: 12px;
-    border: 1px solid var(--borda);
     border-radius: var(--raio);
-    color: var(--texto-forte);
+    border: 1px solid var(--borda);
+    color: var(--texto);
     text-decoration: none;
     background-color: var(--superficie);
     transition: border-color 0.15s, background-color 0.15s;
 }
 
 .lista-notificacoes a:hover {
+    border-color: var(--sinal);
     background-color: var(--superficie-hover);
-    border-color: var(--acento);
 }
 
 .lista-notificacoes strong {
     font-size: 13px;
+    color: var(--texto-forte);
 }
 
 .notificacao-detalhe {
     grid-column: 1 / -1;
     font-size: 11px;
-    text-transform: uppercase;
-    color: var(--texto-apagado);
+    color: var(--texto-suave);
 }
 
 .notificacao-quando {
@@ -1425,7 +1058,7 @@ ul.menu {
     grid-column: 2;
     font-size: 11px;
     font-weight: bold;
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 
@@ -1434,15 +1067,13 @@ ul.menu {
 .menu-usuario-topo {
     display: flex;
     flex-direction: column;
-    gap: 2px;
     padding: 8px 10px 12px;
     margin-bottom: 6px;
     border-bottom: 1px solid var(--borda);
 }
 
 .menu-usuario-topo strong {
-    font-family: var(--fonte-display);
-    font-weight: 400;
+    font-family: var(--fonte-titulo);
     font-size: 14px;
     text-transform: uppercase;
     color: var(--texto-forte);
@@ -1450,15 +1081,17 @@ ul.menu {
 
 .menu-usuario-topo span {
     font-size: 12px;
-    color: var(--acento-texto);
+    color: var(--texto-suave);
 }
 
+/* Item do menu: no hover, fica verde e anda 4px para a direita
+   (o "List Indent" do DS). */
 .menu-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 10px;
+    padding: 9px 10px;
     border: none;
     border-radius: var(--raio);
     background: none;
@@ -1467,14 +1100,13 @@ ul.menu {
     text-align: left;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.15s, color 0.15s, padding-left 0.3s;
+    transition: background-color 0.15s, color 0.15s, padding 0.2s;
 }
 
-/* "List indent" do DS: acende e anda para a direita. */
 .menu-item:hover,
 .menu-item:focus-visible {
     background-color: var(--vidro);
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
     padding-left: 14px;
     outline: none;
 }
@@ -1483,8 +1115,8 @@ ul.menu {
     min-width: 22px;
     padding: 1px 7px;
     border-radius: var(--raio-pilula);
-    background-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
     font-size: 11px;
     font-weight: bold;
     text-align: center;
@@ -1501,8 +1133,8 @@ ul.menu {
     display: block;
     padding: 4px 10px;
     font-size: 10px;
-    letter-spacing: 0.2em;
     text-transform: uppercase;
+    letter-spacing: 0.2em;
     color: var(--texto-apagado);
 }
 
@@ -1518,27 +1150,26 @@ ul.menu {
     flex: 1;
 }
 
-/* "Chip" do DS: pílula vazada que fica branca no hover. */
 .botao-fonte {
-    width: 38px;
-    height: 28px;
+    width: 34px;
+    height: 30px;
     border: 1px solid var(--borda-forte);
     border-radius: var(--raio-pilula);
     background-color: transparent;
-    color: var(--texto-forte);
-    font-size: 12px;
+    color: var(--texto);
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.15s, color 0.15s;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .botao-fonte:hover:not(:disabled) {
-    background-color: var(--inverso);
-    color: var(--sobre-inverso);
+    background-color: var(--sinal);
+    border-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 .botao-fonte:disabled {
-    opacity: 0.3;
+    opacity: 0.35;
     cursor: not-allowed;
 }
 
@@ -1552,6 +1183,11 @@ ul.menu {
 .menu-sair {
     color: var(--status-esgotado);
     font-weight: bold;
+}
+
+.menu-sair:hover,
+.menu-sair:focus-visible {
+    color: var(--status-esgotado);
 }
 
 
@@ -1572,20 +1208,19 @@ ul.menu {
     min-width: 240px;
     max-width: 360px;
     padding: 14px 16px;
-    border: 1px solid var(--borda);
-    border-left: 2px solid var(--acento);
     border-radius: var(--raio);
+    border: 1px solid var(--borda);
+    border-left: 2px solid var(--texto-suave);
     background-color: var(--faixa);
     color: var(--texto);
     font-size: 13px;
     line-height: 1.5;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
 
-    /* O .fade-enter do DS: começa invisível e 10px abaixo;
-       a classe .visivel sobe em 300ms. */
+    /* Começa invisível e um pouco abaixo; a classe .visivel sobe. */
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(12px);
+    transition: opacity 0.25s, transform 0.25s;
 }
 
 .toast.visivel {
@@ -1595,15 +1230,16 @@ ul.menu {
 
 .toast-sucesso { border-left-color: var(--status-disponivel); }
 .toast-erro    { border-left-color: var(--status-esgotado); }
-.toast-info    { border-left-color: var(--texto-apagado); }
 
 
-/* ===== CAMPOS DE FORMULÁRIO (cadastro, login, perfil) ===== */
+/* ===== CAMPOS DE FORMULÁRIO (compartilhado) =====
+   O DS usa o "campo sublinhado": sem caixa, só uma linha embaixo
+   que fica verde quando o campo está em foco. A regra mora aqui,
+   uma vez só, e cada formulário do site aplica nos seus campos. */
 
 .erro-campo {
     display: block;
     min-height: 0;
-    margin-top: 4px;
     color: var(--status-esgotado);
     font-size: 11px;
     line-height: 1.4;
@@ -1620,8 +1256,11 @@ ul.menu {
 
 /* O JavaScript marca aria-invalid nos campos com problema. O mesmo
    atributo que avisa o leitor de tela pinta a linha de vermelho. */
-input[aria-invalid="true"] {
-    border-bottom-color: var(--status-esgotado) !important;
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: var(--status-esgotado) !important;
+    background-color: var(--fundo-erro) !important;
 }
 
 /* Esconde da tela, mas NÃO do leitor de tela nem do teclado.
@@ -1643,21 +1282,18 @@ input[aria-invalid="true"] {
     white-space: nowrap !important;
 }
 
-/* Botão com cara de link sublinhado (o "Underline link" do DS). */
 .botao-texto {
     border: none;
-    border-bottom: 1px solid currentColor;
     background: none;
-    padding: 0 0 2px;
     color: var(--texto-suave);
     font-size: 12px;
     text-transform: uppercase;
+    text-decoration: underline;
     cursor: pointer;
-    transition: color 0.15s;
 }
 
 .botao-texto:hover {
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 
@@ -1687,6 +1323,428 @@ html[data-pagina="restrita"]:not([data-sessao-ok]) main {
 }
 
 
+/* ===== CATEGORIAS (home) ===== */
+
+.secao-categorias {
+    padding: 96px 24px;
+}
+
+/* Cabeçalho de seção do DS: título à esquerda, índice [02] à
+   direita e uma linha embaixo. O ::after (do contador lá em cima)
+   vai para a coluna 2. */
+.secao-categorias .titulo-secao {
+    max-width: var(--largura-max);
+    margin: 0 auto 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--borda);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 6px 16px;
+}
+
+.secao-categorias .titulo-secao::after {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+}
+
+.secao-categorias h2 {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.secao-categorias .subtitulo {
+    color: var(--texto-suave);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* auto-fit + minmax: cinco colunas no computador, e vai quebrando
+   sozinho em telas menores — sem precisar de media query. */
+.grade-categorias {
+    list-style: none;
+    max-width: var(--largura-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 16px;
+}
+
+/* O "stat card" do DS: ícone em cima, nome embaixo, borda que
+   acende em verde no hover. */
+.cartao-categoria {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    height: 100%;
+    min-height: 190px;
+    padding: 24px;
+    border-radius: var(--raio);
+    border: 1px solid var(--borda);
+    background-color: var(--superficie);
+    color: var(--texto);
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+/* Setinha ↗ no canto, que fica verde no hover. */
+.cartao-categoria::after {
+    content: "↗";
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-size: 18px;
+    color: var(--texto-apagado);
+    transition: color 0.15s, transform 0.2s;
+}
+
+.cartao-categoria:hover,
+.cartao-categoria:focus-visible {
+    background-color: var(--superficie-hover);
+    border-color: var(--sinal);
+}
+
+.cartao-categoria:hover::after,
+.cartao-categoria:focus-visible::after {
+    color: var(--sinal-texto);
+    transform: translate(2px, -2px);
+}
+
+/* O emoji começa em preto e branco e ganha cor no hover — é o
+   efeito "saturate-0 → saturate-100" que o DS usa nas fotos. */
+.icone-categoria {
+    font-size: 40px;
+    line-height: 1;
+    filter: grayscale(1);
+    opacity: 0.7;
+    transition: filter 0.3s, opacity 0.3s, transform 0.3s;
+}
+
+.cartao-categoria:hover .icone-categoria,
+.cartao-categoria:focus-visible .icone-categoria {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.cartao-categoria strong {
+    display: block;
+    font-family: var(--fonte-titulo);
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--texto-forte);
+    margin-bottom: 4px;
+}
+
+.qtd-categoria {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-suave);
+}
+
+
+/* ===== SOBRE NÓS ===== */
+
+.secao-sobre {
+    padding: 96px 24px;
+    background-color: var(--faixa);
+    border-top: 1px solid var(--borda);
+    border-bottom: 1px solid var(--borda);
+}
+
+/* Texto à esquerda, imagens à direita. */
+.sobre-conteudo {
+    max-width: var(--largura-max);
+    margin: 0 auto;
+    display: grid;
+    /* minmax(0, ...) deixa as colunas encolherem de verdade;
+       sem o 0, um texto comprido pode alargar a coluna. */
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+}
+
+.secao-sobre h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.secao-sobre p {
+    color: var(--texto-suave);
+    margin-bottom: 16px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+/* O primeiro parágrafo é o "lead": maior e com a régua verde. */
+.sobre-texto > p:first-of-type {
+    color: var(--texto);
+    font-size: 15px;
+    padding-left: 16px;
+    border-left: 2px solid var(--sinal);
+}
+
+/* A lista vira a "lista de serviços" do DS: números grandes 01,
+   02, 03 apagados, que acendem em verde no hover. O número vem de
+   um contador do CSS (item), não do HTML. */
+.secao-sobre ul {
+    list-style: none;
+    counter-reset: item;
+    margin: 32px 0;
+    border-top: 1px solid var(--borda-forte);
+}
+
+.secao-sobre li {
+    counter-increment: item;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    column-gap: 16px;
+    padding: 24px 12px;
+    border-bottom: 1px solid var(--borda-forte);
+    line-height: 1.6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.secao-sobre li::before {
+    content: counter(item, decimal-leading-zero);
+    grid-row: 1 / span 2;
+    font-family: var(--fonte-titulo);
+    font-size: 36px;
+    line-height: 1;
+    opacity: 0.2;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.secao-sobre li:hover,
+.secao-sobre li:focus-within,
+.secao-sobre li:focus {
+    background-color: var(--superficie);
+}
+
+.secao-sobre li:hover::before,
+.secao-sobre li:focus::before {
+    opacity: 1;
+    color: var(--sinal-texto);
+}
+
+.secao-sobre li strong {
+    display: block;
+    font-family: var(--fonte-titulo);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--texto-forte);
+    align-self: center;
+}
+
+/* A explicação de cada item fica escondida e abre no hover
+   (ou no foco do teclado — o <li> tem tabindex="0"). */
+.secao-sobre li span {
+    display: block;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    color: var(--texto-suave);
+    font-size: 13px;
+    transition: max-height 0.35s, opacity 0.35s, margin-top 0.35s;
+}
+
+.secao-sobre li:hover span,
+.secao-sobre li:focus-within span,
+.secao-sobre li:focus span {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 8px;
+}
+
+.sobre-midia {
+    display: grid;
+    gap: 16px;
+
+    /* sticky: a coluna de imagens acompanha a rolagem enquanto o
+       texto ao lado ainda está passando. */
+    position: sticky;
+    top: 110px;
+}
+
+/* Imagens no estilo do DS: preto e branco, colorem no hover. */
+.sobre-midia img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--raio);
+    border: 1px solid var(--borda);
+    filter: grayscale(1);
+    transition: filter 0.7s;
+}
+
+.sobre-midia img:hover {
+    filter: grayscale(0);
+}
+
+/* :empty = "não tem NADA dentro". Enquanto não houver imagem, uma
+   moldura tracejada mostra onde ela vai. Colocou a imagem, a
+   moldura some sozinha — nenhuma linha de CSS precisa mudar. */
+.sobre-midia:empty {
+    min-height: 380px;
+    border: 1px dashed var(--texto-apagado);
+    border-radius: var(--raio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sobre-midia:empty::before {
+    content: "Espaço para as imagens";
+    color: var(--texto-apagado);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+
+/* ===== CONTATO — o "bloco verde" (CTA) do DS ===== */
+
+.secao-contato {
+    position: relative;
+    overflow: hidden;              /* corta o brilho do ::before */
+    padding: 96px 24px;
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
+
+    /* Grade: título e texto à esquerda, formulário à direita. */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+    grid-template-areas:
+        "titulo form"
+        "texto  form";
+    align-content: start;
+    column-gap: 56px;
+    max-width: none;
+}
+
+/* O "brilho" do DS: uma bola branca bem desfocada no canto. */
+.secao-contato::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.25);
+    filter: blur(80px);
+    transform: translate(40%, -50%);
+    pointer-events: none;
+}
+
+/* Com a seção de largura total, limitamos o conteúdo pelas bordas.
+   max(24px, ...) = pelo menos 24px; em telas largas, o que sobrar
+   dos 1100px dividido pelos dois lados. */
+.secao-contato {
+    padding-left: max(24px, calc((100% - var(--largura-max)) / 2));
+    padding-right: max(24px, calc((100% - var(--largura-max)) / 2));
+}
+
+.secao-contato h2 {
+    grid-area: titulo;
+    align-self: end;
+    color: var(--sobre-sinal);
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 0.95;
+    margin-bottom: 20px;
+}
+
+.secao-contato > p {
+    grid-area: texto;
+    line-height: 1.7;
+    font-weight: bold;
+    opacity: 0.75;
+    max-width: 440px;
+}
+
+/* O formulário: caixa escura (como o modal do DS) em cima do verde. */
+.secao-contato form {
+    grid-area: form;
+    position: relative;            /* fica por cima do brilho */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: var(--faixa);
+    color: var(--texto);
+    padding: 32px;
+    border-radius: var(--raio);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.secao-contato label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-apagado);
+    margin-top: 14px;
+}
+
+/* Campo sublinhado do DS. */
+.secao-contato input,
+.secao-contato textarea {
+    width: 100%;
+    padding: 8px 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--borda-forte);
+    border-radius: 0;
+    color: var(--texto);
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+}
+
+.secao-contato input:focus,
+.secao-contato textarea:focus {
+    border-bottom-color: var(--sinal);
+}
+
+/* Botão primário do DS. */
+.secao-contato button {
+    margin-top: 24px;
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
+    border: none;
+    border-radius: var(--raio-pilula);
+    padding: 12px 32px;
+    font-family: var(--fonte-titulo);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.secao-contato button:hover {
+    background-color: var(--texto-forte);
+    color: var(--fundo);
+}
+
+
 /* ===== TAMANHO DA FONTE (A− / A+) =====
    O tema.js guarda a escala em --escala-fonte (0.9 a 1.3).
    zoom aumenta o conteúdo principal inteiro — texto e espaços
@@ -1699,74 +1757,110 @@ main {
 
 /* ===== TEMA CLARO =====
    Ativado pelo tema.js, que escreve data-tema="claro" na tag
-   <html>. Quase tudo muda sozinho porque o site usa VARIÁVEIS:
-   trocando o valor aqui, todas as regras que usam a variável
-   mudam juntas.
-
-   O acento neon continua o mesmo como PREENCHIMENTO (botões), mas
-   como COR DE TEXTO ele some no fundo claro. Por isso existe o
-   --acento-texto separado: aqui ele vira um verde escuro. */
+   <html>. O DS original só existe no escuro; esta é uma versão
+   "papel" dele. Quase tudo muda sozinho porque o site usa
+   VARIÁVEIS: trocando o valor aqui, todas as regras que usam a
+   variável mudam juntas — nenhuma regra de componente é repetida. */
 
 html[data-tema="claro"] {
-    --acento-texto:    #1B7A00;
+    --fundo:             #F2F2EE;
+    --faixa:             #FAFAF7;
+    --superficie:        #FFFFFF;
+    --superficie-hover:  #F7F7F2;
 
-    --fundo:            #F2F2EE;
-    --faixa:            #FAFAF7;
-    --superficie:       #FFFFFF;
-    --superficie-hover: #F6F6F2;
-
-    --texto-forte:   #050505;
-    --texto:         #1A1A1A;
+    --texto-forte:   #000000;
+    --texto:         #141414;
     --texto-suave:   #4B5563;
-    --texto-apagado: #5B6270;
-    --texto-mudo:    #6B7280;
+    --texto-apagado: #5F6670;
 
-    --borda:       rgba(0, 0, 0, 0.12);
-    --borda-forte: rgba(0, 0, 0, 0.24);
-    --grafite:     #B5B5B0;
-    --vidro:       rgba(0, 0, 0, 0.04);
-    --vidro-forte: rgba(0, 0, 0, 0.08);
-    --grade:       rgba(0, 0, 0, 0.05);
+    --borda:        rgba(0, 0, 0, 0.12);
+    --borda-forte:  rgba(0, 0, 0, 0.24);
+    --vidro:        rgba(0, 0, 0, 0.04);
+    --vidro-forte:  rgba(255, 255, 255, 0.7);
+    --grade:        rgba(0, 0, 0, 0.045);
+    --grafite:      #B8B8B2;
 
-    --inverso:       #050505;
-    --sobre-inverso: #FFFFFF;
+    /* Verde neon como TEXTO no branco não passa no WCAG: aqui ele
+       vira um verde escuro (5,4:1). Como FUNDO, continua neon. */
+    --sinal-texto:  #1E7A00;
 
-    --veu-topo: rgba(242, 242, 238, 0.86);
-    --veu-base: rgba(242, 242, 238, 0.97);
+    --veu:          rgba(242, 242, 238, 0.88);
+    --opacidade-foto: 0.14;
+    --veu-modal:    rgba(242, 242, 238, 0.90);
+    --cabecalho-fundo: rgba(242, 242, 238, 0.82);
 
-    /* Tons mais escuros para o texto dos selos passar no WCAG
-       (contraste mínimo 4,5:1 sobre o card branco). */
-    --status-disponivel: #1B7A00;
-    --status-perto:      #8A5A00;
-    --status-esgotado:   #C62828;
-    --status-realizado:  #6B7280;
+    --status-disponivel: #1E7A00;
+    --status-perto:      #8A5300;
+    --status-esgotado:   #B3261E;
+    --status-realizado:  #5F6670;
+
+    --fundo-sucesso: rgba(30, 122, 0, 0.08);
+    --fundo-erro:    rgba(179, 38, 30, 0.07);
 
     color-scheme: light;
 }
 
-/* As poucas cores que não são variáveis (vidros e sombras fixos). */
-html[data-tema="claro"] .cabecalho {
-    background-color: rgba(242, 242, 238, 0.8);
+/* O texto vazado precisa de contorno escuro no fundo claro. */
+html[data-tema="claro"] .texto-contorno {
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.75);
 }
 
-html[data-tema="claro"] .modal {
-    background-color: rgba(242, 242, 238, 0.92);
-}
-
-html[data-tema="claro"] :is(.modal-caixa, .painel-suspenso, .toast) {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18);
-}
-
-/* O "Se Joga" da logo é branco e sumiria no cabeçalho claro.
-   drop-shadow segue o formato do desenho (não a caixa da imagem),
-   então vira um contorno escuro em volta das letras. */
+/* O "Se Joga" da logo é branco (foi feito para fundo escuro) e
+   sumiria no cabeçalho claro. Duas sombras pretas de 1px, sem
+   desfoque, desenham um contorno em volta das letras. */
 html[data-tema="claro"] .logo img {
-    filter: drop-shadow(0 0 0.6px #050505) drop-shadow(0 0 0.6px #050505);
+    filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000);
 }
 
-/* Os ícones das redes sociais ficam pretos em vez de brancos. */
+/* Ícones das redes: pretos em vez de brancos. */
 html[data-tema="claro"] .rodape-coluna ul img {
     filter: brightness(0);
+}
+
+/* Sombras mais leves: sombra preta forte "suja" o fundo claro. */
+html[data-tema="claro"] :is(.painel-suspenso, .toast, .modal-caixa) {
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ===== MOVIMENTO REDUZIDO =====
+   Quem pediu "reduzir movimento" no sistema operacional não recebe
+   a faixa rolando nem as bolinhas piscando (pode causar enjoo). */
+@media (prefers-reduced-motion: reduce) {
+    .faixa-rolante-trilho,
+    .secao-eventos .subtitulo::before,
+    .titulo-pagina p::before,
+    .selo-disponivel::before {
+        animation: none;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+
+/* ===== TABLET (até 1023px) ===== */
+@media (max-width: 1023px) {
+    .cabecalho {
+        padding: 8px 20px;
+    }
+
+    .menu a {
+        padding: 8px 12px;
+    }
+
+    .secao-contato {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "titulo"
+            "texto"
+            "form";
+    }
+
+    .secao-contato > p {
+        margin-bottom: 32px;
+    }
 }
 
 
@@ -1786,16 +1880,23 @@ html[data-tema="claro"] .rodape-coluna ul img {
         transform: scale(1.4);    /* o 1.9 fica largo demais no celular */
     }
 
-    /* A pílula do menu pode quebrar em duas linhas no celular. */
+    /* A pílula ocupa a largura toda e os links ficam mais justos,
+       para as quatro opções caberem numa linha em 375px. */
+    nav.menu {
+        width: 100%;
+        justify-content: center;
+    }
+
     ul.menu {
         flex-wrap: wrap;
         justify-content: center;
-        border-radius: 20px;
+        padding: 4px;
     }
 
     .menu a {
-        padding: 6px 10px;
-        font-size: 11px;
+        font-size: 10px;
+        padding: 8px 8px;
+        letter-spacing: 0.02em;
     }
 
     .acoes-cabecalho {
@@ -1806,21 +1907,24 @@ html[data-tema="claro"] .rodape-coluna ul img {
         flex: 0 0 85%;
     }
 
+    /* No celular não há hover: a explicação já aparece aberta. */
     .secao-sobre li span {
         max-height: none;
         opacity: 1;
         margin-top: 8px;
     }
 
-    /* fixed engasga em celular; alguns navegadores nem suportam. */
-    body,
-    .secao-eventos,
-    .secao-sobre {
-        background-attachment: scroll;
+    .secao-sobre li {
+        grid-template-columns: 44px 1fr;
+    }
+
+    .secao-sobre li::before {
+        font-size: 26px;
     }
 
     .secao-eventos {
         padding: 56px 16px 64px;
+        background-attachment: scroll;   /* fixed engasga no celular */
     }
 
     .secao-eventos .titulo-secao {
@@ -1832,17 +1936,11 @@ html[data-tema="claro"] .rodape-coluna ul img {
     }
 
     .card-evento .titulo {
-        font-size: 22px;
+        font-size: 21px;
     }
 
-    .secao-categorias,
-    .secao-sobre,
-    .secao-contato {
-        padding: 64px 16px;
-    }
-
-    .secao-contato form {
-        padding: 24px;
+    .faixa-rolante {
+        padding: 18px 0;
     }
 
     /* Sobre Nós: uma coluna, imagens embaixo do texto. */
@@ -1860,6 +1958,19 @@ html[data-tema="claro"] .rodape-coluna ul img {
         display: none;
     }
 
+    .secao-sobre,
+    .secao-categorias,
+    .secao-contato {
+        padding-top: 56px;
+        padding-bottom: 56px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .secao-contato form {
+        padding: 22px;
+    }
+
     .grade-categorias {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -1870,17 +1981,8 @@ html[data-tema="claro"] .rodape-coluna ul img {
         padding: 18px;
     }
 
-    .icone-categoria {
-        top: 18px;
-        right: 18px;
-    }
-
     .rodape {
-        padding: 40px 16px 0;
-    }
-
-    .modal-caixa {
-        padding: 40px 24px 24px;
+        padding: 48px 16px 0;
     }
 
     /* No celular o nome ao lado do avatar não cabe: fica só a foto.
@@ -1898,6 +2000,10 @@ html[data-tema="claro"] .rodape-coluna ul img {
         right: 12px;
         width: auto;
         margin-top: 10px;
+    }
+
+    .modal-caixa {
+        padding: 44px 22px 24px;
     }
 
     .area-toasts {

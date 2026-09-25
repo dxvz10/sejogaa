@@ -1,15 +1,13 @@
 /* =========================================================
    LOGIN — estilos exclusivos da login.html
-   Carregado DEPOIS do style.css. Os campos sublinhados e o botão
-   "Primary" já vêm de lá (uma regra só para todos os formulários);
-   aqui fica só o layout da página.
+   Mesmo visual do cadastro (caixa escura, campos sublinhados,
+   botão verde), numa caixa mais estreita.
    ========================================================= */
 
 .cabecalho {
     justify-content: center;
 }
 
-/* Textura quadriculada > véu > foto, como nas seções da home. */
 .secao-login {
     min-height: calc(100vh - 200px);
     display: flex;
@@ -17,83 +15,127 @@
     align-items: center;
     justify-content: center;
     padding: 64px 24px;
-    background-image: var(--textura-grade),
-                      linear-gradient(var(--veu-topo), var(--veu-base)),
-                      var(--tira-cor),
+
+    /* Foto em preto e branco sob o véu escuro (explicado no
+       css/cadastro/style.css — é a mesma técnica). */
+    background-color: var(--fundo);
+    background-image: linear-gradient(var(--veu), var(--veu)),
                       url("../../assets/backgrounds/fundo-sobre.jpg");
-    background-size: 40px 40px, 40px 40px, cover, cover, cover;
-    background-blend-mode: normal, normal, normal, saturation, normal;
+    background-blend-mode: normal, luminosity;
+    background-size: cover;
     background-position: center;
 }
 
-/* Título e subtítulo alinhados com a caixa (mesma largura). */
-.secao-login h1,
-.login-subtitulo {
-    width: 100%;
-    max-width: 420px;
-}
-
 .secao-login h1 {
-    font-family: var(--fonte-display);
+    width: 100%;
+    max-width: 400px;
+    font-size: clamp(30px, 5vw, 44px);
     font-weight: 900;
-    font-size: 36px;
     line-height: 0.95;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    letter-spacing: -0.02em;
     margin-bottom: 16px;
 }
 
 .login-subtitulo {
-    padding-left: 16px;
-    border-left: 2px solid var(--acento);
+    width: 100%;
+    max-width: 400px;
     color: var(--texto-suave);
-    font-size: 14px;
-    line-height: 1.6;
     margin-bottom: 32px;
+    line-height: 1.7;
+    padding-left: 16px;
+    border-left: 2px solid var(--sinal);
 }
 
-/* A caixa é o modal do DS: faixa escura, borda fina, cantos 2px. */
 .caixa-login {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     width: 100%;
-    max-width: 420px;
+    max-width: 400px;
     background-color: var(--faixa);
     border: 1px solid var(--borda);
-    border-radius: var(--raio);
     padding: 40px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: var(--raio);
+    text-align: left;
 }
 
+.caixa-login label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-apagado);
+    margin-top: 16px;
+}
+
+/* Campo sublinhado do DS. */
+.caixa-login input {
+    padding: 8px 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--borda-forte);
+    border-radius: 0;
+    color: var(--texto);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.caixa-login input:focus {
+    border-bottom-color: var(--sinal);
+}
+
+.caixa-login input::placeholder {
+    color: var(--texto-apagado);
+    opacity: 0.7;
+}
+
+/* Botão "Primary" do DS. */
 .caixa-login button {
-    align-self: stretch;          /* no login o botão ocupa a largura toda */
+    margin-top: 28px;
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
+    border: none;
+    border-radius: var(--raio-pilula);
+    padding: 14px 32px;
+    font-family: var(--fonte-titulo);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.caixa-login button:hover {
+    background-color: var(--texto-forte);
+    color: var(--fundo);
 }
 
 .login-rodape {
     margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--borda);
     font-size: 12px;
-    text-align: center;
     color: var(--texto-suave);
 }
 
-/* "Underline link" do DS. */
+/* "Link sublinhado" do DS. */
 .login-rodape a {
     color: var(--texto-forte);
     font-weight: bold;
+    text-transform: uppercase;
     text-decoration: none;
     border-bottom: 1px solid currentColor;
     transition: color 0.15s;
 }
 
 .login-rodape a:hover {
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 .acoes-cabecalho .botao-entrar.ativo {
-    background-color: var(--acento);
-    border-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    border-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 /* ===== CELULAR ===== */
@@ -103,11 +145,7 @@
         padding: 40px 16px;
     }
 
-    .secao-login h1 {
-        font-size: 28px;
-    }
-
     .caixa-login {
-        padding: 24px;
+        padding: 24px 20px;
     }
 }

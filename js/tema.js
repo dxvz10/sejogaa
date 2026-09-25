@@ -4,14 +4,10 @@
    Tema claro/escuro e tamanho da fonte, guardados no
    localStorage para valer em todas as páginas.
 
-   O Design System do site (YOZELEN) é escuro, então o tema
-   ESCURO é o padrão: é o que aparece para quem nunca escolheu.
-   O tema claro é a alternativa.
-
    Este arquivo é carregado no <head>, ANTES do <body> existir.
    Motivo: se o tema fosse aplicado só no fim da página, ela
-   apareceria com a cor errada por um instante e depois trocaria —
-   um "flash" incômodo. Aqui o tema é aplicado antes do primeiro
+   apareceria com o tema errado por um instante e depois trocaria
+   — um "flash" incômodo. Aqui o tema é aplicado antes do primeiro
    desenho.
 
    Por rodar tão cedo, ele não pode usar o storage.js (que ainda
@@ -26,12 +22,12 @@ const CHAVE_PREFERENCIAS = 'portalEventos_preferencias';
 const ESCALAS_DE_FONTE = [0.9, 1, 1.1, 1.2, 1.3];
 
 
+/* O design system do site (Yozelen) nasceu escuro, então o tema
+   PADRÃO é o escuro: só fica claro quem escolheu "claro" no menu. */
 function obterPreferencias() {
     try {
         const guardadas = JSON.parse(localStorage.getItem(CHAVE_PREFERENCIAS));
         return {
-            // Só fica claro se a pessoa ESCOLHEU claro; qualquer outra
-            // coisa (nada salvo, valor estranho) cai no padrão escuro.
             tema: guardadas && guardadas.tema === 'claro' ? 'claro' : 'escuro',
             escala: guardadas && ESCALAS_DE_FONTE.indexOf(guardadas.escala) !== -1 ? guardadas.escala : 1
         };
@@ -51,7 +47,8 @@ function salvarPreferencias(preferencias) {
 
 
 /* O CSS faz o resto:
-   - html[data-tema="claro"] troca as cores (o :root já é o escuro);
+   - html[data-tema="claro"] troca as cores (o escuro é o padrão
+     do :root);
    - a variável --escala-fonte aumenta o conteúdo principal. */
 function aplicarPreferencias(preferencias) {
     const raiz = document.documentElement;       // a tag <html>

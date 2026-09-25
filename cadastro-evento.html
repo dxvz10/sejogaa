@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- data-pagina="restrita": só entra quem está logado. O auth.js manda
+     os visitantes para o login e, depois, de volta para cá. -->
+<html lang="pt-BR" data-pagina="restrita">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeJoga - Cadastrar Evento</title>
+
+    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
+         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/eventos/style.css">
+    <link rel="stylesheet" href="css/cadastro/style.css">
+    <link rel="stylesheet" href="css/cadastro-evento/style.css">
+    <link rel="icon" href="assets/logo/favicon-sj.png" type="image/png">
+
+    <script src="js/tema.js"></script>
+</head>
+
+<body>
+
+    <header class="cabecalho">
+
+        <a href="index.html" class="logo">
+            <img src="assets/logo/logo.png" alt="Logo do SeJoga">
+        </a>
+
+        <nav class="menu" aria-label="Principal">
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="calendario.html">Calendário</a></li>
+                <li><a href="eventos.html" data-precisa-login>Eventos</a></li>
+                <li><a href="cadastro-evento.html" class="ativo" aria-current="page" data-precisa-login>Cadastrar Evento</a></li>
+            </ul>
+        </nav>
+
+        <div class="acoes-cabecalho">
+            <a href="cadastro.html" class="botao-cadastro" data-sessao="deslogado">Cadastrar</a>
+            <a href="login.html" class="botao-entrar" data-sessao="deslogado">Entrar</a>
+        </div>
+
+    </header>
+
+
+    <main class="conteudo">
+
+        <section class="titulo-pagina">
+            <h1>Cadastrar evento</h1>
+            <p>Divulgue seu rolê: preencha os dados e ele aparece no calendário e na página de eventos.</p>
+        </section>
+
+                <!-- NOVO: o formulário do evento.
+             novalidate desliga os balões de erro do navegador: quem vai
+             mostrar os erros é o nosso JavaScript, embaixo de cada campo,
+             no padrão do site. -->
+        <form id="form-evento" class="caixa-cadastro" novalidate>
+
+            <!-- fieldset agrupa campos do mesmo assunto; legend é o título do grupo -->
+            <fieldset class="grupo-cadastro">
+                <legend>Sobre o evento</legend>
+
+                <label for="nome-evento">Nome do evento</label>
+                <input type="text" id="nome-evento" aria-describedby="erro-nome-evento">
+                <small class="erro-campo" id="erro-nome-evento"></small>
+
+                <!-- value = o identificador que vai ser salvo (minúsculo, sem acento);
+                     o texto entre as tags = o que a pessoa lê na tela -->
+                <label for="categoria">Categoria</label>
+                <select id="categoria" aria-describedby="erro-categoria">
+                    <option value="">Escolha uma categoria</option>
+                    <option value="futebol">Futebol</option>
+                    <option value="basquete">Basquete</option>
+                    <option value="fantasia">Fantasia</option>
+                    <option value="e-sport">E-sports</option>
+                    <option value="festa">Festa</option>
+                </select>
+                <small class="erro-campo" id="erro-categoria"></small>
+
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" rows="4" aria-describedby="erro-descricao"></textarea>
+                <small class="erro-campo" id="erro-descricao"></small>
+            </fieldset>
+
+            
+            <!-- NOVO: grupo 2 -->
+            <fieldset class="grupo-cadastro">
+                <legend>Quando e onde</legend>
+
+                <!-- linha-campos: dois campos lado a lado no computador e um
+                     embaixo do outro no celular (regra que já existe no
+                     css/cadastro/style.css). Cada campo fica dentro de uma div. -->
+                <div class="linha-campos">
+                    <div>
+                        <label for="data-evento">Data</label>
+                        <input type="date" id="data-evento" aria-describedby="erro-data-evento">
+                        <small class="erro-campo" id="erro-data-evento"></small>
+                    </div>
+                    <div>
+                        <label for="hora-evento">Horário</label>
+                        <input type="time" id="hora-evento" aria-describedby="erro-hora-evento">
+                        <small class="erro-campo" id="erro-hora-evento"></small>
+                    </div>
+                </div>
+
+                <label for="local">Local</label>
+                <input type="text" id="local" aria-describedby="erro-local">
+                <small class="erro-campo" id="erro-local"></small>
+
+                <!-- As regiões precisam ser EXATAMENTE estes textos: o filtro
+                     "Região" da página Eventos agrupa os eventos por eles.
+                     Com um select, ninguém digita diferente sem querer. -->
+                <label for="regiao">Região</label>
+                <select id="regiao" aria-describedby="erro-regiao">
+                    <option value="">Escolha uma região</option>
+                    <option value="Rio de Janeiro - Centro">Rio de Janeiro - Centro</option>
+                    <option value="Rio de Janeiro - Zona Norte">Rio de Janeiro - Zona Norte</option>
+                    <option value="Rio de Janeiro - Zona Sul">Rio de Janeiro - Zona Sul</option>
+                    <option value="Rio de Janeiro - Zona Oeste">Rio de Janeiro - Zona Oeste</option>
+                    <option value="Internacional">Internacional</option>
+                </select>
+                <small class="erro-campo" id="erro-regiao"></small>
+            </fieldset>
+
+            <!-- NOVO: grupo 3 -->
+            <fieldset class="grupo-cadastro">
+                <legend>Ingressos</legend>
+
+                <div class="linha-campos">
+                    <div>
+                        <label for="preco">Preço em R$ (0 = gratuito)</label>
+                        <!-- min="0": não existe preço negativo.
+                             step="0.01": aceita centavos (ex.: 12,50). -->
+                        <input type="number" id="preco" min="0" step="0.01" aria-describedby="erro-preco">
+                        <small class="erro-campo" id="erro-preco"></small>
+                    </div>
+                    <div>
+                        <label for="capacidade">Vagas</label>
+                        <!-- min="1" e step="1": pelo menos 1 vaga e só números
+                             inteiros, porque não existe meia vaga. -->
+                        <input type="number" id="capacidade" min="1" step="1" aria-describedby="erro-capacidade">
+                        <small class="erro-campo" id="erro-capacidade"></small>
+                    </div>
+                </div>
+
+                <label for="comida-bebida">Comida e bebida <span class="opcional">(opcional)</span></label>
+                <input type="text" id="comida-bebida" aria-describedby="erro-comida-bebida">
+                <small class="erro-campo" id="erro-comida-bebida"></small>
+            </fieldset>
+
+            <!-- aviso geral (ex.: "Corrija os campos marcados") -->
+            <p class="aviso-form" id="aviso-evento"></p>
+
+            <button type="submit">Publicar evento</button>
+        </form>
+
+    </main>
+
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <div class="rodape-coluna">
+                <h3>SeJoga</h3>
+                <p>Festas, jogos e encontros perto de você. Encontre o próximo rolê sem precisar caçar em dez lugares diferentes.</p>
+            </div>
+
+            <nav class="rodape-coluna">
+                <h3>Redes Sociais</h3>
+                <ul>
+                    <li>
+                        <a href="https://www.instagram.com/se.jogaaa/">
+                            <img src="img/icons/instagram.png" alt="Instagram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com/sejogaaaa">
+                            <img src="img/icons/twitter.png" alt="Twitter">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="rodape-coluna">
+                <h3>Institucional</h3>
+                <ul>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a>Política de Privacidade</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="rodape-base">
+            <p>© 2026 SeJoga — Projeto acadêmico UNISUAM · Desenvolvimento de Software para Internet</p>
+        </div>
+    </footer>
+
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/validacoes.js"></script>     <!-- NOVO -->
+    <script src="js/auth.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/cabecalho.js"></script>
+    <script src="js/campos-conta.js"></script>   <!-- NOVO -->
+    <script src="js/cadastro-evento.js"></script> <!-- NOVO: o seu, sempre por último -->
+</body>
+
+</html>

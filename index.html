@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Fontes do Design System: Unbounded (títulos) e Space Mono (texto) -->
+    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
+         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="assets/logo/favicon-sj.png" type="image/png">
-    <!-- tema.js no <head>: aplica o tema escolhido antes da página aparecer -->
+    <!-- tema.js no <head>: aplica o tema escuro antes da página aparecer -->
     <script src="js/tema.js"></script>
     <title>SeJoga</title>
 </head>
@@ -45,14 +46,11 @@
     <!-- 1. EVENTOS — agora a primeira coisa que se vê -->
     <section class="secao-eventos">
 
+        <!-- Os <span> só mudam o visual (palavra vazada e palavra em
+             verde, como no título do design system). O texto lido pelo
+             leitor de tela continua o mesmo: "Alguns dos nossos eventos!" -->
         <div class="titulo-secao">
-            <!-- Sobretítulo do DS: o ponto verde pulsa como "ao vivo" -->
-            <span class="sobretitulo">
-                <span class="ponto-pulso" aria-hidden="true"></span>
-                Rolando perto de você
-            </span>
-            <!-- .contorno = palavra vazada; .destaque = palavra no acento -->
-            <h1>Alguns dos <span class="contorno">nossos</span> <span class="destaque">eventos!</span></h1>
+            <h1>Alguns dos <span class="texto-contorno">nossos</span> <span class="texto-sinal">eventos!</span></h1>
             <p class="subtitulo">Festas, jogos e encontros perto de você</p>
         </div>
 
@@ -76,11 +74,11 @@
     </section>
 
 
-    <!-- FAIXA ROLANTE (marquee do Design System). Só decoração:
-         aria-hidden esconde do leitor de tela, que leria as palavras
-         duas vezes. O conteúdo está REPETIDO de propósito — o CSS
-         anda metade da largura e recomeça, e como as duas metades
-         são iguais, o recomeço fica invisível. -->
+    <!-- FAIXA ROLANTE — enfeite do design system (as categorias
+         passando sem parar). aria-hidden: é só decoração, o leitor de
+         tela pula (as categorias de verdade estão logo abaixo).
+         O texto está escrito DUAS vezes de propósito: é o que faz o
+         loop parecer infinito (explicado no css/style.css). -->
     <div class="faixa-rolante" aria-hidden="true">
         <div class="faixa-rolante-trilho">
             <span>Futebol</span><span class="faixa-x">×</span>

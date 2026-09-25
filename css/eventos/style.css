@@ -4,7 +4,8 @@
    "Adicionar ao calendário" e a busca com filtros.
 
    Carregado DEPOIS do css/style.css e ANTES do CSS específico
-   de cada página. Todas as cores vêm dos tokens do DS (style.css).
+   de cada página. Todas as cores vêm das variáveis do style.css
+   — por isso o tema claro funciona aqui sem nenhuma regra extra.
    ========================================================= */
 
 
@@ -12,46 +13,73 @@
 
 .conteudo {
     min-height: calc(100vh - 170px);
-    padding: 64px 5% 96px;
+    padding: 64px 5%;
 
-    /* Três camadas de fundo. A PRIMEIRA da lista fica POR CIMA:
-       textura quadriculada > véu escuro > foto. */
-    background-image: var(--textura-grade),
-                      linear-gradient(var(--veu-topo), var(--veu-base)),
-                      var(--tira-cor),
-                      url("../../assets/backgrounds/background-calendario.jpg");
-    background-size: 40px 40px, 40px 40px, cover, cover, cover;
-    background-blend-mode: normal, normal, normal, saturation, normal;
-    background-position: center;
-    background-attachment: fixed;     /* a foto não rola junto */
+    /* position + isolation: o ::before abaixo fica preso DENTRO
+       desta área (z-index: -1 relativo a ela), em vez de cair
+       para trás da página inteira. */
+    position: relative;
+    isolation: isolate;
 }
 
-/* Título da página: o "hero" do DS em tamanho menor — alinhado à
-   esquerda, Unbounded 900 em caixa alta, apoio com linha no acento.
-   (Chamava-se .titulo, mas esse nome já é usado nos cards da home.) */
+/* A foto do grupo no estilo do DS: só no TOPO da página, em preto
+   e branco (grayscale) e bem apagada (opacity). A mask-image é um
+   gradiente de "visível" para "invisível": a foto some aos poucos
+   e, dali para baixo, aparece a grade da página. */
+.conteudo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 560px;
+    z-index: -1;
+    background: url("../../assets/backgrounds/background-calendario.jpg") center / cover no-repeat;
+    filter: grayscale(1);
+    opacity: var(--opacidade-foto);
+    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+    mask-image: linear-gradient(to bottom, #000 30%, transparent);
+    pointer-events: none;
+}
+
+/* Título da página no estilo "herói" do DS: etiqueta com bolinha
+   verde em cima, título grande em caixa alta. Chamava-se .titulo,
+   mas esse nome já é usado no título dos cards da home. */
 .titulo-pagina {
     max-width: 1100px;
     margin: 0 auto 48px;
+    display: flex;
+    flex-direction: column-reverse;   /* o <p> aparece EM CIMA do h1 */
+    gap: 16px;
 }
 
 .titulo-pagina h1 {
-    font-family: var(--fonte-display);
+    font-size: clamp(36px, 6vw, 72px);
     font-weight: 900;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 0.9;
+    line-height: 0.95;
     letter-spacing: -0.03em;
-    text-transform: uppercase;
-    color: var(--texto-forte);
-    margin-bottom: 24px;
 }
 
 .titulo-pagina p {
-    max-width: 420px;
-    padding-left: 16px;
-    border-left: 2px solid var(--acento);
+    display: flex;
+    align-items: center;
+    gap: 12px;
     color: var(--texto-suave);
-    font-size: 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
     line-height: 1.6;
+}
+
+/* A bolinha verde "ao vivo" (a animação pulsar está no style.css). */
+.titulo-pagina p::before {
+    content: "";
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--sinal);
+    animation: pulsar 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 
@@ -62,13 +90,10 @@
     margin: 64px auto;
 }
 
-/* Cabeçalho de seção do DS: título + linha fina embaixo. */
+/* Cabeçalho de seção do DS: título pequeno e linha embaixo. */
 .eventos > h2 {
-    font-family: var(--fonte-display);
-    font-weight: 400;
     font-size: 24px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    font-weight: 400;
     padding-bottom: 16px;
     margin-bottom: 24px;
     border-bottom: 1px solid var(--borda);
@@ -89,47 +114,51 @@
 
 
 /* ===== CARD ===== */
-/* Card do DS: superfície #111, borda fina, cantos 2px. No hover o
-   fundo sobe um tom e a borda acende no acento ("border glow"). */
+/* O card do DS: fundo #111, borda fina, cantos retos. No hover a
+   borda acende em verde ("Border Glow") — sem pular para cima. */
 
 .card {
     display: flex;
     flex-direction: column;
     background-color: var(--superficie);
     border: 1px solid var(--borda);
-    border-radius: var(--raio);
     padding: 24px;
-    transition: background-color 0.15s, border-color 0.15s;
+    border-radius: var(--raio);
+    transition: border-color 0.15s, background-color 0.15s;
 }
 
 .card:hover {
+    border-color: var(--sinal);
     background-color: var(--superficie-hover);
-    border-color: var(--acento);
 }
 
 .card h3 {
-    margin: 8px 0 16px;
-    font-family: var(--fonte-display);
+    margin: 10px 0 16px;
+    font-size: 19px;
     font-weight: 400;
-    font-size: 20px;
-    line-height: 1.2;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    line-height: 1.15;
 }
 
 .card p {
     margin-bottom: 6px;
+    color: var(--texto-suave);
+    font-size: 13px;
 }
 
 /* margin-top: auto empurra o rodapé do card para BAIXO. Com cards
    de alturas diferentes na mesma linha, os preços ficam alinhados. */
 .card .rodape-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     margin-top: auto;
+    padding-top: 16px;
 }
 
 
 /* ===== BOTÃO "ADICIONAR AO CALENDÁRIO" ===== */
-/* "Outline CTA" do DS, na largura do card. */
+/* "Outline CTA" do DS: contorno fino; no hover, verde cheio. */
 
 .botao-agenda {
     width: 100%;
@@ -138,7 +167,7 @@
     border: 1px solid var(--borda-forte);
     border-radius: var(--raio-pilula);
     background-color: transparent;
-    color: var(--texto-forte);
+    color: var(--texto);
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
@@ -148,74 +177,69 @@
 }
 
 .botao-agenda:hover {
-    background-color: var(--acento);
-    border-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    border-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 /* Depois de adicionado, preenchido: dá para ver de longe quais
    eventos já estão na agenda. */
 .botao-agenda.na-agenda {
-    background-color: var(--acento);
-    border-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    border-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
 .botao-agenda.na-agenda:hover {
-    background-color: var(--inverso);
-    border-color: var(--inverso);
-    color: var(--sobre-inverso);
+    background-color: var(--texto-forte);
+    border-color: var(--texto-forte);
+    color: var(--fundo);
 }
 
 
 /* ===== CONVITE PARA VISITANTES ===== */
-/* O bloco de chamada do DS: todo no acento, texto preto, título
-   gigante e um brilho desfocado no canto. */
+/* O "bloco verde" do DS: fundo neon, texto preto. */
 
 .cta-visitante {
     position: relative;
-    overflow: hidden;              /* corta o brilho que sai da caixa */
+    overflow: hidden;
     max-width: 1100px;
     margin: 0 auto 64px;
-    padding: 56px 48px;
+    padding: 48px 40px;
     border-radius: var(--raio);
-    background-color: var(--acento);
-    color: var(--sobre-acento);
+    background-color: var(--sinal);
+    color: var(--sobre-sinal);
 }
 
-/* O brilho: um círculo branco muito desfocado, meio para fora. */
+/* O brilho desfocado no canto, igual ao do contato na home. */
 .cta-visitante::before {
     content: "";
     position: absolute;
     top: 0;
     right: 0;
-    width: 256px;
-    height: 256px;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.25);
     filter: blur(80px);
-    transform: translate(50%, -50%);
+    transform: translate(40%, -50%);
     pointer-events: none;
 }
 
 .cta-visitante h2 {
-    position: relative;
-    font-family: var(--fonte-display);
+    color: var(--sobre-sinal);
+    font-size: clamp(24px, 4vw, 40px);
     font-weight: 900;
-    font-size: clamp(1.75rem, 4.5vw, 3.25rem);
-    line-height: 0.95;
-    text-transform: uppercase;
-    margin-bottom: 16px;
+    line-height: 1;
+    margin-bottom: 12px;
 }
 
 .cta-visitante p {
-    position: relative;
-    max-width: 520px;
-    margin-bottom: 28px;
-    font-size: 13px;
-    font-weight: bold;
+    margin-bottom: 24px;
     line-height: 1.6;
+    font-weight: bold;
     opacity: 0.75;
+    max-width: 560px;
 }
 
 .cta-acoes {
@@ -225,49 +249,46 @@
     flex-wrap: wrap;
 }
 
-/* Em cima do verde, os botões usam preto no lugar do acento. */
+/* Em cima do verde, os botões precisam de preto:
+   - Entrar: contorno preto; no hover, preto cheio com letra verde.
+   - Criar conta: preto cheio; no hover, branco. */
 .cta-visitante .botao-entrar {
-    border-color: var(--sobre-acento);
-    color: var(--sobre-acento);
+    border-color: var(--sobre-sinal);
+    color: var(--sobre-sinal);
 }
 
 .cta-visitante .botao-entrar:hover {
-    background-color: var(--sobre-acento);
-    border-color: var(--sobre-acento);
-    color: var(--acento);
+    background-color: var(--sobre-sinal);
+    border-color: var(--sobre-sinal);
+    color: var(--sinal);
 }
 
 .cta-visitante .botao-cadastro {
-    background-color: var(--sobre-acento);
-    border-color: var(--sobre-acento);
-    color: var(--acento);
+    background-color: var(--sobre-sinal);
+    color: var(--sinal);
 }
 
 .cta-visitante .botao-cadastro:hover {
     background-color: #FFFFFF;
-    border-color: #FFFFFF;
     color: #000000;
 }
 
 
 /* ===== BUSCA E FILTROS ===== */
 
-/* Caixa escura: a textura do fundo continua aparecendo nas laterais. */
+/* Painel escuro: a grade da página continua aparecendo em volta. */
 .secao-busca {
     max-width: 1100px;
     margin: 64px auto;
     padding: 32px;
-    border: 1px solid var(--borda);
     border-radius: var(--raio);
+    border: 1px solid var(--borda);
     background-color: var(--faixa);
 }
 
 .secao-busca h2 {
-    font-family: var(--fonte-display);
-    font-weight: 400;
     font-size: 24px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    font-weight: 400;
     padding-bottom: 16px;
     margin-bottom: 24px;
     border-bottom: 1px solid var(--borda);
@@ -282,24 +303,36 @@
 }
 
 .busca-topo label {
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--texto-apagado);
 }
 
-/* O visual do campo (sublinhado) vem do style.css; aqui só o
-   tamanho dentro da linha. */
+/* Campo sublinhado do DS, um pouco maior: é a busca principal. */
 .busca-topo input {
     flex: 1 1 260px;          /* cresce, mas nunca abaixo de 260px */
-    width: auto;
     min-width: 0;
-    font-size: 15px;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid var(--borda-forte);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--texto);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s;
 }
 
-/* A contagem de resultados é a "etiqueta" do DS: mono, no acento. */
+.busca-topo input:focus {
+    border-bottom-color: var(--sinal);
+}
+
 .contador-resultados {
-    font-size: 12px;
-    color: var(--acento-texto);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--sinal-texto);
 }
 
 /* A lista na coluna 1 e os filtros na 2, independente da ordem no
@@ -334,47 +367,47 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 12px;
     margin-bottom: 16px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--borda);
 }
 
 .filtros-topo h3 {
-    font-family: var(--fonte-display);
-    font-weight: 400;
     font-size: 14px;
-    text-transform: uppercase;
-    color: var(--texto-forte);
+    font-weight: 700;
 }
 
-/* "Underline link" do DS. */
+/* "Link sublinhado" do DS. */
 .limpar-filtros {
     border: none;
     border-bottom: 1px solid currentColor;
-    padding: 0 0 2px;
     background: none;
     color: var(--texto-suave);
     font-size: 11px;
+    font-weight: bold;
     text-transform: uppercase;
+    padding-bottom: 1px;
     cursor: pointer;
     transition: color 0.15s;
 }
 
 .limpar-filtros:hover {
-    color: var(--acento-texto);
+    color: var(--sinal-texto);
 }
 
 .grupo-filtro {
     border: none;
     padding: 0;
-    margin: 0 0 20px;
+    margin: 0 0 18px;
 }
 
+/* Rótulo do grupo = "kicker" verde do DS. */
 .grupo-filtro legend {
     font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--acento-texto);
+    font-weight: bold;
+    color: var(--sinal-texto);
     text-transform: uppercase;
+    letter-spacing: 0.2em;
     margin-bottom: 8px;
 }
 
@@ -382,19 +415,18 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 0;
+    padding: 3px 0;
     font-size: 13px;
-    color: var(--texto);
     cursor: pointer;
     transition: color 0.15s;
 }
 
 .grupo-filtro label:hover {
-    color: var(--acento-texto);
+    color: var(--texto-forte);
 }
 
 .grupo-filtro input[type="checkbox"] {
-    accent-color: var(--acento);    /* a caixa marcada no acento do DS */
+    accent-color: var(--sinal);    /* a caixa marcada no verde da marca */
     cursor: pointer;
 }
 
@@ -402,38 +434,44 @@
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    gap: 6px 12px;
+    gap: 6px 10px;
 }
 
 .faixa-preco label {
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--texto-apagado);
+    font-size: 12px;
+    color: var(--texto-suave);
 }
 
 .faixa-preco input {
+    width: 100%;
+    padding: 6px 0;
+    border: none;
+    border-bottom: 1px solid var(--borda-forte);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--texto);
     font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.faixa-preco input:focus {
+    border-bottom-color: var(--sinal);
 }
 
 .sem-resultado {
     grid-column: 1 / -1;       /* ocupa a largura toda da grade */
     padding: 40px 12px;
-    border: 1px dashed var(--texto-mudo);
-    border-radius: var(--raio);
     text-align: center;
-    font-size: 13px;
     color: var(--texto-suave);
+    border: 1px dashed var(--borda-forte);
+    border-radius: var(--raio);
 }
 
 
 /* ===== CELULAR ===== */
 
 @media (max-width: 800px) {
-    /* fixed engasga em celular; alguns navegadores nem suportam. */
-    .conteudo {
-        background-attachment: scroll;
-    }
-
     /* Uma coluna só: os filtros sobem para cima da lista. */
     .busca-layout {
         grid-template-columns: 1fr;
@@ -452,7 +490,11 @@
 
 @media (max-width: 500px) {
     .conteudo {
-        padding: 40px 16px 64px;
+        padding: 36px 16px;
+    }
+
+    .titulo-pagina {
+        margin-bottom: 32px;
     }
 
     .secao-busca {
@@ -460,6 +502,6 @@
     }
 
     .cta-visitante {
-        padding: 36px 20px;
+        padding: 32px 20px;
     }
 }
