@@ -1,105 +1,110 @@
+/* =========================================================
+   LOGIN — estilos exclusivos da login.html
+   Carregado DEPOIS do style.css. Os campos sublinhados e o botão
+   "Primary" já vêm de lá (uma regra só para todos os formulários);
+   aqui fica só o layout da página.
+   ========================================================= */
+
 .cabecalho {
     justify-content: center;
 }
 
+/* Textura quadriculada > véu > foto, como nas seções da home. */
 .secao-login {
     min-height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 48px 24px;
-    text-align: center;
-    background-image: linear-gradient(rgba(61, 10, 78, 0.60), rgba(61, 10, 78, 0.75)), url("../../assets/backgrounds/fundo-sobre.jpg");
-    background-size: cover;
+    padding: 64px 24px;
+    background-image: var(--textura-grade),
+                      linear-gradient(var(--veu-topo), var(--veu-base)),
+                      var(--tira-cor),
+                      url("../../assets/backgrounds/fundo-sobre.jpg");
+    background-size: 40px 40px, 40px 40px, cover, cover, cover;
+    background-blend-mode: normal, normal, normal, saturation, normal;
     background-position: center;
 }
 
+/* Título e subtítulo alinhados com a caixa (mesma largura). */
+.secao-login h1,
+.login-subtitulo {
+    width: 100%;
+    max-width: 420px;
+}
+
 .secao-login h1 {
-    color: var(--branco);
-    font-size: 30px;
-    margin-bottom: 8px;
+    font-family: var(--fonte-display);
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--texto-forte);
+    margin-bottom: 16px;
 }
 
 .login-subtitulo {
-    color: var(--branco);
-    margin-bottom: 28px;
+    padding-left: 16px;
+    border-left: 2px solid var(--acento);
+    color: var(--texto-suave);
+    font-size: 14px;
     line-height: 1.6;
+    margin-bottom: 32px;
 }
 
+/* A caixa é o modal do DS: faixa escura, borda fina, cantos 2px. */
 .caixa-login {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     width: 100%;
-    max-width: 380px;
-    background-color: var(--branco);
-    padding: 32px;
-    border-radius: 10px;
-    text-align: left;
-}
-
-.caixa-login label {
-    font-weight: bold;
-    font-size: 14px;
-    margin-top: 12px;
-}
-
-.caixa-login input {
-    padding: 10px 12px;
-    border: 1px solid var(--cinza-borda);
-    border-radius: 6px;
-    font-size: 15px;
-    font-family: inherit;
-}
-
-.caixa-login input:focus-visible {
-    border-color: var(--roxo);
-    outline: 2px solid var(--roxo-claro);
+    max-width: 420px;
+    background-color: var(--faixa);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .caixa-login button {
-    margin-top: 24px;
-    background-color: var(--rosa);
-    color: var(--branco);
-    border: none;
-    border-radius: 6px;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.caixa-login button:hover {
-    background-color: var(--rosa-escuro);
+    align-self: stretch;          /* no login o botão ocupa a largura toda */
 }
 
 .login-rodape {
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 24px;
+    font-size: 12px;
     text-align: center;
-    color: var(--cinza-texto);
+    color: var(--texto-suave);
 }
 
+/* "Underline link" do DS. */
 .login-rodape a {
-    color: var(--roxo);
+    color: var(--texto-forte);
     font-weight: bold;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color 0.15s;
+}
+
+.login-rodape a:hover {
+    color: var(--acento-texto);
 }
 
 .acoes-cabecalho .botao-entrar.ativo {
-    background-color: var(--branco);
-    color: var(--roxo);
+    background-color: var(--acento);
+    border-color: var(--acento);
+    color: var(--sobre-acento);
 }
 
 /* ===== CELULAR ===== */
 @media (max-width: 767px) {
     .secao-login {
         min-height: auto;
-        padding: 32px 16px;
+        padding: 40px 16px;
     }
 
     .secao-login h1 {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .caixa-login {

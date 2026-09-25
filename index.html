@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fontes do Design System: Unbounded (títulos) e Space Mono (texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="assets/logo/favicon-sj.png" type="image/png">
-    <!-- tema.js no <head>: aplica o tema escuro antes da página aparecer -->
+    <!-- tema.js no <head>: aplica o tema escolhido antes da página aparecer -->
     <script src="js/tema.js"></script>
     <title>SeJoga</title>
 </head>
@@ -42,7 +46,13 @@
     <section class="secao-eventos">
 
         <div class="titulo-secao">
-            <h1>Alguns dos nossos eventos!</h1>
+            <!-- Sobretítulo do DS: o ponto verde pulsa como "ao vivo" -->
+            <span class="sobretitulo">
+                <span class="ponto-pulso" aria-hidden="true"></span>
+                Rolando perto de você
+            </span>
+            <!-- .contorno = palavra vazada; .destaque = palavra no acento -->
+            <h1>Alguns dos <span class="contorno">nossos</span> <span class="destaque">eventos!</span></h1>
             <p class="subtitulo">Festas, jogos e encontros perto de você</p>
         </div>
 
@@ -64,6 +74,27 @@
             </button>
         </div>
     </section>
+
+
+    <!-- FAIXA ROLANTE (marquee do Design System). Só decoração:
+         aria-hidden esconde do leitor de tela, que leria as palavras
+         duas vezes. O conteúdo está REPETIDO de propósito — o CSS
+         anda metade da largura e recomeça, e como as duas metades
+         são iguais, o recomeço fica invisível. -->
+    <div class="faixa-rolante" aria-hidden="true">
+        <div class="faixa-rolante-trilho">
+            <span>Futebol</span><span class="faixa-x">×</span>
+            <span>Basquete</span><span class="faixa-x">×</span>
+            <span>E-sports</span><span class="faixa-x">×</span>
+            <span>Festa</span><span class="faixa-x">×</span>
+            <span>Fantasia</span><span class="faixa-x">×</span>
+            <span>Futebol</span><span class="faixa-x">×</span>
+            <span>Basquete</span><span class="faixa-x">×</span>
+            <span>E-sports</span><span class="faixa-x">×</span>
+            <span>Festa</span><span class="faixa-x">×</span>
+            <span>Fantasia</span><span class="faixa-x">×</span>
+        </div>
+    </div>
 
 
     <!-- 2. CATEGORIAS — cada cartão abre a página Eventos já filtrada.

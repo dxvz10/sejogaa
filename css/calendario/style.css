@@ -2,7 +2,7 @@
    CALENDÁRIO — só a grade de dias
 
    Carregado por último, depois de:
-     css/style.css          reset, cores, cabeçalho, rodapé, botões
+     css/style.css          tokens do DS, cabeçalho, rodapé, botões
      css/eventos/style.css  fundo da página, cards, busca e filtros
 
    Antes este arquivo repetia o cabeçalho, o rodapé e os botões
@@ -15,65 +15,74 @@
 /* ===== CAIXA DO CALENDÁRIO ===== */
 
 .calendario-container {
-    background-color: var(--branco);
+    background-color: var(--faixa);
     max-width: 1100px;
     margin: auto;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
 }
 
 .calendario-topo {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 25px;
+    gap: 16px;
+    margin-bottom: 28px;
 }
 
 .calendario-topo h2 {
-    font-size: 25px;
-    color: var(--roxo-escuro);
+    font-family: var(--fonte-display);
+    font-weight: 700;
+    font-size: 28px;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--texto-forte);
 }
 
 
-/* Setas de mês. Chamavam-se .seta, mas essa classe já existe no
-   style.css para as setas do carrossel da home — e lá ela tem
-   position: absolute. Com o mesmo nome, as duas setas daqui iam
-   parar uma em cima da outra. */
+/* Setas de mês: o "Glass Icon" do DS. Chamavam-se .seta, mas essa
+   classe já existe no style.css para as setas do carrossel da
+   home — e lá ela tem position: absolute. Com o mesmo nome, as
+   duas setas daqui iam parar uma em cima da outra. */
 .seta-mes {
-    width: 42px;
-    height: 42px;
-    border: none;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--borda);
     border-radius: 50%;
-    background-color: var(--roxo);
-    color: var(--branco);
-    font-size: 30px;
+    background-color: var(--vidro-forte);
+    color: var(--texto-forte);
+    font-size: 26px;
     line-height: 1;
     cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .seta-mes:hover {
-    background-color: var(--roxo-escuro);
+    background-color: var(--acento);
+    border-color: var(--acento);
+    color: var(--sobre-acento);
 }
 
 
 /* ===== DIAS DA SEMANA ===== */
+/* Micro-rótulo do DS: 10px, caixa alta, bem espaçado, cinza. */
 
 .dias-semana {
     display: grid;
     /* minmax(0, 1fr), e não só 1fr: "1fr" deixa o conteúdo EMPURRAR
        a coluna, e um nome de evento comprido estourava a tela. */
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    background-color: var(--roxo);
-    color: var(--branco);
-    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid var(--borda-forte);
+    color: var(--texto-suave);
 }
 
 .dias-semana div {
     text-align: center;
-    padding: 13px;
-    font-weight: bold;
-    font-size: 14px;
+    padding: 12px 4px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
 }
 
 
@@ -82,68 +91,44 @@
 .dias {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    border-left: 1px solid var(--cinza-borda);
-    border-top: 1px solid var(--cinza-borda);
+    border-left: 1px solid var(--borda);
 }
 
 .dia {
     min-height: 105px;
     padding: 10px;
-    border-right: 1px solid var(--cinza-borda);
-    border-bottom: 1px solid var(--cinza-borda);
-    background-color: var(--branco);
-    font-size: 16px;
-
-    /* position + z-index: sem isso o quadradinho ampliado passa
-       POR BAIXO dos vizinhos, porque quem não tem z-index é
-       pintado na ordem do HTML. */
-    position: relative;
-    z-index: 0;
+    border-right: 1px solid var(--borda);
+    border-bottom: 1px solid var(--borda);
+    background-color: var(--faixa);
+    font-size: 14px;
+    color: var(--texto-suave);
 
     /* O caminho de VOLTA (mouse saindo) não tem atraso. */
-    transition: transform 0.25s ease,
-                box-shadow 0.25s ease,
-                background-color 0.25s ease;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* "Border glow" do DS: o fundo sobe um tom e uma borda interna no
+   acento acende. inset desenha a borda POR DENTRO da célula, então
+   ela não empurra as vizinhas nem fica escondida por baixo delas. */
 .dia:hover {
-    background-color: var(--roxo-claro);
+    background-color: var(--superficie-hover);
+    box-shadow: inset 0 0 0 1px var(--acento);
     cursor: pointer;
-
-    /* transition-delay AQUI vale só para a ida: o mouse precisa
-       ficar parado 350ms, então passar de raspão não dispara nada. */
-    transition-delay: 0.35s;
-
-    transform: scale(1.07);
-    box-shadow: 0 8px 24px rgba(61, 10, 78, 0.28);
-    z-index: 2;
-}
-
-/* Quem pediu menos movimento no sistema recebe só a cor. */
-@media (prefers-reduced-motion: reduce) {
-    .dia:hover {
-        transform: none;
-    }
 }
 
 .dia.vazio {
-    background-color: var(--cinza-claro);
+    background-color: transparent;
 }
 
 .dia.vazio:hover {
-    transform: none;
     box-shadow: none;
     cursor: default;
 }
 
+/* Dia com evento: número forte e fundo um tom acima. */
 .dia.evento {
-    background-color: var(--roxo-claro);
-    font-weight: bold;
-}
-
-.dia.hoje {
-    outline: 2px solid var(--rosa);
-    outline-offset: -2px;
+    background-color: var(--superficie);
+    color: var(--texto-forte);
 }
 
 .numero-dia {
@@ -151,16 +136,34 @@
     font-weight: bold;
 }
 
+/* Hoje: o número vira o quadradinho do logo do DS — acento cheio,
+   texto preto, fonte display. */
+.dia.hoje .numero-dia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 4px;
+    border-radius: var(--raio);
+    background-color: var(--acento);
+    color: var(--sobre-acento);
+    font-family: var(--fonte-display);
+    font-size: 13px;
+}
+
 /* A etiqueta de um evento dentro do quadradinho do dia. */
 .etiqueta-evento {
     display: block;
     margin-top: 6px;
     padding: 4px 6px;
-    border-radius: 4px;
-    background-color: var(--rosa);
-    color: var(--branco);
-    font-size: 11px;
+    border-left: 2px solid var(--acento);
+    border-radius: 0 var(--raio) var(--raio) 0;
+    background-color: var(--vidro-forte);
+    color: var(--texto-forte);
+    font-size: 10px;
     font-weight: normal;
+    text-transform: uppercase;
 
     /* Nome comprido não pode empurrar a coluna: corta com "…". */
     white-space: nowrap;
@@ -168,10 +171,12 @@
     text-overflow: ellipsis;
 }
 
-/* Evento que o usuário guardou na agenda dele. */
+/* Evento que o usuário guardou na agenda dele: cheio de acento. */
 .etiqueta-evento.meu-evento {
-    background-color: var(--roxo);
-    box-shadow: inset 3px 0 0 var(--rosa-claro);
+    background-color: var(--acento);
+    border-left-color: var(--sobre-acento);
+    color: var(--sobre-acento);
+    font-weight: bold;
 }
 
 
@@ -180,32 +185,44 @@
 @media (max-width: 800px) {
     .dia {
         min-height: 80px;
-        font-size: 13px;
+        font-size: 12px;
         padding: 6px;
     }
 
     .etiqueta-evento {
-        font-size: 9px;
+        font-size: 8px;
         padding: 3px 4px;
     }
 }
 
 @media (max-width: 500px) {
     .calendario-container {
-        padding: 10px;
+        padding: 12px;
     }
 
     .calendario-topo h2 {
-        font-size: 20px;
+        font-size: 18px;
+    }
+
+    .seta-mes {
+        width: 38px;
+        height: 38px;
     }
 
     .dias-semana div {
-        font-size: 10px;
+        font-size: 9px;
+        letter-spacing: 0.05em;
         padding: 8px 2px;
     }
 
     .dia {
         min-height: 64px;
         padding: 4px;
+    }
+
+    .dia.hoje .numero-dia {
+        min-width: 22px;
+        height: 22px;
+        font-size: 11px;
     }
 }
