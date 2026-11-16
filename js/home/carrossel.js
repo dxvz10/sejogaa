@@ -14,6 +14,13 @@ function atualizarCarrosel() {
     });
 
     const card = cards[indiceAtual];
+
+    // Nenhum evento aberto = nenhum card. Sem esta trava, o
+    // card.offsetLeft abaixo quebraria o arquivo inteiro.
+    if (!card) {
+        return;
+    }
+
     const alvo = card.offsetLeft - (trilho.offsetWidth - card.offsetWidth) / 2;
 
     trilho.scrollTo({

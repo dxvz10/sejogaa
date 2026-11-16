@@ -236,6 +236,76 @@ ul.menu {
 }
 
 
+/* ===== SUBMENU DE CATEGORIAS (item "Eventos") =====
+   Mesmo visual dos painéis suspensos do cabeçalho (fundo --faixa,
+   borda fina, sombra). Fica escondido e aparece quando:
+     :hover        -> o mouse está em cima do item;
+     :focus-within -> algum link DE DENTRO do item recebeu foco
+                      (Tab no teclado, ou um toque no celular).
+   Só CSS, nenhum JavaScript. */
+.menu-com-submenu {
+    position: relative;      /* o submenu se posiciona a partir daqui */
+}
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 50;
+    min-width: 180px;
+    padding: 8px;
+    margin-top: 8px;
+    list-style: none;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    background-color: var(--faixa);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+
+    /* Escondido com opacity + visibility (e não display: none)
+       para dar tempo da transição de entrada acontecer. */
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -4px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+}
+
+/* Uma "ponte" invisível entre o item e o submenu: sem ela, o mouse
+   passa pelo vão de 8px, sai do :hover e o submenu fecha. */
+.submenu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    height: 10px;
+}
+
+.menu-com-submenu:hover > .submenu,
+.menu-com-submenu:focus-within > .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+/* Os links do submenu usam o "List Indent" do DS (igual ao
+   .menu-item do menu do usuário), e não a pílula verde do menu. */
+.submenu a {
+    padding: 9px 10px;
+    border-radius: var(--raio);
+    font-size: 11px;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s, padding 0.2s;
+}
+
+.submenu a:hover,
+.submenu a:focus-visible {
+    background-color: var(--vidro);
+    color: var(--sinal-texto);
+    padding-left: 14px;
+    outline: none;
+}
+
+
 /* ===== BOTÕES ===== */
 /* Dois botões do DS:
    - .botao-entrar  = "Outline CTA": contorno fino, acende no hover.

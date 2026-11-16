@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- Página de erro: aberta por qualquer pessoa, logada ou não.
+     No GitHub Pages, o arquivo 404.html na raiz é mostrado
+     automaticamente para qualquer endereço que não existe. -->
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeJoga - Página não encontrada</title>
+
+    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
+         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/eventos/style.css">
+    <link rel="stylesheet" href="css/erro/style.css">
+    <link rel="icon" href="assets/logo/favicon-sj.png" type="image/png">
+
+    <script src="js/tema.js"></script>
+</head>
+
+<body>
+
+    <header class="cabecalho">
+
+        <a href="index.html" class="logo">
+            <img src="assets/logo/logo.png" alt="Logo do SeJoga">
+        </a>
+
+        <nav class="menu" aria-label="Principal">
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="calendario.html">Calendário</a></li>
+                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
+                     com o Tab (:focus-within). Cada link já chega na página
+                     Eventos com o filtro daquela categoria marcado. -->
+                <li class="menu-com-submenu">
+                    <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
+                    <ul class="submenu" aria-label="Categorias">
+                        <li><a href="eventos.html?categoria=futebol" data-precisa-login>Futebol</a></li>
+                        <li><a href="eventos.html?categoria=basquete" data-precisa-login>Basquete</a></li>
+                        <li><a href="eventos.html?categoria=fantasia" data-precisa-login>Fantasia</a></li>
+                        <li><a href="eventos.html?categoria=e-sport" data-precisa-login>E-sports</a></li>
+                        <li><a href="eventos.html?categoria=festa" data-precisa-login>Festa</a></li>
+                    </ul>
+                </li>
+                <li><a href="cadastro-evento.html" data-precisa-login>Cadastrar Evento</a></li>
+            </ul>
+        </nav>
+
+        <div class="acoes-cabecalho">
+            <a href="cadastro.html" class="botao-cadastro" data-sessao="deslogado">Cadastrar</a>
+            <a href="login.html" class="botao-entrar" data-sessao="deslogado">Entrar</a>
+        </div>
+
+    </header>
+
+
+    <main class="conteudo pagina-erro">
+
+        <!-- Página de erro personalizada. Serve para DOIS casos:
+               404.html            -> endereço que não existe
+               404.html?tipo=auth  -> falha crítica de autenticação
+             O erro.js troca os textos conforme o "tipo" do endereço.
+             O texto abaixo é o do 404, que aparece mesmo sem JavaScript. -->
+        <section class="caixa-erro" aria-labelledby="titulo-erro">
+            <span class="codigo-erro" id="codigo-erro" aria-hidden="true">404</span>
+
+            <div class="titulo-pagina">
+                <h1 id="titulo-erro">Página não encontrada</h1>
+                <p id="etiqueta-erro">Erro 404 · Esse rolê não existe</p>
+            </div>
+
+            <p class="texto-erro" id="texto-erro">
+                O endereço que você tentou abrir não existe ou mudou de lugar.
+                Confira o link ou volte para o início e encontre seu próximo evento por lá.
+            </p>
+
+            <div class="acoes-erro">
+                <a href="index.html" class="botao-cadastro" id="acao-principal">Voltar para o início</a>
+                <a href="calendario.html" class="botao-entrar" id="acao-secundaria">Ver calendário</a>
+            </div>
+        </section>
+
+    </main>
+
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <div class="rodape-coluna">
+                <h3>SeJoga</h3>
+                <p>Festas, jogos e encontros perto de você. Encontre o próximo rolê sem precisar caçar em dez lugares diferentes.</p>
+            </div>
+
+            <nav class="rodape-coluna">
+                <h3>Redes Sociais</h3>
+                <ul>
+                    <li>
+                        <a href="https://www.instagram.com/se.jogaaa/">
+                            <img src="img/icons/instagram.png" alt="Instagram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com/sejogaaaa">
+                            <img src="img/icons/twitter.png" alt="Twitter">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="rodape-coluna">
+                <h3>Institucional</h3>
+                <ul>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a>Política de Privacidade</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="rodape-base">
+            <p>© 2026 SeJoga — Projeto acadêmico UNISUAM · Desenvolvimento de Software para Internet</p>
+        </div>
+    </footer>
+
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/cabecalho.js"></script>
+    <script src="js/erro.js"></script>
+</body>
+
+</html>

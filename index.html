@@ -27,7 +27,19 @@
         <ul class="menu">
             <li><a href="index.html" class="ativo" aria-current="page">Início</a></li>
             <li><a href="calendario.html">Calendário</a></li>
-            <li><a href="eventos.html" data-precisa-login>Eventos</a></li>
+            <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
+                 com o Tab (:focus-within). Cada link já chega na página
+                 Eventos com o filtro daquela categoria marcado. -->
+            <li class="menu-com-submenu">
+                <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
+                <ul class="submenu" aria-label="Categorias">
+                    <li><a href="eventos.html?categoria=futebol" data-precisa-login>Futebol</a></li>
+                    <li><a href="eventos.html?categoria=basquete" data-precisa-login>Basquete</a></li>
+                    <li><a href="eventos.html?categoria=fantasia" data-precisa-login>Fantasia</a></li>
+                    <li><a href="eventos.html?categoria=e-sport" data-precisa-login>E-sports</a></li>
+                    <li><a href="eventos.html?categoria=festa" data-precisa-login>Festa</a></li>
+                </ul>
+            </li>
             <li><a href="cadastro-evento.html" data-precisa-login>Cadastrar Evento</a></li>
         </ul>
     </nav>

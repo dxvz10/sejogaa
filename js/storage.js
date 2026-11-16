@@ -15,6 +15,7 @@ const CHAVES = {
     sessao: 'portalEventos_sessao',            // quem está logado agora
     eventos: 'portalEventos_eventos',          // lista de eventos
     meusEventos: 'portalEventos_meusEventos',  // agenda de cada usuário
+    feedbacks: 'portalEventos_feedbacks',      // respostas do formulário de feedback
     notificacoesVistas: 'portalEventos_notificacoesVistas',
     preferencias: 'portalEventos_preferencias',
     versaoSemente: 'portalEventos_versaoSemente'

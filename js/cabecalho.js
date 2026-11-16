@@ -164,7 +164,8 @@ function montarMenuUsuario(usuario) {
     const itens = [
         { texto: 'Meu perfil', href: 'perfil.html' },
         { texto: 'Minha agenda', href: 'perfil.html#agenda', contador: quantosNaAgenda },
-        { texto: 'Cadastrar evento', href: 'cadastro-evento.html' }
+        { texto: 'Cadastrar evento', href: 'cadastro-evento.html' },
+        { texto: 'Enviar feedback', href: 'feedback.html' }
     ];
 
     itens.forEach(function (item) {
