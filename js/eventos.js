@@ -25,7 +25,12 @@
    eventos de exemplo continuarem no futuro no dia da apresentação.
    Um deles (evt_005, em agosto) ficou no passado de propósito,
    para a sinalização cinza "Já realizado" aparecer na demonstração. */
-const VERSAO_SEMENTE = 3;
+/* Versão 4: mais 12 eventos, entre reais (Réveillon de Copacabana,
+   Cordão da Bola Preta, desfiles da Sapucaí, clássicos do Carioca) e
+   fictícios. Juntos, eles mostram todas as cores de status:
+   amarelo (evt_014, perto do início), vermelho por cancelamento
+   (evt_024) e por lotação, verde e cinza. */
+const VERSAO_SEMENTE = 4;
 
 const EVENTOS_INICIAIS = [
     {
@@ -123,6 +128,102 @@ const EVENTOS_INICIAIS = [
         descricao: 'Mesas para iniciantes e veteranos, com mestres convidados.',
         comidaBebida: 'Petiscos e bebidas à venda.',
         capacidadeVagas: 36, vagasOcupadas: 12, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_013', categoria: 'festa', nome: 'Réveillon de Copacabana',
+        local: 'Praia de Copacabana', regiao: 'Rio de Janeiro - Zona Sul',
+        preco: 0, dataHora: '2026-12-31T20:00:00',
+        descricao: 'A maior festa de Ano-Novo do Brasil: shows na areia e queima de fogos à meia-noite.',
+        comidaBebida: 'Ambulantes e quiosques na orla.',
+        capacidadeVagas: 2000, vagasOcupadas: 900, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_014', categoria: 'festa', nome: 'Esquenta da Consciência Negra',
+        local: 'Madureira', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 0, dataHora: '2026-11-19T19:00:00',
+        descricao: 'Roda de samba na véspera do feriado de 20 de novembro.',
+        comidaBebida: 'Barracas de comida e bebida.',
+        capacidadeVagas: 300, vagasOcupadas: 140, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_015', categoria: 'festa', nome: 'Cordão da Bola Preta',
+        local: 'Centro do Rio', regiao: 'Rio de Janeiro - Centro',
+        preco: 0, dataHora: '2027-02-06T09:00:00',
+        descricao: 'O bloco mais tradicional do Carnaval carioca, no sábado de Carnaval.',
+        comidaBebida: 'Ambulantes ao longo do percurso.',
+        capacidadeVagas: 3000, vagasOcupadas: 1200, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_016', categoria: 'festa', nome: 'Desfile das Escolas de Samba — Grupo Especial',
+        local: 'Sambódromo da Marquês de Sapucaí', regiao: 'Rio de Janeiro - Centro',
+        preco: 180, dataHora: '2027-02-07T21:00:00',
+        descricao: 'Primeira noite de desfiles do Grupo Especial na Sapucaí.',
+        comidaBebida: 'Bares e lanchonetes no Sambódromo.',
+        capacidadeVagas: 1000, vagasOcupadas: 820, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_017', categoria: 'futebol', nome: 'Botafogo x Vasco — Campeonato Carioca',
+        local: 'Estádio Nilton Santos', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 60, dataHora: '2027-01-24T18:00:00',
+        descricao: 'Clássico pelo Campeonato Carioca.',
+        comidaBebida: 'Praça de alimentação no estádio.',
+        capacidadeVagas: 300, vagasOcupadas: 95, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_018', categoria: 'futebol', nome: 'Fla-Flu — Campeonato Carioca',
+        local: 'Maracanã', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 90, dataHora: '2027-02-21T16:00:00',
+        descricao: 'O clássico mais famoso do Rio, pelo Campeonato Carioca.',
+        comidaBebida: 'Praça de alimentação no estádio.',
+        capacidadeVagas: 300, vagasOcupadas: 260, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_019', categoria: 'fantasia', nome: 'Concurso de Cosplay de Fim de Ano',
+        local: 'Shopping Nova América', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 20, dataHora: '2026-12-13T15:00:00',
+        descricao: 'Desfile e premiação dos melhores cosplays do ano.',
+        comidaBebida: 'Praça de alimentação do shopping.',
+        capacidadeVagas: 120, vagasOcupadas: 55, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_020', categoria: 'fantasia', nome: 'Baile à Fantasia de Carnaval',
+        local: 'Lapa', regiao: 'Rio de Janeiro - Centro',
+        preco: 60, dataHora: '2027-02-05T22:00:00',
+        descricao: 'Baile com marchinhas e concurso da fantasia mais criativa.',
+        comidaBebida: 'Bar aberto durante o baile.',
+        capacidadeVagas: 200, vagasOcupadas: 70, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_021', categoria: 'e-sport', nome: 'Torneio de EA FC na Zona Oeste',
+        local: 'Campo Grande', regiao: 'Rio de Janeiro - Zona Oeste',
+        preco: 30, dataHora: '2026-12-05T13:00:00',
+        descricao: 'Chaveamento 1x1 no console, com premiação para os 3 primeiros.',
+        comidaBebida: 'Lanchonete no local.',
+        capacidadeVagas: 64, vagasOcupadas: 41, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_022', categoria: 'e-sport', nome: 'Campeonato Universitário de Valorant',
+        local: 'Bonsucesso', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 0, dataHora: '2027-03-13T10:00:00',
+        descricao: 'Times de faculdades do Rio disputando o título universitário.',
+        comidaBebida: 'Lanches à venda.',
+        capacidadeVagas: 80, vagasOcupadas: 24, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_023', categoria: 'basquete', nome: 'Peneira de Basquete Feminino',
+        local: 'Tijuca Tênis Clube', regiao: 'Rio de Janeiro - Zona Norte',
+        preco: 0, dataHora: '2027-01-30T09:00:00',
+        descricao: 'Seletiva aberta para atletas de 14 a 18 anos.',
+        comidaBebida: 'Água disponível.',
+        capacidadeVagas: 60, vagasOcupadas: 18, cancelado: false, criadoPorLogin: 'sejoga'
+    },
+    {
+        id: 'evt_024', categoria: 'basquete', nome: 'Amistoso de Basquete — Zona Sul x Zona Norte',
+        local: 'Ginásio do Leme', regiao: 'Rio de Janeiro - Zona Sul',
+        preco: 15, dataHora: '2026-12-12T19:00:00',
+        descricao: 'Amistoso entre seleções de bairro. Evento cancelado por causa da reforma do ginásio.',
+        comidaBebida: 'Lanchonete no ginásio.',
+        capacidadeVagas: 150, vagasOcupadas: 60, cancelado: true, criadoPorLogin: 'sejoga'
     }
 ];
 
