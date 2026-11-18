@@ -8,7 +8,7 @@ O SeJoga reúne em um só lugar festas, jogos de futebol e basquete, encontros d
 
 ## Links
 
-- **Site no ar:** _(colar aqui o link do GitHub Pages / Vercel / Netlify)_
+- **Site no ar:** https://sejogav2.vercel.app
 - **Protótipo no Figma:** _(colar aqui o link do Figma)_
 - **Repositório:** https://github.com/dxvz10/sejogav2
 
