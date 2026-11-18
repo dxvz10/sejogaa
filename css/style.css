@@ -1688,6 +1688,102 @@ html[data-pagina="restrita"]:not([data-sessao-ok]) main {
 }
 
 
+/* ===== ILUSTRAÇÃO DO "SOBRE NÓS" (SVG no index.html) =====
+   No SVG, fill = cor de dentro e stroke = cor da linha. As cores
+   vêm das mesmas variáveis do site, então o tema claro funciona
+   sem nenhuma regra a mais. */
+
+.sobre-ilustracao {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    background-color: var(--fundo);
+    /* a mesma grade fininha do fundo da página */
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, var(--grade) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grade) 1px, transparent 1px);
+}
+
+.ilu-anel {
+    fill: none;
+    stroke: var(--borda-forte);
+    stroke-dasharray: 2 6;
+}
+
+/* As linhas tracejadas "correm" do pino até as categorias: a
+   animação desloca o começo do tracejado (stroke-dashoffset). */
+.ilu-linha {
+    stroke: var(--sinal-texto);
+    stroke-width: 1.2;
+    stroke-dasharray: 4 6;
+    opacity: 0.6;
+    animation: fluxo-linha 1.6s linear infinite;
+}
+
+@keyframes fluxo-linha {
+    to { stroke-dashoffset: -20; }
+}
+
+.ilu-pino { fill: var(--sinal); }
+.ilu-furo { fill: var(--fundo); }
+
+/* O anel do pino cresce e some, como o "ao vivo" do título.
+   transform-box: fill-box faz o scale partir do centro do anel. */
+.ilu-pulso {
+    fill: none;
+    stroke: var(--sinal);
+    stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulso-pino 2s ease-out infinite;
+}
+
+@keyframes pulso-pino {
+    from { transform: scale(0.6); opacity: 0.9; }
+    to   { transform: scale(3);   opacity: 0; }
+}
+
+/* Cada categoria: círculo escuro com borda verde e ícone branco. */
+.ilu-no > circle {
+    fill: var(--faixa);
+    stroke: var(--sinal-texto);
+    stroke-width: 1.5;
+    transition: fill 0.2s;
+}
+
+.ilu-icone {
+    fill: none;
+    stroke: var(--texto-forte);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.2s;
+}
+
+/* Mouse em cima: o círculo acende em verde (como os botões). */
+.ilu-no:hover > circle { fill: var(--sinal); }
+.ilu-no:hover .ilu-icone { stroke: var(--sobre-sinal); }
+
+.ilu-rotulo {
+    fill: var(--texto-apagado);
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-anchor: middle;      /* o x do texto é o centro dele */
+}
+
+/* Quem pediu menos movimento no sistema não vê as animações. */
+@media (prefers-reduced-motion: reduce) {
+    .ilu-linha,
+    .ilu-pulso {
+        animation: none;
+    }
+}
+
+
 /* ===== CONTATO — o "bloco verde" (CTA) do DS ===== */
 
 .secao-contato {
