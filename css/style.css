@@ -1697,14 +1697,7 @@ html[data-pagina="restrita"]:not([data-sessao-ok]) main {
     display: block;
     width: 100%;
     height: auto;
-    border: 1px solid var(--borda);
-    border-radius: var(--raio);
-    background-color: var(--fundo);
-    /* a mesma grade fininha do fundo da página */
-    background-size: 40px 40px;
-    background-image:
-        linear-gradient(to right, var(--grade) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grade) 1px, transparent 1px);
+    overflow: visible;        /* o anel de fora pode passar um pouco da coluna */
 }
 
 .ilu-anel {
@@ -1750,14 +1743,14 @@ html[data-pagina="restrita"]:not([data-sessao-ok]) main {
 .ilu-no > circle {
     fill: var(--faixa);
     stroke: var(--sinal-texto);
-    stroke-width: 1.5;
+    stroke-width: 2;
     transition: fill 0.2s;
 }
 
 .ilu-icone {
     fill: none;
     stroke: var(--texto-forte);
-    stroke-width: 1.6;
+    stroke-width: 1.3;        /* o scale(1.5) do HTML engrossa a linha */
     stroke-linecap: round;
     stroke-linejoin: round;
     transition: stroke 0.2s;
@@ -1770,7 +1763,7 @@ html[data-pagina="restrita"]:not([data-sessao-ok]) main {
 .ilu-rotulo {
     fill: var(--texto-apagado);
     font-family: var(--fonte-texto);
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.15em;
     text-anchor: middle;      /* o x do texto é o centro dele */
 }
