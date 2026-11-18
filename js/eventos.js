@@ -21,13 +21,17 @@
    guardada recebe as mudanças sem perder os eventos criados.
    ------------------------------------------------------------- */
 
-const VERSAO_SEMENTE = 2;
+/* Versão 3: as datas da semente foram adiadas em 3 meses para os
+   eventos de exemplo continuarem no futuro no dia da apresentação.
+   Um deles (evt_005, em agosto) ficou no passado de propósito,
+   para a sinalização cinza "Já realizado" aparecer na demonstração. */
+const VERSAO_SEMENTE = 3;
 
 const EVENTOS_INICIAIS = [
     {
         id: 'evt_001', categoria: 'futebol', nome: 'Vasco x Vitória',
         local: 'Maracanã', regiao: 'Rio de Janeiro - Zona Norte',
-        preco: 50, dataHora: '2026-09-10T16:00:00',
+        preco: 50, dataHora: '2026-12-10T16:00:00',
         descricao: 'Venha assistir Vasco x Vitória pela Copa Betano do Brasil!',
         comidaBebida: 'Praça de alimentação no estádio.',
         capacidadeVagas: 200, vagasOcupadas: 200, cancelado: false, criadoPorLogin: 'sejoga'
@@ -35,7 +39,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_002', categoria: 'futebol', nome: 'Flamengo x Palmeiras',
         local: 'Maracanã', regiao: 'Rio de Janeiro - Zona Norte',
-        preco: 80, dataHora: '2026-09-27T18:30:00',
+        preco: 80, dataHora: '2026-12-27T18:30:00',
         descricao: 'Clássico pelo Brasileirão, com transmissão no telão.',
         comidaBebida: 'Praça de alimentação no estádio.',
         capacidadeVagas: 300, vagasOcupadas: 120, cancelado: false, criadoPorLogin: 'sejoga'
@@ -43,7 +47,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_003', categoria: 'festa', nome: 'Festival SeJoga',
         local: 'Rio de Janeiro - Zona Portuária', regiao: 'Rio de Janeiro - Centro',
-        preco: 120, dataHora: '2026-09-24T20:00:00',
+        preco: 120, dataHora: '2026-12-24T20:00:00',
         descricao: 'Um dia inteiro de música, food trucks e muita gente boa.',
         comidaBebida: 'Food trucks e bares no local.',
         capacidadeVagas: 500, vagasOcupadas: 310, cancelado: false, criadoPorLogin: 'sejoga'
@@ -51,7 +55,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_004', categoria: 'e-sport', nome: 'Loud x NRG',
         local: 'Los Angeles Arena', regiao: 'Internacional',
-        preco: 100, dataHora: '2026-10-20T14:00:00',
+        preco: 100, dataHora: '2027-01-20T14:00:00',
         descricao: 'Venha assistir Loud x NRG pelo VCT Americas Stage 2!',
         comidaBebida: 'Lanchonete na arena.',
         capacidadeVagas: 150, vagasOcupadas: 40, cancelado: false, criadoPorLogin: 'sejoga'
@@ -67,7 +71,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_006', categoria: 'basquete', nome: 'Flamengo x Franca — NBB',
         local: 'Maracanãzinho', regiao: 'Rio de Janeiro - Zona Norte',
-        preco: 40, dataHora: '2026-10-04T19:00:00',
+        preco: 40, dataHora: '2027-01-04T19:00:00',
         descricao: 'Abertura do NBB com o clássico do basquete brasileiro.',
         comidaBebida: 'Lanchonete no ginásio.',
         capacidadeVagas: 400, vagasOcupadas: 150, cancelado: false, criadoPorLogin: 'sejoga'
@@ -75,7 +79,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_007', categoria: 'fantasia', nome: 'Encontro Geek na Tijuca',
         local: 'Praça Saens Peña', regiao: 'Rio de Janeiro - Zona Norte',
-        preco: 0, dataHora: '2026-09-26T14:00:00',
+        preco: 0, dataHora: '2026-12-26T14:00:00',
         descricao: 'Cosplay, troca de quadrinhos e concurso de fantasia. Entrada gratuita.',
         comidaBebida: 'Barracas de lanche na praça.',
         capacidadeVagas: 60, vagasOcupadas: 22, cancelado: false, criadoPorLogin: 'sejoga'
@@ -83,7 +87,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_008', categoria: 'festa', nome: 'Samba na Pedra do Sal',
         local: 'Pedra do Sal, Saúde', regiao: 'Rio de Janeiro - Centro',
-        preco: 20, dataHora: '2026-10-10T19:00:00',
+        preco: 20, dataHora: '2027-01-10T19:00:00',
         descricao: 'Roda de samba tradicional ao ar livre, no berço do samba carioca.',
         comidaBebida: 'Ambulantes e bares no entorno.',
         capacidadeVagas: 250, vagasOcupadas: 90, cancelado: false, criadoPorLogin: 'sejoga'
@@ -91,7 +95,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_009', categoria: 'e-sport', nome: 'Final do CBLOL — Watch Party',
         local: 'Barra Shopping', regiao: 'Rio de Janeiro - Zona Oeste',
-        preco: 30, dataHora: '2026-10-17T16:00:00',
+        preco: 30, dataHora: '2027-01-17T16:00:00',
         descricao: 'Telão, sorteios e torcida organizada para a grande final.',
         comidaBebida: 'Praça de alimentação do shopping.',
         capacidadeVagas: 180, vagasOcupadas: 70, cancelado: false, criadoPorLogin: 'sejoga'
@@ -99,7 +103,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_010', categoria: 'basquete', nome: 'Racha 3x3 na Praia',
         local: 'Posto 5, Copacabana', regiao: 'Rio de Janeiro - Zona Sul',
-        preco: 15, dataHora: '2026-10-11T09:00:00',
+        preco: 15, dataHora: '2027-01-11T09:00:00',
         descricao: 'Torneio 3x3 aberto, com times montados na hora.',
         comidaBebida: 'Água e isotônico no local.',
         capacidadeVagas: 48, vagasOcupadas: 20, cancelado: false, criadoPorLogin: 'sejoga'
@@ -107,7 +111,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_011', categoria: 'futebol', nome: 'Pelada de Sábado no Aterro',
         local: 'Aterro do Flamengo', regiao: 'Rio de Janeiro - Zona Sul',
-        preco: 10, dataHora: '2026-09-26T08:00:00',
+        preco: 10, dataHora: '2026-12-26T08:00:00',
         descricao: 'Racha amistoso 5x5. Leva colete quem tiver.',
         comidaBebida: 'Água disponível.',
         capacidadeVagas: 20, vagasOcupadas: 20, cancelado: false, criadoPorLogin: 'sejoga'
@@ -115,7 +119,7 @@ const EVENTOS_INICIAIS = [
     {
         id: 'evt_012', categoria: 'fantasia', nome: 'Noite de RPG de Mesa',
         local: 'Botafogo', regiao: 'Rio de Janeiro - Zona Sul',
-        preco: 25, dataHora: '2026-11-07T18:00:00',
+        preco: 25, dataHora: '2027-02-07T18:00:00',
         descricao: 'Mesas para iniciantes e veteranos, com mestres convidados.',
         comidaBebida: 'Petiscos e bebidas à venda.',
         capacidadeVagas: 36, vagasOcupadas: 12, cancelado: false, criadoPorLogin: 'sejoga'

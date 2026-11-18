@@ -282,6 +282,20 @@ document.addEventListener('click', function (evento) {
     const tipo = document.documentElement.dataset.pagina;
 
     if (tipo === 'restrita') {
+        /* FALHA CRÍTICA DE AUTENTICAÇÃO: existe uma sessão gravada,
+           mas ela está corrompida ou aponta para uma conta que não
+           existe mais (alguém mexeu no localStorage pelo DevTools,
+           ou a conta foi apagada). Não dá para confiar nela: apagamos
+           e mandamos para a página de erro personalizada. */
+        const temSessaoGravada = localStorage.getItem(CHAVES.sessao) !== null;
+        const sessao = obterSessao();
+
+        if (temSessaoGravada && (!sessao || !buscarUsuario(sessao.login))) {
+            apagarDoArmazenamento(CHAVES.sessao);
+            window.location.replace('404.html?tipo=auth');
+            return;
+        }
+
         if (!usuarioLogado()) {
             // replace() não deixa esta página no histórico: o botão
             // "voltar" do navegador não traz a pessoa de volta aqui.

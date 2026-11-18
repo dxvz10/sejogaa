@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!-- data-pagina="restrita": só entra quem está logado. O auth.js manda
+     os visitantes para o login e, depois, de volta para cá. -->
+<html lang="pt-BR" data-pagina="restrita">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeJoga - Feedback</title>
+
+    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
+         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/eventos/style.css">
+    <link rel="stylesheet" href="css/cadastro/style.css">
+    <link rel="stylesheet" href="css/cadastro-evento/style.css">
+    <link rel="stylesheet" href="css/feedback/style.css">
+    <link rel="icon" href="assets/logo/favicon-sj.png" type="image/png">
+
+    <script src="js/tema.js"></script>
+</head>
+
+<body>
+
+    <header class="cabecalho">
+
+        <a href="index.html" class="logo">
+            <img src="assets/logo/logo.png" alt="Logo do SeJoga">
+        </a>
+
+        <nav class="menu" aria-label="Principal">
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="calendario.html">Calendário</a></li>
+                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
+                     com o Tab (:focus-within). Cada link já chega na página
+                     Eventos com o filtro daquela categoria marcado. -->
+                <li class="menu-com-submenu">
+                    <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
+                    <ul class="submenu" aria-label="Categorias">
+                        <li><a href="eventos.html?categoria=futebol" data-precisa-login>Futebol</a></li>
+                        <li><a href="eventos.html?categoria=basquete" data-precisa-login>Basquete</a></li>
+                        <li><a href="eventos.html?categoria=fantasia" data-precisa-login>Fantasia</a></li>
+                        <li><a href="eventos.html?categoria=e-sport" data-precisa-login>E-sports</a></li>
+                        <li><a href="eventos.html?categoria=festa" data-precisa-login>Festa</a></li>
+                    </ul>
+                </li>
+                <li><a href="cadastro-evento.html" data-precisa-login>Cadastrar Evento</a></li>
+            </ul>
+        </nav>
+
+        <div class="acoes-cabecalho">
+            <a href="cadastro.html" class="botao-cadastro" data-sessao="deslogado">Cadastrar</a>
+            <a href="login.html" class="botao-entrar" data-sessao="deslogado">Entrar</a>
+        </div>
+
+    </header>
+
+
+    <main class="conteudo">
+
+        <section class="titulo-pagina">
+            <h1>Feedback</h1>
+            <p>Conte para a gente o que achou do SeJoga. Leva menos de um minuto.</p>
+        </section>
+
+        <!-- Formulário de feedback (área restrita do enunciado).
+             Ele usa de propósito os quatro tipos de campo que o
+             professor pediu: range, select, radio e checkbox.
+             novalidate: quem mostra os erros é o nosso JavaScript. -->
+        <form id="form-feedback" class="caixa-cadastro" novalidate>
+
+            <fieldset class="grupo-cadastro">
+                <legend>Sua avaliação</legend>
+
+                <!-- RANGE: um "controle deslizante" de 0 a 10.
+                     O <output> mostra o número escolhido ao lado; o
+                     feedback.js atualiza esse número a cada movimento. -->
+                <label for="nota">Nota para o site: <output id="valor-nota" for="nota">8</output>/10</label>
+                <input type="range" id="nota" name="nota" min="0" max="10" step="1" value="8">
+
+                <!-- SELECT: os mesmos identificadores de categoria do
+                     resto do site (minúsculos, sem acento). -->
+                <label for="categoria-preferida">Categoria que você mais curte</label>
+                <select id="categoria-preferida" name="categoria-preferida" aria-describedby="erro-categoria-preferida">
+                    <option value="">Escolha uma categoria</option>
+                    <option value="futebol">Futebol</option>
+                    <option value="basquete">Basquete</option>
+                    <option value="fantasia">Fantasia</option>
+                    <option value="e-sport">E-sports</option>
+                    <option value="festa">Festa</option>
+                </select>
+                <small class="erro-campo" id="erro-categoria-preferida"></small>
+            </fieldset>
+
+            <fieldset class="grupo-cadastro">
+                <legend>Como nos conheceu</legend>
+
+                <!-- RADIO: todos com o MESMO name, então só um pode ficar
+                     marcado. O role="radiogroup" + aria-describedby deixa o
+                     leitor de tela ler a mensagem de erro do grupo. -->
+                <div class="grupo-opcoes" id="forma-indicacao" role="radiogroup"
+                     aria-label="Como nos conheceu" aria-describedby="erro-forma-indicacao">
+                    <label class="opcao"><input type="radio" name="forma-indicacao" value="amigos"> Indicação de amigos</label>
+                    <label class="opcao"><input type="radio" name="forma-indicacao" value="redes-sociais"> Redes sociais</label>
+                    <label class="opcao"><input type="radio" name="forma-indicacao" value="busca"> Pesquisa no Google</label>
+                    <label class="opcao"><input type="radio" name="forma-indicacao" value="outro"> Outro</label>
+                </div>
+                <small class="erro-campo" id="erro-forma-indicacao"></small>
+            </fieldset>
+
+            <fieldset class="grupo-cadastro">
+                <legend>Interesses</legend>
+
+                <!-- CHECKBOX: aqui pode marcar quantos quiser. -->
+                <span class="rotulo-grupo" id="rotulo-interesses">O que você quer ver mais no site?</span>
+                <div class="grupo-opcoes" aria-labelledby="rotulo-interesses">
+                    <label class="opcao"><input type="checkbox" name="interesses" value="mais-eventos"> Mais eventos perto de mim</label>
+                    <label class="opcao"><input type="checkbox" name="interesses" value="eventos-gratuitos"> Eventos gratuitos</label>
+                    <label class="opcao"><input type="checkbox" name="interesses" value="lembretes"> Lembretes da minha agenda</label>
+                    <label class="opcao"><input type="checkbox" name="interesses" value="ingressos"> Compra de ingressos</label>
+                </div>
+
+                <label for="comentario">Comentário <span class="opcional">(opcional)</span></label>
+                <textarea id="comentario" name="comentario" rows="4" maxlength="500" aria-describedby="erro-comentario"></textarea>
+                <small class="erro-campo" id="erro-comentario"></small>
+
+                <!-- Checkbox sozinho = uma pergunta de "sim ou não". -->
+                <label class="opcao opcao-destaque">
+                    <input type="checkbox" id="aceita-novidades" name="aceita-novidades">
+                    Quero receber novidades do SeJoga
+                </label>
+            </fieldset>
+
+            <p class="aviso-form" id="aviso-feedback"></p>
+
+            <button type="submit">Enviar feedback</button>
+        </form>
+
+    </main>
+
+
+    <footer class="rodape">
+        <div class="rodape-conteudo">
+            <div class="rodape-coluna">
+                <h3>SeJoga</h3>
+                <p>Festas, jogos e encontros perto de você. Encontre o próximo rolê sem precisar caçar em dez lugares diferentes.</p>
+            </div>
+
+            <nav class="rodape-coluna">
+                <h3>Redes Sociais</h3>
+                <ul>
+                    <li>
+                        <a href="https://www.instagram.com/se.jogaaa/">
+                            <img src="img/icons/instagram.png" alt="Instagram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com/sejogaaaa">
+                            <img src="img/icons/twitter.png" alt="Twitter">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="rodape-coluna">
+                <h3>Institucional</h3>
+                <ul>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a>Política de Privacidade</a></li>
+                    <li><a href="#">Fale Conosco</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="rodape-base">
+            <p>© 2026 SeJoga — Projeto acadêmico UNISUAM · Desenvolvimento de Software para Internet</p>
+        </div>
+    </footer>
+
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/cabecalho.js"></script>
+    <script src="js/feedback.js"></script>
+</body>
+
+</html>

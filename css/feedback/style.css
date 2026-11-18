@@ -1,0 +1,173 @@
+/* =========================================================
+   FEEDBACK E CONFIRMAÇÃO — feedback.html e confirmacao.html
+
+   Carregado DEPOIS de css/style.css, css/eventos/style.css e
+   css/cadastro/style.css: a caixa escura, os fieldsets, os
+   rótulos e o botão verde vêm de lá. Aqui só entra o que esses
+   arquivos não têm: range, radio, checkbox e a lista de resumo.
+   Todas as cores são variáveis do style.css, então o tema claro
+   funciona sem nenhuma regra extra.
+   ========================================================= */
+
+
+/* O css/cadastro centraliza a logo (a tela de cadastro só tem a
+   logo). Aqui o cabeçalho é o completo: logo na esquerda, menu no
+   meio, usuário na direita — igual ao cadastro de evento. */
+.cabecalho {
+    justify-content: space-between;
+}
+
+.caixa-cadastro {
+    margin: 0 auto;
+}
+
+.titulo-pagina {
+    max-width: 560px;
+}
+
+
+/* ===== RANGE (nota de 0 a 10) =====
+   O css/cadastro dá a TODO input a linha embaixo e padding. No
+   range isso não faz sentido: tiramos e pintamos o controle com o
+   verde do DS usando accent-color (vale para range, radio e
+   checkbox nos navegadores atuais). */
+.caixa-cadastro input[type="range"] {
+    padding: 0;
+    margin: 12px 0 4px;
+    border: none;
+    accent-color: var(--sinal);
+    cursor: pointer;
+}
+
+/* O número ao lado do rótulo, em verde e em destaque. */
+#valor-nota {
+    color: var(--sinal-texto);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+/* ===== RADIO E CHECKBOX ===== */
+
+.grupo-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 8px;
+}
+
+/* Rótulo de grupo de checkboxes: mesmo visual do label do DS. */
+.rotulo-grupo {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-apagado);
+    margin-top: 8px;
+}
+
+/* O label de uma opção NÃO usa o visual de rótulo (caixa alta,
+   cinza): é o texto da própria opção, então fica legível, igual
+   aos filtros da página Eventos. O "label" envolve o input, então
+   clicar no texto também marca a caixa. */
+.caixa-cadastro label.opcao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    padding: 6px 0;
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--texto);
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.caixa-cadastro label.opcao:hover {
+    color: var(--texto-forte);
+}
+
+/* Tira do radio/checkbox a largura 100% e a linha do css/cadastro. */
+.caixa-cadastro input[type="radio"],
+.caixa-cadastro input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    accent-color: var(--sinal);
+    cursor: pointer;
+}
+
+.caixa-cadastro label.opcao-destaque {
+    margin-top: 16px;
+}
+
+/* Grupo de radio com erro: o mesmo vermelho dos campos de texto. */
+.grupo-opcoes[aria-invalid="true"] {
+    padding-left: 12px;
+    border-left: 2px solid var(--status-esgotado);
+    background-color: var(--fundo-erro);
+}
+
+
+/* ===== CONFIRMAÇÃO: LISTA DE RESUMO ===== */
+
+.titulo-resumo {
+    color: var(--sinal-texto);
+    font-family: var(--fonte-texto);
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+}
+
+/* Cada par "nome → valor" vira uma linha com o nome à esquerda
+   (rótulo do DS) e o valor à direita, separados por uma linha fina. */
+.lista-resumo > div {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--borda);
+}
+
+.lista-resumo > div:last-child {
+    border-bottom: none;
+}
+
+.lista-resumo dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-apagado);
+}
+
+.lista-resumo dd {
+    color: var(--texto);
+    overflow-wrap: anywhere;   /* um comentário sem espaços não estoura a caixa */
+}
+
+.acoes-resumo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+
+/* ===== CELULAR ===== */
+
+@media (max-width: 767px) {
+    /* O nome fica EM CIMA do valor: 180px + texto não cabem em 375px. */
+    .lista-resumo > div {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .acoes-resumo a {
+        flex: 1;
+        justify-content: center;
+    }
+}

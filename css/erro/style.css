@@ -1,0 +1,62 @@
+/* =========================================================
+   PÁGINA DE ERRO — 404.html (navegação e autenticação)
+
+   Carregado DEPOIS de css/style.css e css/eventos/style.css:
+   o fundo com foto, a grade e o título "herói" (.titulo-pagina)
+   vêm de lá. Aqui só centralizamos a caixa e desenhamos o número
+   gigante vazado, no mesmo estilo do .texto-contorno da home.
+   ========================================================= */
+
+.pagina-erro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.caixa-erro {
+    width: 100%;
+    max-width: 720px;
+}
+
+/* O "404" enorme só com o contorno (texto vazado do DS).
+   color: transparent apaga o miolo e o -webkit-text-stroke desenha
+   a borda da letra. aria-hidden no HTML: é só decoração, o título
+   logo abaixo já diz o que aconteceu. */
+.codigo-erro {
+    display: block;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(96px, 22vw, 200px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--sinal-texto);   /* verde escuro no tema claro */
+    margin-bottom: 24px;
+    user-select: none;
+}
+
+.caixa-erro .titulo-pagina {
+    margin: 0 0 24px;
+}
+
+.texto-erro {
+    max-width: 560px;
+    color: var(--texto-suave);
+    line-height: 1.7;
+    padding-left: 16px;
+    border-left: 2px solid var(--sinal);
+    margin-bottom: 32px;
+}
+
+.acoes-erro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media (max-width: 767px) {
+    .acoes-erro a {
+        flex: 1;
+        justify-content: center;
+    }
+}
