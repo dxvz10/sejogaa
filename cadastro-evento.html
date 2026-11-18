@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- data-pagina="restrita": só entra quem está logado. O auth.js manda
-     os visitantes para o login e, depois, de volta para cá. -->
+<!-- pagina restrita: so abre logado (auth.js) -->
 <html lang="pt-BR" data-pagina="restrita">
 
 <head>
@@ -8,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Cadastrar Evento</title>
 
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -24,19 +21,18 @@
 
 <body>
 
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -58,7 +54,6 @@
 
     </header>
 
-
     <main class="conteudo">
 
         <section class="titulo-pagina">
@@ -66,13 +61,8 @@
             <p>Divulgue seu rolê: preencha os dados e ele aparece no calendário e na página de eventos.</p>
         </section>
 
-                <!-- NOVO: o formulário do evento.
-             novalidate desliga os balões de erro do navegador: quem vai
-             mostrar os erros é o nosso JavaScript, embaixo de cada campo,
-             no padrão do site. -->
         <form id="form-evento" class="caixa-cadastro" novalidate>
 
-            <!-- fieldset agrupa campos do mesmo assunto; legend é o título do grupo -->
             <fieldset class="grupo-cadastro">
                 <legend>Sobre o evento</legend>
 
@@ -80,8 +70,6 @@
                 <input type="text" id="nome-evento" aria-describedby="erro-nome-evento">
                 <small class="erro-campo" id="erro-nome-evento"></small>
 
-                <!-- value = o identificador que vai ser salvo (minúsculo, sem acento);
-                     o texto entre as tags = o que a pessoa lê na tela -->
                 <label for="categoria">Categoria</label>
                 <select id="categoria" aria-describedby="erro-categoria">
                     <option value="">Escolha uma categoria</option>
@@ -98,14 +86,9 @@
                 <small class="erro-campo" id="erro-descricao"></small>
             </fieldset>
 
-            
-            <!-- NOVO: grupo 2 -->
             <fieldset class="grupo-cadastro">
                 <legend>Quando e onde</legend>
 
-                <!-- linha-campos: dois campos lado a lado no computador e um
-                     embaixo do outro no celular (regra que já existe no
-                     css/cadastro/style.css). Cada campo fica dentro de uma div. -->
                 <div class="linha-campos">
                     <div>
                         <label for="data-evento">Data</label>
@@ -123,9 +106,6 @@
                 <input type="text" id="local" aria-describedby="erro-local">
                 <small class="erro-campo" id="erro-local"></small>
 
-                <!-- As regiões precisam ser EXATAMENTE estes textos: o filtro
-                     "Região" da página Eventos agrupa os eventos por eles.
-                     Com um select, ninguém digita diferente sem querer. -->
                 <label for="regiao">Região</label>
                 <select id="regiao" aria-describedby="erro-regiao">
                     <option value="">Escolha uma região</option>
@@ -138,22 +118,17 @@
                 <small class="erro-campo" id="erro-regiao"></small>
             </fieldset>
 
-            <!-- NOVO: grupo 3 -->
             <fieldset class="grupo-cadastro">
                 <legend>Ingressos</legend>
 
                 <div class="linha-campos">
                     <div>
                         <label for="preco">Preço em R$ (0 = gratuito)</label>
-                        <!-- min="0": não existe preço negativo.
-                             step="0.01": aceita centavos (ex.: 12,50). -->
                         <input type="number" id="preco" min="0" step="0.01" aria-describedby="erro-preco">
                         <small class="erro-campo" id="erro-preco"></small>
                     </div>
                     <div>
                         <label for="capacidade">Vagas</label>
-                        <!-- min="1" e step="1": pelo menos 1 vaga e só números
-                             inteiros, porque não existe meia vaga. -->
                         <input type="number" id="capacidade" min="1" step="1" aria-describedby="erro-capacidade">
                         <small class="erro-campo" id="erro-capacidade"></small>
                     </div>
@@ -164,7 +139,6 @@
                 <small class="erro-campo" id="erro-comida-bebida"></small>
             </fieldset>
 
-            <!-- aviso geral (ex.: "Corrija os campos marcados") -->
             <p class="aviso-form" id="aviso-evento"></p>
 
             <button type="submit">Publicar evento</button>
@@ -172,7 +146,7 @@
 
     </main>
 
-
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -211,15 +185,15 @@
         </div>
     </footer>
 
-
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
-    <script src="js/validacoes.js"></script>     <!-- NOVO -->
+    <script src="js/validacoes.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/eventos.js"></script>
     <script src="js/cabecalho.js"></script>
-    <script src="js/campos-conta.js"></script>   <!-- NOVO -->
-    <script src="js/cadastro-evento.js"></script> <!-- NOVO: o seu, sempre por último -->
+    <script src="js/campos-conta.js"></script>
+    <script src="js/cadastro-evento.js"></script>
 </body>
 
 </html>

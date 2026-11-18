@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- data-pagina="restrita": só entra quem está logado. O auth.js manda
-     os visitantes para o login e, depois, de volta para cá. -->
+<!-- pagina restrita: so abre logado (auth.js) -->
 <html lang="pt-BR" data-pagina="restrita">
 
 <head>
@@ -8,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Eventos</title>
 
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -22,19 +19,18 @@
 
 <body>
 
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" class="ativo" aria-current="page" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -56,7 +52,6 @@
 
     </header>
 
-
     <main class="conteudo">
 
         <section class="titulo-pagina">
@@ -64,14 +59,12 @@
             <p>Todos os rolês do SeJoga num lugar só. Busque, filtre e monte sua agenda.</p>
         </section>
 
-        <!-- A busca e os filtros são montados pelo js/busca-eventos.js —
-             o mesmo arquivo da seção "Todos os eventos" do calendário.
-             data-titulo escolhe o subtítulo que aparece dentro da caixa. -->
+        <!-- busca e filtros (montados pelo js) -->
         <section class="secao-busca" id="busca-eventos" data-busca-eventos data-titulo="Encontre seu próximo rolê"></section>
 
     </main>
 
-
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -110,7 +103,7 @@
         </div>
     </footer>
 
-
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/auth.js"></script>

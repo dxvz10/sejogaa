@@ -1,35 +1,14 @@
-/* =============================================================
-   SEJOGA — FORMULÁRIO DE FEEDBACK (feedback.html)
-
-   Área restrita: o auth.js já mandou para o login quem não está
-   logado. Aqui:
-     1. o range mostra o número escolhido enquanto a pessoa arrasta;
-     2. no envio, valida o select (obrigatório) e o radio (obrigatório);
-     3. monta o objeto do feedback e salva no localStorage
-        (chave portalEventos_feedbacks, uma LISTA de respostas);
-     4. leva para a confirmacao.html, que mostra o que foi enviado.
-
-   Reaproveita: gravarNoArmazenamento/lerDoArmazenamento
-   (storage.js) e loginAtual (eventos.js).
-   ============================================================= */
-
-
 const formFeedback = document.querySelector('#form-feedback');
 const campoNota = document.querySelector('#nota');
 const valorNota = document.querySelector('#valor-nota');
 const avisoFeedback = document.querySelector('#aviso-feedback');
 
-
-/* RANGE: o evento 'input' dispara a CADA movimento do controle
-   (o 'change' só dispararia ao soltar o mouse). */
+// mostra o numero do range enquanto arrasta
 campoNota.addEventListener('input', function () {
     valorNota.textContent = campoNota.value;
 });
 
-
-/* Mostra (ou apaga) a mensagem embaixo de um campo e marca o
-   aria-invalid — o mesmo padrão do campos-conta.js, para o erro
-   ter a mesma cara em todos os formulários do site. */
+// escreve o erro embaixo do campo
 function marcarErro(id, mensagem) {
     const elemento = document.getElementById(id);
     document.getElementById('erro-' + id).textContent = mensagem;
@@ -41,19 +20,13 @@ function marcarErro(id, mensagem) {
     }
 }
 
-
-/* RADIO: não existe ".value" do grupo inteiro. Procuramos o que
-   está marcado com o seletor :checked. Se nenhum estiver, o
-   querySelector devolve null. */
+// pega o radio marcado (ou vazio se nenhum)
 function radioMarcado(nome) {
     const marcado = formFeedback.querySelector('input[name="' + nome + '"]:checked');
     return marcado ? marcado.value : '';
 }
 
-
-/* CHECKBOX em grupo: querySelectorAll devolve TODOS os marcados.
-   Array.from transforma a lista em array, e o map pega só o value.
-   Nenhum marcado = array vazio [] (não é erro: é opcional). */
+// pega todos os checkboxes marcados
 function checkboxesMarcados(nome) {
     const marcados = formFeedback.querySelectorAll('input[name="' + nome + '"]:checked');
     return Array.from(marcados).map(function (caixa) {
@@ -61,9 +34,7 @@ function checkboxesMarcados(nome) {
     });
 }
 
-
-/* Valida e devolve o id do PRIMEIRO campo com erro (ou null).
-   Confere todos de uma vez: a pessoa vê tudo o que falta. */
+// categoria e "como nos conheceu" sao obrigatorios
 function validarFeedback() {
     let primeiroErro = null;
 
@@ -84,17 +55,15 @@ function validarFeedback() {
     return primeiroErro;
 }
 
-
-/* Assim que a pessoa corrige, a mensagem de erro some. */
+// tira o erro quando a pessoa corrige
 formFeedback.addEventListener('change', function () {
     if (formFeedback.querySelector('[aria-invalid="true"]')) {
         validarFeedback();
     }
 });
 
-
+// envio do feedback
 formFeedback.addEventListener('submit', function (envio) {
-    // Sem isto, o navegador recarregaria a página e perderia tudo.
     envio.preventDefault();
 
     const primeiroErro = validarFeedback();
@@ -103,7 +72,6 @@ formFeedback.addEventListener('submit', function (envio) {
         avisoFeedback.textContent = 'Confira os campos marcados em vermelho.';
         avisoFeedback.className = 'aviso-form visivel erro';
 
-        // No radio, o foco vai para a primeira opção do grupo.
         const alvo = primeiroErro === 'forma-indicacao'
             ? formFeedback.querySelector('input[name="forma-indicacao"]')
             : document.getElementById(primeiroErro);
@@ -111,21 +79,20 @@ formFeedback.addEventListener('submit', function (envio) {
         return;
     }
 
-    // MONTAR o objeto no formato combinado do grupo.
+    // monta o objeto do feedback
     const feedback = {
         id: 'fbk_' + Date.now(),
         loginUsuario: loginAtual(),
-        nota: Number(campoNota.value),                       // texto → número
+        nota: Number(campoNota.value),
         categoriaPreferida: document.getElementById('categoria-preferida').value,
         formaIndicacao: radioMarcado('forma-indicacao'),
         interesses: checkboxesMarcados('interesses'),
         comentario: document.getElementById('comentario').value.trim(),
-        aceitaNovidades: document.getElementById('aceita-novidades').checked,  // true/false
+        aceitaNovidades: document.getElementById('aceita-novidades').checked,
         enviadoEm: new Date().toISOString()
     };
 
-    // SALVAR: lê a lista, acrescenta no fim e grava a lista INTEIRA
-    // (o localStorage não sabe "acrescentar", só substituir).
+    // coloca na lista e salva no localStorage
     const lista = lerDoArmazenamento(CHAVES.feedbacks, []);
     lista.push(feedback);
 
@@ -134,6 +101,6 @@ formFeedback.addEventListener('submit', function (envio) {
         return;
     }
 
-    // MOSTRAR: a página de confirmação lê o feedback pelo id do endereço.
+    // vai pra confirmacao passando o id
     window.location.href = 'confirmacao.html?id=' + encodeURIComponent(feedback.id);
 });

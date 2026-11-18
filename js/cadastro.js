@@ -1,17 +1,7 @@
-/* =============================================================
-   SEJOGA — TELA DE CADASTRO
-
-   Os campos comuns com o perfil (nome, contato, endereço, foto)
-   são tratados pelo campos-conta.js. Aqui entra só o que é do
-   cadastro: CPF, login, senha e a criação da conta.
-   ============================================================= */
-
 const formCadastro = document.querySelector('#form-cadastro');
 const avisoCadastro = document.querySelector('#aviso-cadastro');
 
-
-/* As regras do cadastro = as regras de dados + as de acesso.
-   Object.assign junta os dois "mapas" num só. */
+// regras do cadastro = regras gerais + cpf, login, senha e confirmacao
 const REGRAS_CADASTRO = Object.assign({}, REGRAS_DADOS, {
     'cpf': {
         testar: validarCPF,
@@ -33,7 +23,6 @@ const REGRAS_CADASTRO = Object.assign({}, REGRAS_DADOS, {
     }
 });
 
-
 let fotoEscolhida = '';
 
 ligarValidacaoAoVivo(REGRAS_CADASTRO);
@@ -43,14 +32,15 @@ ligarEscolhaDeFoto('foto', 'previa-foto', function (foto) {
     fotoEscolhida = foto;
 });
 
-
+// aviso geral embaixo do formulario
 function mostrarAvisoCadastro(texto) {
     avisoCadastro.textContent = texto;
     avisoCadastro.className = 'aviso-form visivel erro';
 }
 
-
+// envio do cadastro
 formCadastro.addEventListener('submit', function (evento) {
+    // nao deixa a pagina recarregar
     evento.preventDefault();
 
     const primeiroErro = validarTodos(REGRAS_CADASTRO);
@@ -62,16 +52,16 @@ formCadastro.addEventListener('submit', function (evento) {
     }
 
     const dados = Object.assign(lerDadosDoFormulario(), {
-        cpf: valorDe('cpf').replace(/\D/g, ''),      // só dígitos; formata na exibição
+        cpf: valorDe('cpf').replace(/\D/g, ''),
         login: valorDe('login'),
         senha: document.getElementById('senha').value,
         foto: fotoEscolhida
     });
 
+    // salva o usuario (auth.js)
     const resultado = cadastrarUsuario(dados);
 
     if (!resultado.ok) {
-        // Login, CPF ou e-mail repetido: marca o campo culpado.
         if (document.getElementById('erro-' + resultado.campo)) {
             marcarCampo(resultado.campo, resultado.erro);
             document.getElementById(resultado.campo).focus();
@@ -80,8 +70,6 @@ formCadastro.addEventListener('submit', function (evento) {
         return;
     }
 
-    /* Conta criada. Vai para o login com o campo já preenchido:
-       ali a pessoa confirma que lembra a senha, e o professor vê
-       os dois fluxos funcionando. */
+    // deu certo: vai pro login com o login ja preenchido
     window.location.href = 'login.html?novo=' + encodeURIComponent(resultado.usuario.login);
 });

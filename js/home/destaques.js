@@ -1,23 +1,8 @@
-/* =============================================================
-   SEJOGA — HOME: CARDS DO CARROSSEL E CONTAGEM DAS CATEGORIAS
-
-   Os cards são montados a partir da lista única do eventos.js —
-   a mesma do calendário e da página Eventos.
-
-   Este arquivo roda ANTES do carrossel.js de propósito: o
-   carrossel precisa que os cards já existam para encontrá-los.
-
-   (O criarElemento, que morava aqui, foi para o ui.js: agora
-   todas as páginas usam o mesmo.)
-   ============================================================= */
-
 const trilhoEventos = document.querySelector('.trilho-eventos');
 
-/* Quantos eventos entram no carrossel. Só os próximos em que
-   ainda dá para entrar — evento que já passou não é vitrine. */
 const QUANTIDADE_CARROSSEL = 6;
 
-
+// card do carrossel da home
 function montarCardCarrossel(evento) {
     const status = calcularStatusEvento(evento);
 
@@ -37,9 +22,8 @@ function montarCardCarrossel(evento) {
     return card;
 }
 
-
+// coloca os proximos eventos no carrossel
 function renderizarCarrossel() {
-    // Limpa antes de montar, senão uma segunda chamada duplicaria tudo.
     trilhoEventos.textContent = '';
 
     proximosEventosAbertos(QUANTIDADE_CARROSSEL).forEach(function (evento) {
@@ -47,9 +31,7 @@ function renderizarCarrossel() {
     });
 }
 
-
-/* Em cada cartão de categoria: "3 próximos eventos".
-   O HTML marca onde escrever com data-contar-categoria. */
+// quantos eventos tem em cada categoria
 function contarCategorias() {
     const abertos = obterEventos().filter(eventoAberto);
 
@@ -67,7 +49,6 @@ function contarCategorias() {
         }
     });
 }
-
 
 renderizarCarrossel();
 contarCategorias();

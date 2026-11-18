@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<!-- data-pagina="visitante": quem já está logado é mandado para a home -->
 <html lang="pt-BR" data-pagina="visitante">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login/style.css">
     <link rel="icon" href="assets/logo/favicon-sj.png?v=2" type="image/png">
-    <!-- tema.js no <head>: aplica o tema escuro antes da página aparecer -->
     <script src="js/tema.js"></script>
     <title>SeJoga - Login</title>
 </head>
 <body>
+  <!-- cabecalho -->
   <header class="cabecalho">
 
         <a href="index.html" class="logo">
@@ -48,6 +45,7 @@
             </form>
         </section>
     </main>
+<!-- rodape -->
 <footer class="rodape">
     <div class="rodape-conteudo">
         <div class="rodape-coluna">
@@ -86,7 +84,7 @@
     </div>
 </footer>
 
-<!-- storage → ui → validacoes → auth → login: cada um usa o anterior -->
+<!-- scripts (o storage vem primeiro porque os outros usam ele) -->
 <script src="js/storage.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/validacoes.js"></script>

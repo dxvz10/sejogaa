@@ -1,22 +1,4 @@
-/* =============================================================
-   SEJOGA — BUSCA E FILTROS DE EVENTOS
-
-   Aparece em dois lugares: no calendário (só para quem está
-   logado) e na página Eventos. Em vez de copiar ~60 linhas de
-   HTML nas duas páginas, cada uma tem só isto:
-
-       <section class="secao-busca" data-busca-eventos></section>
-
-   e este arquivo monta o resto. Uma versão só para manter.
-
-   A REGRA de filtragem está no eventos.js (filtrarEventos). Aqui
-   só lemos o que está marcado na tela e desenhamos o resultado.
-
-   Aceita filtros vindos no endereço, para a home poder mandar a
-   pessoa direto para uma categoria:
-       eventos.html?categoria=futebol
-   ============================================================= */
-
+// opcoes do filtro de status
 const OPCOES_STATUS = [
     { valor: 'disponivel', texto: 'Disponível' },
     { valor: 'perto', texto: 'Perto do início' },
@@ -24,11 +6,7 @@ const OPCOES_STATUS = [
     { valor: 'realizado', texto: 'Já realizado' }
 ];
 
-
-/* -------------------------------------------------------------
-   MONTAGEM DO PAINEL
-   ------------------------------------------------------------- */
-
+// cria um checkbox de filtro
 function caixaDeMarcar(nome, valor, texto) {
     const rotulo = criarElemento('label');
     const caixa = criarElemento('input');
@@ -41,9 +19,7 @@ function caixaDeMarcar(nome, valor, texto) {
     return rotulo;
 }
 
-
-/* fieldset + legend: o leitor de tela anuncia "Status, grupo"
-   antes das opções. É a marcação certa para agrupar controles. */
+// grupo de filtros com titulo
 function grupoDeFiltro(titulo, filhos) {
     const grupo = criarElemento('fieldset', 'grupo-filtro');
     grupo.appendChild(criarElemento('legend', null, titulo));
@@ -53,7 +29,7 @@ function grupoDeFiltro(titulo, filhos) {
     return grupo;
 }
 
-
+// campo de preco minimo/maximo
 function campoDePreco(id, rotuloTexto, dica) {
     const pedacos = [];
     const rotulo = criarElemento('label', null, rotuloTexto);
@@ -71,14 +47,13 @@ function campoDePreco(id, rotuloTexto, dica) {
     return pedacos;
 }
 
-
+// monta a busca com os filtros
 function montarBusca(secao) {
-    const sufixo = secao.id || 'busca';      // ids únicos se houver mais de uma
+    const sufixo = secao.id || 'busca';
     const titulo = secao.dataset.titulo || 'Todos os eventos';
 
     const cabecalho = criarElemento('h2', null, titulo);
 
-    // --- barra de busca ---
     const topo = criarElemento('div', 'busca-topo');
     const rotuloBusca = criarElemento('label', null, 'Buscar');
     rotuloBusca.htmlFor = 'campo-' + sufixo;
@@ -95,7 +70,6 @@ function montarBusca(secao) {
     topo.appendChild(campoBusca);
     topo.appendChild(contador);
 
-    // --- painel de filtros ---
     const painel = criarElemento('aside', 'painel-filtros');
     painel.setAttribute('aria-label', 'Filtros');
 
@@ -122,17 +96,14 @@ function montarBusca(secao) {
         });
     painel.appendChild(grupoDeFiltro('Preço (R$)', [faixa]));
 
-    // As regiões saem dos próprios eventos: evento novo numa
-    // região nova faz a opção aparecer sozinha.
     painel.appendChild(grupoDeFiltro('Região', listarRegioes().map(function (regiao) {
         return caixaDeMarcar('regiao', regiao, regiao);
     })));
 
-    // --- resultados ---
     const resultados = criarElemento('div', 'resultados-busca');
 
     const layout = criarElemento('div', 'busca-layout');
-    layout.appendChild(painel);          // no HTML vem antes: no celular fica em cima
+    layout.appendChild(painel);
     layout.appendChild(resultados);
 
     secao.appendChild(cabecalho);
@@ -142,17 +113,12 @@ function montarBusca(secao) {
     ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo);
 }
 
-
-/* -------------------------------------------------------------
-   COMPORTAMENTO
-   ------------------------------------------------------------- */
-
+// refaz a lista sempre que muda a busca ou um filtro
 function ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo) {
     const precoMin = secao.querySelector('#preco-min-' + sufixo);
     const precoMax = secao.querySelector('#preco-max-' + sufixo);
     let esperandoDigitar;
 
-    /* Lê as caixas marcadas de um grupo DESTA seção. */
     function marcados(nome) {
         return Array.from(secao.querySelectorAll('input[name="' + nome + '"]:checked'))
             .map(function (caixa) {
@@ -160,8 +126,6 @@ function ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo) {
             });
     }
 
-    /* Campo de número vazio devolve "". Number('') daria 0, o que
-       filtraria errado — por isso null quando está vazio. */
     function numeroOuNulo(campo) {
         const texto = campo.value.trim();
         return texto === '' ? null : Number(texto);
@@ -192,14 +156,11 @@ function ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo) {
             (encontrados.length === 1 ? ' evento encontrado' : ' eventos encontrados');
     }
 
-    /* Debounce: só recalcula quando a pessoa para de digitar por
-       250ms — a mesma técnica do carrossel. */
     campoBusca.addEventListener('input', function () {
         clearTimeout(esperandoDigitar);
         esperandoDigitar = setTimeout(aplicar, 250);
     });
 
-    // Delegação: um listener no painel cobre todas as caixas.
     secao.querySelector('.painel-filtros').addEventListener('change', aplicar);
     precoMin.addEventListener('input', aplicar);
     precoMax.addEventListener('input', aplicar);
@@ -214,7 +175,7 @@ function ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo) {
         aplicar();
     });
 
-    // Filtros vindos no endereço (?categoria=festa&busca=samba).
+    // filtro que vem pelo endereco (ex: ?categoria=futebol do submenu)
     const parametros = new URLSearchParams(window.location.search);
     const categoria = parametros.get('categoria');
     const busca = parametros.get('busca');
@@ -232,6 +193,5 @@ function ligarBusca(secao, campoBusca, contador, resultados, limpar, sufixo) {
 
     aplicar();
 }
-
 
 document.querySelectorAll('[data-busca-eventos]').forEach(montarBusca);

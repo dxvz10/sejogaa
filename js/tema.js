@@ -1,29 +1,9 @@
-/* =============================================================
-   SEJOGA — APARÊNCIA (Desafio Plus do enunciado)
-
-   Tema claro/escuro e tamanho da fonte, guardados no
-   localStorage para valer em todas as páginas.
-
-   Este arquivo é carregado no <head>, ANTES do <body> existir.
-   Motivo: se o tema fosse aplicado só no fim da página, ela
-   apareceria com o tema errado por um instante e depois trocaria
-   — um "flash" incômodo. Aqui o tema é aplicado antes do primeiro
-   desenho.
-
-   Por rodar tão cedo, ele não pode usar o storage.js (que ainda
-   não carregou) — por isso lê o localStorage diretamente.
-   ============================================================= */
-
 const CHAVE_PREFERENCIAS = 'portalEventos_preferencias';
 
-/* Os tamanhos possíveis. Uma lista fixa é mais previsível do que
-   somar 0.1 à vontade — e evita números como 1.2000000000000002,
-   que é como o computador às vezes guarda decimais. */
+// tamanhos da fonte do A- e A+
 const ESCALAS_DE_FONTE = [0.9, 1, 1.1, 1.2, 1.3];
 
-
-/* O design system do site (Yozelen) nasceu escuro, então o tema
-   PADRÃO é o escuro: só fica claro quem escolheu "claro" no menu. */
+// le o tema e o tamanho da fonte salvos (padrao: escuro e 1)
 function obterPreferencias() {
     try {
         const guardadas = JSON.parse(localStorage.getItem(CHAVE_PREFERENCIAS));
@@ -36,27 +16,22 @@ function obterPreferencias() {
     }
 }
 
-
+// salva as escolhas no localStorage
 function salvarPreferencias(preferencias) {
     try {
         localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify(preferencias));
     } catch (erro) {
-        // Sem armazenamento, o tema vale só nesta página. Tudo bem.
     }
 }
 
-
-/* O CSS faz o resto:
-   - html[data-tema="claro"] troca as cores (o escuro é o padrão
-     do :root);
-   - a variável --escala-fonte aumenta o conteúdo principal. */
+// coloca o data-tema no html e muda a variavel do tamanho da fonte
 function aplicarPreferencias(preferencias) {
-    const raiz = document.documentElement;       // a tag <html>
+    const raiz = document.documentElement;
     raiz.dataset.tema = preferencias.tema;
     raiz.style.setProperty('--escala-fonte', preferencias.escala);
 }
 
-
+// troca entre claro e escuro
 function alternarTema() {
     const preferencias = obterPreferencias();
     preferencias.tema = preferencias.tema === 'escuro' ? 'claro' : 'escuro';
@@ -65,9 +40,7 @@ function alternarTema() {
     return preferencias.tema;
 }
 
-
-/* passo = +1 (A+) ou -1 (A−). Math.min e Math.max funcionam como
-   trava: nunca passa do primeiro nem do último tamanho da lista. */
+// A+ (passo 1) ou A- (passo -1), sem passar do menor nem do maior
 function mudarEscala(passo) {
     const preferencias = obterPreferencias();
     const atual = ESCALAS_DE_FONTE.indexOf(preferencias.escala);
@@ -79,6 +52,5 @@ function mudarEscala(passo) {
     return preferencias.escala;
 }
 
-
-// Aplica já, na hora em que o <head> é lido.
+// aplica assim que a pagina abre
 aplicarPreferencias(obterPreferencias());

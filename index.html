@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="assets/logo/favicon-sj.png?v=2" type="image/png">
-    <!-- tema.js no <head>: aplica o tema escuro antes da página aparecer -->
     <script src="js/tema.js"></script>
     <title>SeJoga</title>
 </head>
 <body>
 
-<!-- CABEÇALHO — o mesmo em todas as páginas -->
+<!-- cabecalho -->
 <header class="cabecalho">
 
     <a href="index.html" class="logo">
         <img src="assets/logo/logo.png" alt="Logo do SeJoga">
     </a>
 
+    <!-- menu -->
     <nav class="menu" aria-label="Principal">
         <ul class="menu">
             <li><a href="index.html" class="ativo" aria-current="page">Início</a></li>
             <li><a href="calendario.html">Calendário</a></li>
-            <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                 com o Tab (:focus-within). Cada link já chega na página
-                 Eventos com o filtro daquela categoria marcado. -->
             <li class="menu-com-submenu">
                 <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                 <ul class="submenu" aria-label="Categorias">
@@ -44,8 +39,6 @@
         </ul>
     </nav>
 
-    <!-- Visitante: estes dois botões. Logado: o cabecalho.js esconde
-         os dois e monta o sininho e o menu do usuário no lugar. -->
     <div class="acoes-cabecalho">
         <a href="cadastro.html" class="botao-cadastro" data-sessao="deslogado">Cadastrar</a>
         <a href="login.html" class="botao-entrar" data-sessao="deslogado">Entrar</a>
@@ -55,12 +48,9 @@
 
 <main>
 
-    <!-- 1. EVENTOS — agora a primeira coisa que se vê -->
+    <!-- eventos em destaque (carrossel) -->
     <section class="secao-eventos">
 
-        <!-- Os <span> só mudam o visual (palavra vazada e palavra em
-             verde, como no título do design system). O texto lido pelo
-             leitor de tela continua o mesmo: "Alguns dos nossos eventos!" -->
         <div class="titulo-secao">
             <h1>Alguns dos <span class="texto-contorno">nossos</span> <span class="texto-sinal">eventos!</span></h1>
             <p class="subtitulo">Festas, jogos e encontros perto de você</p>
@@ -73,8 +63,6 @@
                 </svg>
             </button>
 
-            <!-- Os cards são montados pelo js/home/destaques.js,
-                 a partir da lista única do js/eventos.js. -->
             <div class="trilho-eventos"></div>
 
             <button class="seta seta-direita" aria-label="Próximo evento">
@@ -85,12 +73,6 @@
         </div>
     </section>
 
-
-    <!-- FAIXA ROLANTE — enfeite do design system (as categorias
-         passando sem parar). aria-hidden: é só decoração, o leitor de
-         tela pula (as categorias de verdade estão logo abaixo).
-         O texto está escrito DUAS vezes de propósito: é o que faz o
-         loop parecer infinito (explicado no css/style.css). -->
     <div class="faixa-rolante" aria-hidden="true">
         <div class="faixa-rolante-trilho">
             <span>Futebol</span><span class="faixa-x">×</span>
@@ -106,10 +88,7 @@
         </div>
     </div>
 
-
-    <!-- 2. CATEGORIAS — cada cartão abre a página Eventos já filtrada.
-         data-precisa-login: visitante recebe o convite de login e,
-         depois de entrar, cai direto na categoria que escolheu. -->
+    <!-- categorias -->
     <section class="secao-categorias">
 
         <div class="titulo-secao">
@@ -156,8 +135,7 @@
         </ul>
     </section>
 
-
-    <!-- 3. SOBRE NÓS — texto à esquerda, imagens à direita -->
+    <!-- sobre nos -->
     <section class="secao-sobre">
         <div class="sobre-conteudo">
 
@@ -182,40 +160,27 @@
                 <p>Seja para planejar o fim de semana com antecedência ou para encontrar um programa de última hora, o SeJoga existe para descomplicar a sua rotina e aproximar você dos melhores momentos. Explore, decida e... SeJoga!</p>
             </div>
 
-            <!-- ILUSTRAÇÃO DO "SOBRE NÓS"
-                 Desenhada em SVG direto no HTML (e não como <img>) para as
-                 cores virem das variáveis do CSS: assim ela troca de cor
-                 sozinha no tema claro. A ideia do desenho: o pino verde no
-                 centro é "você", e as cinco categorias do site giram em
-                 volta, ligadas a ele — "eventos perto de você".
-                 role="img" + aria-label: o leitor de tela lê a descrição
-                 em vez de tentar ler cada linha do desenho. -->
             <div class="sobre-midia">
+                <!-- desenho: o pino no meio ligado as 5 categorias -->
                 <svg class="sobre-ilustracao" viewBox="0 0 460 530" role="img"
                      aria-label="Ilustração: um pino de localização no centro, ligado às cinco categorias do SeJoga: futebol, basquete, fantasia, e-sports e festa.">
 
-                    <!-- Anéis de "radar" em volta do pino -->
                     <circle class="ilu-anel" cx="230" cy="280" r="95"/>
                     <circle class="ilu-anel" cx="230" cy="280" r="175"/>
                     <circle class="ilu-anel" cx="230" cy="280" r="226"/>
 
-                    <!-- Linhas do centro até cada categoria. O tracejado
-                         "anda" pela animação do CSS (stroke-dashoffset). -->
                     <line class="ilu-linha" x1="230" y1="280" x2="230" y2="105"/>
                     <line class="ilu-linha" x1="230" y1="280" x2="396" y2="226"/>
                     <line class="ilu-linha" x1="230" y1="280" x2="333" y2="422"/>
                     <line class="ilu-linha" x1="230" y1="280" x2="127" y2="422"/>
                     <line class="ilu-linha" x1="230" y1="280" x2="64" y2="226"/>
 
-                    <!-- Pino no centro, com um anel que pulsa -->
                     <circle class="ilu-pulso" cx="230" cy="280" r="18"/>
                     <g transform="translate(198.8 222.8) scale(2.6)">
                         <path class="ilu-pino" d="M12 2C8 2 5 5 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-4-3-7-7-7z"/>
                         <circle class="ilu-furo" cx="12" cy="9" r="2.6"/>
                     </g>
 
-                    <!-- As cinco categorias. Cada ícone é desenhado numa caixa de
-                         24×24 e ampliado 1,5 vez (scale) no lugar certo (translate). -->
                     <g class="ilu-no">
                         <title>Futebol</title>
                         <circle cx="230" cy="105" r="40"/>
@@ -274,8 +239,7 @@
         </div>
     </section>
 
-
-    <!-- 4. CONTATO -->
+    <!-- contato -->
     <section class="secao-contato">
         <h2>Faça seu contato!</h2>
         <p>Tem alguma dúvida, sugestão ou quer compartilhar uma experiência? Entre em contato conosco!</p>
@@ -295,6 +259,7 @@
     </section>
 </main>
 
+<!-- rodape -->
 <footer class="rodape">
     <div class="rodape-conteudo">
         <div class="rodape-coluna">
@@ -333,8 +298,6 @@
     </div>
 </footer>
 
-<!-- Confirmação do formulário de contato. O convite de login
-     (#modal-conta) não precisa estar aqui: o auth.js cria sozinho. -->
 <div class="modal" id="modal-contato">
     <div class="modal-caixa" role="dialog" aria-modal="true" aria-labelledby="modal-contato-titulo">
         <button type="button" class="modal-fechar" aria-label="Fechar">&times;</button>
@@ -342,14 +305,12 @@
         <p id="modal-contato-texto"></p>
 
         <div class="modal-acoes">
-            <!-- data-fechar-modal: o ui.js fecha o modal ao clicar -->
             <button type="button" class="botao-cadastro" data-fechar-modal>OK</button>
         </div>
     </div>
 </div>
 
-<!-- A ordem importa: cada arquivo usa funções dos anteriores.
-     O destaques.js monta os cards que o carrossel.js precisa encontrar. -->
+<!-- scripts (o storage vem primeiro porque os outros usam ele) -->
 <script src="js/storage.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/auth.js"></script>

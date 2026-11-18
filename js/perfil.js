@@ -1,37 +1,13 @@
-/* =============================================================
-   SEJOGA — MEU PERFIL
-
-   Três partes:
-   1. Meus dados — os mesmos campos do cadastro, já preenchidos.
-   2. Alterar senha.
-   3. Minha agenda — os eventos que a pessoa guardou.
-
-   A página é restrita (data-pagina="restrita"): o auth.js já
-   mandou para o login quem não estiver logado.
-   ============================================================= */
-
 const usuario = usuarioAtual();
-
-/* Um visitante que abriu esta página está sendo mandado para o
-   login pelo auth.js — mas o navegador ainda termina de ler os
-   scripts. Sem usuário, não há o que montar: por isso tudo que
-   RODA fica dentro de iniciarPerfil(), chamada só se houver
-   alguém logado (lá no fim do arquivo). */
-
-
-/* =============================================================
-   1. MEUS DADOS
-   ============================================================= */
 
 let fotoAtual = '';
 
-
+// mostra o CPF com pontos e traco
 function formatarCPF(cpf) {
     return mascaraCPF(cpf || '');
 }
 
-
-/* Mostra na tela o que está guardado. */
+// preenche o formulario com os dados do usuario
 function preencherPerfil() {
     document.getElementById('perfil-nome').textContent = usuario.nomeCompleto || usuario.login;
     document.getElementById('perfil-login').textContent = '@' + usuario.login;
@@ -55,38 +31,28 @@ function preencherPerfil() {
         'uf': usuario.uf
     };
 
-    /* Object.keys devolve a lista de "nomes" do objeto. Para cada
-       um, coloca o valor no campo de mesmo id. O || '' evita
-       escrever "undefined" num campo que ficou vazio. */
     Object.keys(campos).forEach(function (id) {
         document.getElementById(id).value = campos[id] || '';
     });
 }
 
-
-/* O avatar do cabeçalho foi montado quando a página abriu. Sem
-   isto, ele só mostraria a foto nova depois de recarregar. */
+// troca a foto no cabecalho tambem
 function atualizarAvataresDoCabecalho(foto) {
     document.querySelectorAll('.cabecalho .usuario-avatar').forEach(function (avatar) {
         avatar.style.backgroundImage = foto ? 'url("' + foto + '")' : '';
     });
 }
 
-
+// aviso embaixo de cada formulario
 function mostrarAviso(id, texto, tipo) {
     const aviso = document.getElementById(id);
     aviso.textContent = texto;
     aviso.className = 'aviso-form visivel ' + tipo;
 }
 
-
-/* =============================================================
-   2. ALTERAR SENHA
-   ============================================================= */
-
+// regras da troca de senha
 const REGRAS_SENHA = {
     'senha-atual': {
-        // Confere com a senha guardada.
         testar: function (valor) { return valor === buscarUsuario(usuario.login).senha; },
         mensagem: 'Senha atual incorreta.'
     },
@@ -102,11 +68,7 @@ const REGRAS_SENHA = {
     }
 };
 
-
-/* =============================================================
-   3. MINHA AGENDA
-   ============================================================= */
-
+// lista os eventos da agenda (proximos e passados)
 function desenharAgenda() {
     const proximos = document.getElementById('agenda-proximos');
     const passados = document.getElementById('agenda-passados');
@@ -118,7 +80,6 @@ function desenharAgenda() {
         return new Date(evento.dataHora) >= agora;
     });
 
-    // reverse(): os já realizados do mais recente para o mais antigo.
     const antigos = todos.filter(function (evento) {
         return new Date(evento.dataHora) < agora;
     }).reverse();
@@ -155,11 +116,7 @@ function desenharAgenda() {
     }
 }
 
-
-/* =============================================================
-   INICIALIZAÇÃO
-   ============================================================= */
-
+// liga tudo da pagina de perfil
 function iniciarPerfil() {
     fotoAtual = usuario.foto || '';
 
@@ -170,7 +127,6 @@ function iniciarPerfil() {
     ligarEscolhaDeFoto('foto', 'previa-foto', function (foto) {
         fotoAtual = foto;
 
-        // A foto é salva na hora — não precisa clicar em "Salvar".
         if (atualizarUsuario(usuario.login, { foto: foto })) {
             atualizarAvataresDoCabecalho(foto);
             mostrarToast('Foto atualizada.', 'sucesso');
@@ -179,12 +135,10 @@ function iniciarPerfil() {
         }
     });
 
-
     document.getElementById('remover-foto').addEventListener('click', function () {
         fotoAtual = '';
         atualizarUsuario(usuario.login, { foto: '' });
 
-        // Tirar o background inline faz a silhueta do CSS voltar.
         document.getElementById('previa-foto').style.backgroundImage = '';
         atualizarAvataresDoCabecalho('');
         mostrarToast('Foto removida.', 'info');
@@ -203,7 +157,6 @@ function iniciarPerfil() {
 
         const dados = lerDadosDoFormulario();
 
-        // O e-mail não pode ser o de OUTRA conta (o próprio pode).
         if (valorJaCadastrado('email', dados.email, usuario.login)) {
             marcarCampo('email', 'Este e-mail já é usado por outra conta.');
             document.getElementById('email').focus();
@@ -215,7 +168,6 @@ function iniciarPerfil() {
             return;
         }
 
-        // Atualiza o objeto na memória e o que aparece na tela.
         Object.assign(usuario, dados);
         document.getElementById('perfil-nome').textContent = usuario.nomeCompleto;
 
@@ -240,21 +192,16 @@ function iniciarPerfil() {
 
         atualizarUsuario(usuario.login, { senha: document.getElementById('nova-senha').value });
 
-        // form.reset() limpa todos os campos do formulário de uma vez.
         this.reset();
         mostrarAviso('aviso-senha', 'Senha alterada.', 'sucesso');
         mostrarToast('Senha alterada.', 'sucesso');
     });
 
-    /* Quando a pessoa tira um evento da agenda (botão do card), o
-       cards-evento.js avisa. Aqui, redesenhar = o card some da lista. */
     document.addEventListener('agenda-mudou', desenharAgenda);
-
 
     preencherPerfil();
     desenharAgenda();
 }
-
 
 if (usuario) {
     iniciarPerfil();

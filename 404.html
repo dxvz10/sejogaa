@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!-- Página de erro: aberta por qualquer pessoa, logada ou não.
-     No GitHub Pages, o arquivo 404.html na raiz é mostrado
-     automaticamente para qualquer endereço que não existe. -->
 <html lang="pt-BR">
 
 <head>
@@ -9,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Página não encontrada</title>
 
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -24,19 +19,18 @@
 
 <body>
 
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -58,14 +52,9 @@
 
     </header>
 
-
     <main class="conteudo pagina-erro">
 
-        <!-- Página de erro personalizada. Serve para DOIS casos:
-               404.html            -> endereço que não existe
-               404.html?tipo=auth  -> falha crítica de autenticação
-             O erro.js troca os textos conforme o "tipo" do endereço.
-             O texto abaixo é o do 404, que aparece mesmo sem JavaScript. -->
+        <!-- erro 404 (ou erro de login quando vem ?tipo=auth) -->
         <section class="caixa-erro" aria-labelledby="titulo-erro">
             <span class="codigo-erro" id="codigo-erro" aria-hidden="true">404</span>
 
@@ -87,7 +76,7 @@
 
     </main>
 
-
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -126,7 +115,7 @@
         </div>
     </footer>
 
-
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/auth.js"></script>

@@ -6,12 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Calendário de Eventos</title>
 
-    <!-- Do mais geral para o mais específico: o compartilhado primeiro
-         (cabeçalho, rodapé, botões), depois o dos cards e da busca
-         (também usado pela página Eventos), por último o do calendário.
-         Em empate de especificidade, vence o arquivo lido por último. -->
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -20,26 +14,23 @@
     <link rel="stylesheet" href="css/calendario/style.css">
     <link rel="icon" href="assets/logo/favicon-sj.png?v=2" type="image/png">
 
-    <!-- tema.js no <head>: aplica o tema escuro antes da página aparecer -->
     <script src="js/tema.js"></script>
 </head>
 
 <body>
 
-    <!-- CABEÇALHO -->
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html" class="ativo" aria-current="page">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -54,8 +45,6 @@
             </ul>
         </nav>
 
-        <!-- Visitante: estes dois botões. Logado: o cabecalho.js esconde
-             os dois e monta o sininho e o menu do usuário no lugar. -->
         <div class="acoes-cabecalho">
             <a href="cadastro.html" class="botao-cadastro" data-sessao="deslogado">Cadastrar</a>
             <a href="login.html" class="botao-entrar" data-sessao="deslogado">Entrar</a>
@@ -63,8 +52,6 @@
 
     </header>
 
-
-    <!-- CONTEÚDO PRINCIPAL -->
     <main class="conteudo">
 
         <section class="titulo-pagina">
@@ -72,13 +59,10 @@
             <p>Encontre festas, jogos, encontros e eventos perto de você.</p>
         </section>
 
-
-        <!-- CALENDÁRIO -->
+        <!-- calendario -->
         <section class="calendario-container" aria-labelledby="mes-ano">
 
             <div class="calendario-topo">
-                <!-- .seta-mes, e não .seta: a classe .seta já existe no
-                     CSS compartilhado, para as setas do carrossel da home. -->
                 <button type="button" class="seta-mes" id="mes-anterior" aria-label="Mês anterior">‹</button>
                 <h2 id="mes-ano" aria-live="polite">Carregando…</h2>
                 <button type="button" class="seta-mes" id="mes-seguinte" aria-label="Próximo mês">›</button>
@@ -94,22 +78,16 @@
                 <div>SÁB</div>
             </div>
 
-            <!-- Os dias são desenhados pelo js/calendario.js. -->
             <div class="dias" id="grade-dias"></div>
 
         </section>
 
-
-        <!-- PRÓXIMOS EVENTOS — os 6 mais próximos em que ainda dá para entrar -->
         <section class="eventos">
             <h2>Próximos eventos</h2>
 
-            <!-- Os cards vêm da lista única do js/eventos.js. -->
             <div class="cards-eventos" id="cards-eventos"></div>
         </section>
 
-
-        <!-- VISITANTE: convite no lugar da busca completa -->
         <section class="cta-visitante" data-sessao="deslogado">
             <h2>Quer ver todos os eventos?</h2>
             <p>Entre na sua conta para buscar, filtrar por região e preço e montar sua agenda.</p>
@@ -119,17 +97,12 @@
             </div>
         </section>
 
-
-        <!-- LOGADO: busca e filtros. O js/busca-eventos.js monta tudo aqui
-             dentro. hidden: começa escondida; o cabecalho.js mostra para
-             quem está logado. -->
         <section class="secao-busca" id="busca-calendario" data-busca-eventos
                  data-titulo="Todos os eventos" data-sessao="logado" hidden></section>
 
     </main>
 
-
-    <!-- RODAPÉ -->
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -168,9 +141,7 @@
         </div>
     </footer>
 
-
-    <!-- A ordem importa: cada arquivo usa funções dos anteriores.
-         storage → ui → auth → eventos → cabecalho → cards → página -->
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/auth.js"></script>

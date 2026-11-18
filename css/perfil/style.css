@@ -1,18 +1,8 @@
-/* =========================================================
-   PERFIL — estilos exclusivos da perfil.html
-
-   Reaproveita os campos do cadastro (css/cadastro/style.css) e
-   os cards de evento (css/eventos/style.css). Aqui fica só o que
-   é do perfil: as duas colunas e o cartão com a foto.
-   ========================================================= */
-
-/* O css/cadastro/style.css centraliza a logo no cabeçalho (a tela
-   de cadastro só tem a logo). Aqui o cabeçalho é o completo. */
+/* pagina de perfil */
 .cabecalho {
     justify-content: space-between;
 }
 
-/* Dados à esquerda (largo), senha à direita (estreito). */
 .perfil-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 340px;
@@ -29,7 +19,6 @@
     padding: 32px;
 }
 
-/* Cabeçalho de seção do DS: título e linha embaixo. */
 .caixa-perfil > h2 {
     font-size: 20px;
     font-weight: 400;
@@ -38,8 +27,6 @@
     border-bottom: 1px solid var(--borda);
 }
 
-/* O formulário do perfil usa as regras do .caixa-cadastro, mas
-   sem a caixa própria: ele já está dentro de uma. */
 .formulario-perfil {
     max-width: none;
     padding: 0;
@@ -47,9 +34,6 @@
     border: none;
     box-shadow: none;
 }
-
-
-/* ===== CARTÃO COM A FOTO ===== */
 
 .perfil-cartao {
     display: flex;
@@ -75,7 +59,6 @@
     line-height: 1.1;
 }
 
-/* O login aparece como "kicker" verde. */
 .perfil-identidade > span {
     color: var(--sinal-texto);
     font-size: 12px;
@@ -95,16 +78,11 @@
     outline-offset: 2px;
 }
 
-/* Campo que só mostra (CPF): tracejado, para ficar claro que não
-   edita. */
 .formulario-perfil input[readonly] {
     border-bottom-style: dashed;
     color: var(--texto-suave);
     cursor: not-allowed;
 }
-
-
-/* ===== AGENDA ===== */
 
 .agenda-subtitulo {
     font-family: var(--fonte-texto);
@@ -120,13 +98,11 @@
     color: var(--texto-apagado);
 }
 
-/* Eventos que já passaram: apagados e em preto e branco. */
 .cards-passados .card {
     opacity: 0.6;
     filter: grayscale(1);
 }
 
-/* Agenda vazia: moldura tracejada (a "ring tile" do DS). */
 .agenda-vazia {
     padding: 40px 24px;
     border-radius: var(--raio);
@@ -143,11 +119,8 @@
     display: inline-flex;
 }
 
-
-/* ===== CELULAR E TABLET ===== */
-
+/* telas menores */
 @media (max-width: 900px) {
-    /* Uma coluna: a senha desce para baixo dos dados. */
     .perfil-layout {
         grid-template-columns: 1fr;
     }

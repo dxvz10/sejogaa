@@ -1,19 +1,4 @@
-/* =========================================================
-   CALENDÁRIO — só a grade de dias
-
-   Carregado por último, depois de:
-     css/style.css          reset, cores, cabeçalho, rodapé, botões
-     css/eventos/style.css  fundo da página, cards, busca e filtros
-
-   Antes este arquivo repetia o cabeçalho, o rodapé e os botões
-   do style.css. Com duas cópias, elas já tinham começado a
-   ficar diferentes (o rodapé daqui estourava a tela no celular).
-   Agora cada coisa existe num lugar só.
-   ========================================================= */
-
-
-/* ===== CAIXA DO CALENDÁRIO ===== */
-
+/* calendario */
 .calendario-container {
     background-color: var(--faixa);
     border: 1px solid var(--borda);
@@ -37,11 +22,6 @@
     text-align: center;
 }
 
-
-/* Setas de mês — o "botão-ícone de vidro" do DS. Chamavam-se
-   .seta, mas essa classe já existe no style.css para as setas do
-   carrossel da home — e lá ela tem position: absolute. Com o mesmo
-   nome, as duas setas daqui iam parar uma em cima da outra. */
 .seta-mes {
     flex-shrink: 0;
     width: 44px;
@@ -62,14 +42,8 @@
     color: var(--sobre-sinal);
 }
 
-
-/* ===== DIAS DA SEMANA ===== */
-/* Rótulos pequenos e espaçados, como os do DS. */
-
 .dias-semana {
     display: grid;
-    /* minmax(0, 1fr), e não só 1fr: "1fr" deixa o conteúdo EMPURRAR
-       a coluna, e um nome de evento comprido estourava a tela. */
     grid-template-columns: repeat(7, minmax(0, 1fr));
     color: var(--texto-apagado);
     border-bottom: 1px solid var(--borda-forte);
@@ -81,9 +55,6 @@
     font-size: 11px;
     letter-spacing: 0.2em;
 }
-
-
-/* ===== DIAS DO MÊS ===== */
 
 .dias {
     display: grid;
@@ -99,13 +70,9 @@
     background-color: var(--superficie);
     font-size: 14px;
 
-    /* position + z-index: sem isso o quadradinho ampliado passa
-       POR BAIXO dos vizinhos, porque quem não tem z-index é
-       pintado na ordem do HTML. */
     position: relative;
     z-index: 0;
 
-    /* O caminho de VOLTA (mouse saindo) não tem atraso. */
     transition: transform 0.25s ease,
                 box-shadow 0.25s ease,
                 background-color 0.25s ease;
@@ -115,25 +82,19 @@
     background-color: var(--superficie-hover);
     cursor: pointer;
 
-    /* transition-delay AQUI vale só para a ida: o mouse precisa
-       ficar parado 350ms, então passar de raspão não dispara nada. */
     transition-delay: 0.35s;
 
     transform: scale(1.07);
-    /* Contorno verde "por dentro" (inset) + sombra: a borda que
-       acende do DS, no quadradinho ampliado. */
     box-shadow: inset 0 0 0 1px var(--sinal), 0 12px 28px rgba(0, 0, 0, 0.45);
     z-index: 2;
 }
 
-/* Quem pediu menos movimento no sistema recebe só a cor. */
 @media (prefers-reduced-motion: reduce) {
     .dia:hover {
         transform: none;
     }
 }
 
-/* Dias de fora do mês: sem fundo, deixam a grade aparecer. */
 .dia.vazio {
     background-color: transparent;
 }
@@ -144,11 +105,11 @@
     cursor: default;
 }
 
+/* dia com evento */
 .dia.evento {
     background-color: var(--superficie-hover);
 }
 
-/* Dia com evento: o número fica verde. */
 .dia.evento .numero-dia {
     color: var(--sinal-texto);
 }
@@ -166,7 +127,6 @@
     color: var(--texto-forte);
 }
 
-/* A etiqueta de um evento dentro do quadradinho do dia. */
 .etiqueta-evento {
     display: block;
     margin-top: 6px;
@@ -178,23 +138,17 @@
     font-size: 10px;
     font-weight: normal;
 
-    /* Nome comprido não pode empurrar a coluna: corta com "…". */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Evento que o usuário guardou na agenda dele: verde cheio, para
-   ele achar os "seus" de longe. */
 .etiqueta-evento.meu-evento {
     background-color: var(--sinal);
     border-left-color: var(--sobre-sinal);
     color: var(--sobre-sinal);
     font-weight: bold;
 }
-
-
-/* ===== CELULAR ===== */
 
 @media (max-width: 800px) {
     .dia {

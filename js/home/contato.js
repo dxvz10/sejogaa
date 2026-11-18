@@ -13,14 +13,12 @@ function esconderAviso() {
     avisoForm.className = 'aviso-form';
 }
 
-/* Abrir e fechar agora é com o ui.js: ele fecha qualquer modal
-   pelo X, pelo fundo escuro, pelo Esc e pelos botões marcados
-   com data-fechar-modal. Não precisamos mais repetir isso aqui. */
 function abrirModalContato(texto) {
     modalContatoTexto.textContent = texto;
     abrirModal('modal-contato');
 }
 
+// formulario de contato (mostra o modal no lugar do alert)
 formContato.addEventListener('submit', function (evento) {
     evento.preventDefault();
 

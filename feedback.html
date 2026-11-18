@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- data-pagina="restrita": só entra quem está logado. O auth.js manda
-     os visitantes para o login e, depois, de volta para cá. -->
+<!-- pagina restrita: so abre logado (auth.js) -->
 <html lang="pt-BR" data-pagina="restrita">
 
 <head>
@@ -8,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Feedback</title>
 
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -25,19 +22,18 @@
 
 <body>
 
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -59,7 +55,6 @@
 
     </header>
 
-
     <main class="conteudo">
 
         <section class="titulo-pagina">
@@ -67,24 +62,17 @@
             <p>Conte para a gente o que achou do SeJoga. Leva menos de um minuto.</p>
         </section>
 
-        <!-- Formulário de feedback (área restrita do enunciado).
-             Ele usa de propósito os quatro tipos de campo que o
-             professor pediu: range, select, radio e checkbox.
-             novalidate: quem mostra os erros é o nosso JavaScript. -->
         <form id="form-feedback" class="caixa-cadastro" novalidate>
 
             <fieldset class="grupo-cadastro">
                 <legend>Sua avaliação</legend>
 
-                <!-- RANGE: um "controle deslizante" de 0 a 10.
-                     O <output> mostra o número escolhido ao lado; o
-                     feedback.js atualiza esse número a cada movimento. -->
                 <label for="nota">Nota para o site: <output id="valor-nota" for="nota">8</output>/10</label>
+                <!-- range da nota -->
                 <input type="range" id="nota" name="nota" min="0" max="10" step="1" value="8">
 
-                <!-- SELECT: os mesmos identificadores de categoria do
-                     resto do site (minúsculos, sem acento). -->
                 <label for="categoria-preferida">Categoria que você mais curte</label>
+                <!-- select -->
                 <select id="categoria-preferida" name="categoria-preferida" aria-describedby="erro-categoria-preferida">
                     <option value="">Escolha uma categoria</option>
                     <option value="futebol">Futebol</option>
@@ -99,9 +87,7 @@
             <fieldset class="grupo-cadastro">
                 <legend>Como nos conheceu</legend>
 
-                <!-- RADIO: todos com o MESMO name, então só um pode ficar
-                     marcado. O role="radiogroup" + aria-describedby deixa o
-                     leitor de tela ler a mensagem de erro do grupo. -->
+                <!-- radio: mesmo name, so da pra marcar um -->
                 <div class="grupo-opcoes" id="forma-indicacao" role="radiogroup"
                      aria-label="Como nos conheceu" aria-describedby="erro-forma-indicacao">
                     <label class="opcao"><input type="radio" name="forma-indicacao" value="amigos"> Indicação de amigos</label>
@@ -115,7 +101,7 @@
             <fieldset class="grupo-cadastro">
                 <legend>Interesses</legend>
 
-                <!-- CHECKBOX: aqui pode marcar quantos quiser. -->
+                <!-- checkbox: pode marcar varios -->
                 <span class="rotulo-grupo" id="rotulo-interesses">O que você quer ver mais no site?</span>
                 <div class="grupo-opcoes" aria-labelledby="rotulo-interesses">
                     <label class="opcao"><input type="checkbox" name="interesses" value="mais-eventos"> Mais eventos perto de mim</label>
@@ -128,7 +114,6 @@
                 <textarea id="comentario" name="comentario" rows="4" maxlength="500" aria-describedby="erro-comentario"></textarea>
                 <small class="erro-campo" id="erro-comentario"></small>
 
-                <!-- Checkbox sozinho = uma pergunta de "sim ou não". -->
                 <label class="opcao opcao-destaque">
                     <input type="checkbox" id="aceita-novidades" name="aceita-novidades">
                     Quero receber novidades do SeJoga
@@ -142,7 +127,7 @@
 
     </main>
 
-
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -181,7 +166,7 @@
         </div>
     </footer>
 
-
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/auth.js"></script>

@@ -1,37 +1,7 @@
-/* =============================================================
-   SEJOGA — FONTE ÚNICA DOS EVENTOS
-
-   A lista de eventos mora num lugar só (o localStorage). A home,
-   o calendário, a página Eventos, o perfil e as notificações
-   leem daqui — nenhuma página tem eventos escritos à mão.
-
-   Este arquivo NÃO mexe na tela: só guarda, calcula e filtra.
-   ============================================================= */
-
-
-/* -------------------------------------------------------------
-   LISTA INICIAL (semente)
-
-   Gravada no localStorage na primeira visita. Depois disso, o
-   que vale é o que está guardado — para não apagar eventos
-   criados pela página de cadastro de evento.
-
-   VERSAO_SEMENTE: quando esta lista muda (evento novo, campo
-   novo), aumentamos o número. Quem já tinha a versão antiga
-   guardada recebe as mudanças sem perder os eventos criados.
-   ------------------------------------------------------------- */
-
-/* Versão 3: as datas da semente foram adiadas em 3 meses para os
-   eventos de exemplo continuarem no futuro no dia da apresentação.
-   Um deles (evt_005, em agosto) ficou no passado de propósito,
-   para a sinalização cinza "Já realizado" aparecer na demonstração. */
-/* Versão 4: mais 12 eventos, entre reais (Réveillon de Copacabana,
-   Cordão da Bola Preta, desfiles da Sapucaí, clássicos do Carioca) e
-   fictícios. Juntos, eles mostram todas as cores de status:
-   amarelo (evt_014, perto do início), vermelho por cancelamento
-   (evt_024) e por lotação, verde e cinza. */
+// quando mudar a lista de eventos de exemplo, aumentar esse numero
 const VERSAO_SEMENTE = 4;
 
+// eventos de exemplo
 const EVENTOS_INICIAIS = [
     {
         id: 'evt_001', categoria: 'futebol', nome: 'Vasco x Vitória',
@@ -227,23 +197,17 @@ const EVENTOS_INICIAIS = [
     }
 ];
 
-
-/* -------------------------------------------------------------
-   LER E GRAVAR
-   ------------------------------------------------------------- */
-
+// pega os eventos salvos (na primeira vez salva os de exemplo)
 function obterEventos() {
     const guardados = lerDoArmazenamento(CHAVES.eventos, null);
     const versao = lerDoArmazenamento(CHAVES.versaoSemente, 1);
 
-    // Primeira visita: grava a lista inicial.
     if (!Array.isArray(guardados)) {
         salvarEventos(EVENTOS_INICIAIS);
         gravarNoArmazenamento(CHAVES.versaoSemente, VERSAO_SEMENTE);
         return EVENTOS_INICIAIS.slice();
     }
 
-    // Versão antiga guardada: atualiza sem perder nada.
     if (versao < VERSAO_SEMENTE) {
         const atualizada = mesclarSemente(guardados);
         salvarEventos(atualizada);
@@ -254,10 +218,7 @@ function obterEventos() {
     return guardados;
 }
 
-
-/* Os eventos da semente substituem a cópia antiga de mesmo id;
-   os criados por usuários (ids que não estão na semente) ficam
-   intactos. */
+// atualiza os de exemplo sem apagar os que o usuario criou
 function mesclarSemente(guardados) {
     const idsDaSemente = EVENTOS_INICIAIS.map(function (evento) {
         return evento.id;
@@ -270,32 +231,26 @@ function mesclarSemente(guardados) {
     return EVENTOS_INICIAIS.concat(criadosPorUsuarios);
 }
 
-
+// salva a lista de eventos
 function salvarEventos(lista) {
     gravarNoArmazenamento(CHAVES.eventos, lista);
 }
 
-
+// acha um evento pelo id
 function buscarEvento(id) {
     return obterEventos().find(function (evento) {
         return evento.id === id;
     });
 }
 
-
-/* Do mais próximo para o mais distante. sort() recebe uma função
-   que compara dois itens: negativo = "a" vem antes. */
+// ordena do mais perto pro mais longe
 function ordenarPorData(lista) {
     return lista.slice().sort(function (a, b) {
         return new Date(a.dataHora) - new Date(b.dataHora);
     });
 }
 
-
-/* Para listas de busca: primeiro o que ainda vai acontecer (do
-   mais próximo ao mais distante), e só depois os que já passaram
-   (do mais recente ao mais antigo). Ninguém procura evento
-   encerrado primeiro. */
+// abertos primeiro, depois os outros
 function ordenarParaExibir(lista) {
     const agora = new Date();
 
@@ -310,34 +265,30 @@ function ordenarParaExibir(lista) {
     return ordenarPorData(futuros).concat(ordenarPorData(passados).reverse());
 }
 
-
-/* -------------------------------------------------------------
-   STATUS — calculado, nunca guardado
-
-   Se a cor fosse salva junto com o evento, ela envelheceria: um
-   evento marcado "Disponível" continuaria verde depois de
-   acontecer. Calculando na hora de exibir, isso não acontece.
-   ------------------------------------------------------------- */
-
+// calcula a cor do evento na hora (nao salva, porque muda com o tempo)
 function calcularStatusEvento(evento) {
     const agora = new Date();
     const data = new Date(evento.dataHora);
 
+    // ja passou: cinza
     if (data < agora) {
         return { chave: 'realizado', rotulo: 'Já realizado', classe: 'selo-realizado' };
     }
 
+    // cancelado: vermelho
     if (evento.cancelado) {
         return { chave: 'cancelado', rotulo: 'Cancelado', classe: 'selo-esgotado' };
     }
 
+    // sem vaga: vermelho
     if (evento.vagasOcupadas >= evento.capacidadeVagas) {
         return { chave: 'esgotado', rotulo: 'Esgotado', classe: 'selo-esgotado' };
     }
 
-    // Subtrair duas datas dá a diferença em MILISSEGUNDOS.
+    // diferenca entre as datas vem em milissegundos, ai converte pra horas
     const horasQueFaltam = (data - agora) / 1000 / 60 / 60;
 
+    // faltando 48h ou menos: amarelo
     if (horasQueFaltam <= 48) {
         return { chave: 'perto', rotulo: 'Perto do início', classe: 'selo-perto' };
     }
@@ -345,54 +296,41 @@ function calcularStatusEvento(evento) {
     return { chave: 'disponivel', rotulo: 'Disponível', classe: 'selo-disponivel' };
 }
 
-
-/* Só dá para entrar num evento que não passou e ainda tem vaga. */
+// evento que ainda da pra ir
 function eventoAberto(evento) {
     const status = calcularStatusEvento(evento).chave;
     return status === 'disponivel' || status === 'perto';
 }
 
-
-/* Os N próximos eventos em que ainda dá para entrar. */
+// proximos eventos abertos (carrossel da home)
 function proximosEventosAbertos(quantidade) {
     const abertos = obterEventos().filter(eventoAberto);
     return ordenarPorData(abertos).slice(0, quantidade);
 }
 
-
-/* -------------------------------------------------------------
-   FORMATAÇÃO
-   ------------------------------------------------------------- */
-
 const DIAS_DA_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
+// datas e precos no formato brasileiro
 function formatarData(iso) {
     const d = new Date(iso);
 
-    // padStart(2, '0'): 5 vira "05".
     const dia = String(d.getDate()).padStart(2, '0');
 
-    // getMonth() conta de 0 (janeiro) a 11 (dezembro). Por isso o + 1.
     const mes = String(d.getMonth() + 1).padStart(2, '0');
 
     return dia + '/' + mes + '/' + d.getFullYear();
 }
-
 
 function formatarHora(iso) {
     const d = new Date(iso);
     return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
 }
 
-
-/* "Qui, 24/09 · 20:00" */
 function formatarDataCurta(iso) {
     const d = new Date(iso);
     return DIAS_DA_SEMANA[d.getDay()] + ', ' + formatarData(iso).slice(0, 5) + ' · ' + formatarHora(iso);
 }
 
-
-/* Preço zero vira "Gratuito" em vez de "R$ 0,00". */
 function formatarPreco(valor) {
     if (valor === 0) {
         return 'Gratuito';
@@ -400,10 +338,7 @@ function formatarPreco(valor) {
     return 'R$ ' + valor.toFixed(2).replace('.', ',');
 }
 
-
-/* "hoje", "amanhã", "em 3 dias" — compara só as DATAS, sem a
-   hora: um evento às 22h de amanhã é "amanhã", mesmo que falte
-   menos de 24 horas. */
+// texto tipo "hoje", "amanha", "em 3 dias"
 function descreverQuando(iso) {
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -418,13 +353,13 @@ function descreverQuando(iso) {
     return 'em ' + diferenca + ' dias';
 }
 
-
+// ve se o evento e naquele dia (calendario)
 function mesmoDia(iso, ano, mes, dia) {
     const d = new Date(iso);
     return d.getFullYear() === ano && d.getMonth() === mes && d.getDate() === dia;
 }
 
-
+// nome das categorias pra mostrar na tela
 const NOMES_CATEGORIAS = {
     'futebol': 'Futebol',
     'basquete': 'Basquete',
@@ -433,21 +368,13 @@ const NOMES_CATEGORIAS = {
     'festa': 'Festa'
 };
 
-
-/* -------------------------------------------------------------
-   "MINHA AGENDA" — os eventos que cada usuário guardou
-
-   Uma lista por login:
-       { "davich": ["evt_002", "evt_007"], "maria": [...] }
-   Dois usuários no mesmo navegador não misturam as agendas.
-   ------------------------------------------------------------- */
-
+// login de quem esta logado
 function loginAtual() {
-    const sessao = obterSessao();   // vem do auth.js
+    const sessao = obterSessao();
     return sessao ? sessao.login : null;
 }
 
-
+// agenda do usuario logado
 function obterMeusEventos() {
     const login = loginAtual();
 
@@ -459,9 +386,7 @@ function obterMeusEventos() {
     return todos[login] || [];
 }
 
-
-/* Adiciona se não estiver, remove se estiver.
-   Devolve true quando o evento FICOU na agenda. */
+// adiciona ou tira o evento da agenda
 function alternarMeuEvento(idEvento) {
     const login = loginAtual();
 
@@ -476,7 +401,7 @@ function alternarMeuEvento(idEvento) {
     if (posicao === -1) {
         minha.push(idEvento);
     } else {
-        minha.splice(posicao, 1);    // remove 1 item naquela posição
+        minha.splice(posicao, 1);
     }
 
     todos[login] = minha;
@@ -485,8 +410,6 @@ function alternarMeuEvento(idEvento) {
     return posicao === -1;
 }
 
-
-/* Os eventos da agenda como objetos completos, por data. */
 function eventosDaMinhaAgenda() {
     const ids = obterMeusEventos();
 
@@ -497,9 +420,7 @@ function eventosDaMinhaAgenda() {
     return ordenarPorData(eventos);
 }
 
-
-/* Os eventos da agenda que acontecem entre AGORA e daqui a N
-   dias. É o que alimenta o sininho e o resumo pós-login. */
+// eventos da agenda nos proximos dias (sino)
 function agendaDosProximosDias(dias) {
     const agora = new Date();
     const limite = new Date(agora.getTime() + dias * 24 * 60 * 60 * 1000);
@@ -510,18 +431,7 @@ function agendaDosProximosDias(dias) {
     });
 }
 
-
-/* -------------------------------------------------------------
-   FILTRAR — função PURA
-
-   Recebe a lista e os critérios, devolve uma lista nova. Não toca
-   na tela e não guarda nada: serve para o calendário, para a
-   página Eventos, para onde precisar.
-   ------------------------------------------------------------- */
-
-/* Minúsculo e sem acento, para "maracana" achar "Maracanã".
-   normalize('NFD') separa a letra do acento; o replace apaga os
-   acentos soltos. */
+// tira acento e deixa minusculo pra busca achar "maracana" e "Maracanã"
 function normalizar(texto) {
     return String(texto)
         .toLowerCase()
@@ -529,7 +439,7 @@ function normalizar(texto) {
         .replace(/[̀-ͯ]/g, '');
 }
 
-
+// filtra pelo texto da busca e pelos filtros marcados
 function filtrarEventos(lista, criterios) {
     const termo = normalizar(criterios.texto || '');
 
@@ -542,10 +452,8 @@ function filtrarEventos(lista, criterios) {
             }
         }
 
-        // Lista vazia = "não filtrar por isso".
         if (criterios.status && criterios.status.length > 0) {
             const chave = calcularStatusEvento(evento).chave;
-            // Cancelado e esgotado usam o mesmo selo vermelho.
             const equivalente = (chave === 'cancelado') ? 'esgotado' : chave;
 
             if (criterios.status.indexOf(equivalente) === -1) {
@@ -565,9 +473,6 @@ function filtrarEventos(lista, criterios) {
             }
         }
 
-        /* !== null, e não só if (precoMin): o ZERO é um preço
-           válido, mas o JavaScript trata 0 como "falso". Um evento
-           gratuito sumiria do filtro. */
         if (criterios.precoMin !== null && criterios.precoMin !== undefined) {
             if (evento.preco < criterios.precoMin) {
                 return false;
@@ -584,8 +489,7 @@ function filtrarEventos(lista, criterios) {
     });
 }
 
-
-/* As regiões que existem de fato nos eventos, sem repetir. */
+// regioes que aparecem no filtro
 function listarRegioes() {
     const vistas = [];
 

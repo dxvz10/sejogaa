@@ -1,44 +1,17 @@
-/* =============================================================
-   SEJOGA — CABEÇALHO DE QUEM ESTÁ LOGADO
-
-   Deslogado: os botões "Cadastrar" e "Entrar", escritos no HTML.
-   Logado: este arquivo monta, no lugar deles,
-     🔔 o sininho com os eventos da agenda dos próximos 7 dias
-     👤 o avatar com o menu (perfil, agenda, aparência, sair)
-
-   Por que montar por JavaScript em vez de escrever no HTML? Porque
-   são quatro páginas com o mesmo cabeçalho. Escrito à mão, seriam
-   quatro cópias de ~40 linhas — e uma hora uma delas fica
-   diferente das outras. Assim existe UMA versão.
-
-   Precisa de: storage.js, ui.js, auth.js, eventos.js, tema.js.
-   ============================================================= */
-
+// o sino mostra os eventos dos proximos 7 dias
 const DIAS_DAS_NOTIFICACOES = 7;
 
-
-/* SVGs pequenos, desenhados aqui mesmo. aria-hidden porque são
-   decorativos: o texto do botão já diz o que ele faz. */
 const ICONE_SINO =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2z" fill="currentColor"/></svg>';
 
 const ICONE_SETA =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-
-/* =============================================================
-   NOTIFICAÇÕES "JÁ VISTAS"
-
-   O número vermelho do sino conta só o que a pessoa ainda não
-   viu. Abriu o painel, zera. Guardamos por login:
-       { "davich": ["evt_003", "evt_007"] }
-   ============================================================= */
-
+// notificacoes que a pessoa ja viu
 function notificacoesVistas() {
     const todas = lerDoArmazenamento(CHAVES.notificacoesVistas, {});
     return todas[loginAtual()] || [];
 }
-
 
 function marcarComoVistas(eventos) {
     const todas = lerDoArmazenamento(CHAVES.notificacoesVistas, {});
@@ -48,7 +21,7 @@ function marcarComoVistas(eventos) {
     gravarNoArmazenamento(CHAVES.notificacoesVistas, todas);
 }
 
-
+// quantas ainda nao foram vistas (numero vermelho do sino)
 function contarNaoVistas(eventos) {
     const vistas = notificacoesVistas();
 
@@ -57,11 +30,7 @@ function contarNaoVistas(eventos) {
     }).length;
 }
 
-
-/* =============================================================
-   MONTAGEM
-   ============================================================= */
-
+// um item da lista do sino
 function montarItemDeEvento(evento) {
     const item = criarElemento('li');
     const link = criarElemento('a');
@@ -76,7 +45,7 @@ function montarItemDeEvento(evento) {
     return item;
 }
 
-
+// painel que abre ao clicar no sino
 function montarPainelNotificacoes(eventos) {
     const painel = criarElemento('div', 'painel-suspenso painel-notificacoes');
     painel.id = 'painel-notificacoes';
@@ -103,14 +72,14 @@ function montarPainelNotificacoes(eventos) {
     return painel;
 }
 
-
+// botao do sino
 function montarSino(eventos) {
     const caixa = criarElemento('div', 'notificacoes');
     const naoVistas = contarNaoVistas(eventos);
 
     const botao = criarElemento('button', 'botao-icone botao-sino');
     botao.type = 'button';
-    botao.innerHTML = ICONE_SINO;     // SVG nosso, fixo: innerHTML é seguro aqui
+    botao.innerHTML = ICONE_SINO;
     botao.setAttribute('aria-expanded', 'false');
     botao.setAttribute('aria-controls', 'painel-notificacoes');
     botao.setAttribute('aria-label', naoVistas > 0
@@ -126,12 +95,11 @@ function montarSino(eventos) {
     return caixa;
 }
 
-
+// menu do usuario: nome, perfil, agenda, feedback, aparencia e sair
 function montarMenuUsuario(usuario) {
     const caixa = criarElemento('div', 'usuario');
     const primeiroNome = (usuario.nomeCompleto || usuario.login).trim().split(' ')[0];
 
-    // --- o botão: avatar + nome + seta ---
     const botao = criarElemento('button', 'botao-usuario');
     botao.type = 'button';
     botao.setAttribute('aria-expanded', 'false');
@@ -149,7 +117,6 @@ function montarMenuUsuario(usuario) {
     seta.innerHTML = ICONE_SETA;
     botao.appendChild(seta);
 
-    // --- o menu ---
     const menu = criarElemento('div', 'painel-suspenso menu-usuario');
     menu.id = 'menu-usuario';
     menu.hidden = true;
@@ -190,8 +157,7 @@ function montarMenuUsuario(usuario) {
     return caixa;
 }
 
-
-/* Tema e A−/A+ dentro do menu. */
+// botoes de tema e de A- / A+
 function montarAparencia() {
     const bloco = criarElemento('div', 'menu-aparencia');
     bloco.appendChild(criarElemento('span', 'menu-rotulo', 'Aparência'));
@@ -199,8 +165,6 @@ function montarAparencia() {
     const botaoTema = criarElemento('button', 'menu-item botao-tema');
     botaoTema.type = 'button';
 
-    /* aria-pressed = botão de liga/desliga. O leitor de tela diz
-       "Tema escuro, botão alternar, pressionado". */
     function atualizarBotaoTema() {
         const escuro = obterPreferencias().tema === 'escuro';
         botaoTema.textContent = escuro ? 'Tema escuro: ligado' : 'Tema escuro: desligado';
@@ -245,14 +209,7 @@ function montarAparencia() {
     return bloco;
 }
 
-
-/* =============================================================
-   ABRIR E FECHAR OS PAINÉIS
-
-   Só um aberto por vez. Fecha ao clicar fora, no Esc, ou ao
-   clicar de novo no mesmo botão.
-   ============================================================= */
-
+// fecha os paineis abertos
 function fecharPaineis(exceto) {
     document.querySelectorAll('.area-usuario [aria-expanded="true"]').forEach(function (botao) {
         if (botao === exceto) {
@@ -263,7 +220,7 @@ function fecharPaineis(exceto) {
     });
 }
 
-
+// abre ou fecha um painel
 function alternarPainel(botao) {
     const painel = document.getElementById(botao.getAttribute('aria-controls'));
     const abrir = botao.getAttribute('aria-expanded') !== 'true';
@@ -272,7 +229,6 @@ function alternarPainel(botao) {
     botao.setAttribute('aria-expanded', abrir ? 'true' : 'false');
     painel.hidden = !abrir;
 
-    // Abriu o sino: conta como visto, some o número vermelho.
     if (abrir && botao.classList.contains('botao-sino')) {
         marcarComoVistas(agendaDosProximosDias(DIAS_DAS_NOTIFICACOES));
 
@@ -284,7 +240,7 @@ function alternarPainel(botao) {
     }
 }
 
-
+// clicou fora fecha os paineis
 document.addEventListener('click', function (evento) {
     const botao = evento.target.closest('.area-usuario .botao-sino, .area-usuario .botao-usuario');
 
@@ -293,14 +249,12 @@ document.addEventListener('click', function (evento) {
         return;
     }
 
-    // Clique DENTRO de um painel (nos botões de tema, por exemplo)
-    // não pode fechá-lo. Clique fora fecha.
     if (!evento.target.closest('.painel-suspenso')) {
         fecharPaineis(null);
     }
 });
 
-
+// Esc fecha os paineis
 document.addEventListener('keydown', function (evento) {
     if (evento.key !== 'Escape') {
         return;
@@ -309,15 +263,11 @@ document.addEventListener('keydown', function (evento) {
     const aberto = document.querySelector('.area-usuario [aria-expanded="true"]');
     if (aberto) {
         fecharPaineis(null);
-        aberto.focus();      // devolve o foco ao botão que abriu
+        aberto.focus();
     }
 });
 
-
-/* =============================================================
-   RESUMO DA SEMANA — aparece uma vez, logo depois do login
-   ============================================================= */
-
+// depois do login mostra os eventos da semana
 function mostrarResumoDaSemana(usuario) {
     let recado = null;
 
@@ -386,11 +336,7 @@ function mostrarResumoDaSemana(usuario) {
     abrirModal('modal-semana');
 }
 
-
-/* =============================================================
-   INICIALIZAÇÃO
-   ============================================================= */
-
+// logado: esconde Cadastrar/Entrar e coloca o sino e o menu com o nome
 (function montarCabecalho() {
     const usuario = usuarioAtual();
     const acoes = document.querySelector('.acoes-cabecalho');
@@ -399,7 +345,6 @@ function mostrarResumoDaSemana(usuario) {
         return;
     }
 
-    // Esconde os botões de visitante e acrescenta a área logada.
     acoes.querySelectorAll('[data-sessao="deslogado"]').forEach(function (elemento) {
         elemento.hidden = true;
     });
@@ -412,11 +357,7 @@ function mostrarResumoDaSemana(usuario) {
     mostrarResumoDaSemana(usuario);
 })();
 
-
-/* Qualquer elemento da página marcado com data-sessao="logado"
-   só aparece para quem está logado (e o contrário para
-   "deslogado"). É assim que o calendário esconde a seção
-   "Todos os eventos" dos visitantes. */
+// mostra ou esconde partes da pagina se estiver logado ou nao
 (function mostrarConformeSessao() {
     const logado = usuarioLogado();
 

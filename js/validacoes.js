@@ -1,31 +1,4 @@
-/* =============================================================
-   SEJOGA — VALIDAÇÕES
-
-   Regra de ouro deste arquivo: as funções NÃO encostam na tela.
-   Elas recebem um texto e devolvem true ou false (ou um valor
-   limpo). Quem decide que mensagem mostrar, e onde, é a página.
-
-   Assim o cadastro, o login e o perfil usam EXATAMENTE a mesma
-   regra — nenhuma tela aceita o que a outra recusa.
-
-   As regras de nome, CPF, telefone, login e senha são as do
-   enunciado e valem ponto na correção.
-   ============================================================= */
-
-
-/* -------------------------------------------------------------
-   EXPRESSÕES REGULARES — um "molde" que o texto tem de encaixar
-
-   ^  começo do texto        $  fim do texto
-   [A-Za-z]  uma letra sem acento
-   À-ÿ       as letras acentuadas (á, ç, õ...)
-   \s        um espaço
-   {6}       exatamente 6 vezes     {15,80}  de 15 a 80 vezes
-   \d        um dígito (0 a 9)      \D       qualquer coisa que NÃO é dígito
-   ------------------------------------------------------------- */
-
-
-/* Nome completo: 15 a 80 caracteres, só letras e espaços. */
+// nome: 15 a 80 caracteres, so letras, e pelo menos 2 palavras
 function validarNomeCompleto(nome) {
     const limpo = nome.trim();
 
@@ -33,42 +6,30 @@ function validarNomeCompleto(nome) {
         return false;
     }
 
-    // "Nome completo" pede pelo menos duas palavras.
     return limpo.split(/\s+/).length >= 2;
 }
 
-
-/* Login: exatamente 6 letras (exigência do enunciado).
-   Num sistema real isso seria ruim — gera colisão de nomes e
-   limita demais. Aqui a regra existe para exercitar validação. */
+// login: exatamente 6 letras
 function validarLogin(login) {
     return /^[A-Za-z]{6}$/.test(login);
 }
 
-
-/* Senha: exatamente 8 letras (exigência do enunciado).
-   Na vida real, fixar o tamanho e proibir números e símbolos
-   ENFRAQUECE a senha: reduz as combinações possíveis. */
+// senha: exatamente 8 letras
 function validarSenha(senha) {
     return /^[A-Za-z]{8}$/.test(senha);
 }
 
-
+// confirmacao tem que ser igual a senha
 function validarConfirmacaoSenha(senha, confirmacao) {
     return confirmacao !== '' && senha === confirmacao;
 }
 
-
-/* E-mail: algo@algo.algo, sem espaços. Não é perfeito (nenhuma
-   regex de e-mail é), mas barra os erros de digitação comuns. */
+// email no formato nome@site.com
 function validarEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 }
 
-
-/* Data de nascimento: precisa existir, não pode ser futura, e a
-   pessoa precisa ter pelo menos 13 anos. O campo type="date"
-   entrega o texto no formato "AAAA-MM-DD". */
+// data de nascimento: nao pode ser no futuro e precisa ter 13 anos ou mais
 function validarNascimento(valor) {
     if (!valor) {
         return false;
@@ -83,7 +44,6 @@ function validarNascimento(valor) {
 
     let idade = hoje.getFullYear() - nascimento.getFullYear();
 
-    // Ainda não fez aniversário este ano? Então tem um ano a menos.
     const aindaNaoFez =
         hoje.getMonth() < nascimento.getMonth() ||
         (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate());
@@ -95,31 +55,23 @@ function validarNascimento(valor) {
     return idade >= 13 && idade <= 120;
 }
 
-
-/* -------------------------------------------------------------
-   CPF — validação do DÍGITO VERIFICADOR
-
-   Contar 11 números não basta. Os dois últimos dígitos do CPF
-   são CALCULADOS a partir dos nove primeiros. Se o que a pessoa
-   digitou não bater com a conta, o CPF não existe.
-   ------------------------------------------------------------- */
-
+// valida o CPF pelos digitos verificadores
 function validarCPF(cpfDigitado) {
-    // Tira pontos e traço: sobram só os números.
+    // tira pontos e traco
     const cpf = cpfDigitado.replace(/\D/g, '');
 
-    // 11 dígitos, e não pode ser tudo igual (111.111.111-11
-    // passaria na conta, mas não é um CPF válido).
+    // precisa ter 11 numeros e nao pode ser tudo igual (tipo 111.111.111-11)
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
         return false;
     }
 
-    // 1º dígito: multiplica os 9 primeiros por 10, 9, 8 ... 2.
+    // 1o digito: multiplica os 9 primeiros por 10, 9, 8... ate 2 e soma
     let soma = 0;
     for (let i = 0; i < 9; i++) {
         soma = soma + Number(cpf[i]) * (10 - i);
     }
 
+    // resto da divisao por 11 (se der 10 vira 0)
     let digito1 = (soma * 10) % 11;
     if (digito1 === 10) {
         digito1 = 0;
@@ -129,7 +81,7 @@ function validarCPF(cpfDigitado) {
         return false;
     }
 
-    // 2º dígito: os 10 primeiros (já com o 1º dígito) por 11 ... 2.
+    // 2o digito: mesma conta com os 10 primeiros, pesos de 11 ate 2
     soma = 0;
     for (let i = 0; i < 10; i++) {
         soma = soma + Number(cpf[i]) * (11 - i);
@@ -140,46 +92,26 @@ function validarCPF(cpfDigitado) {
         digito2 = 0;
     }
 
+    // so e valido se os 2 digitos baterem
     return digito2 === Number(cpf[10]);
 }
 
-
-/* Telefone no formato do enunciado: (+55)XX-XXXXXXXX
-   DDD com 2 dígitos + 8 dígitos.
-
-   O enunciado escreve 8 dígitos para fixo E celular. Só que desde
-   2016 todo celular no Brasil tem 9 dígitos (o "9" na frente) —
-   com 8, ninguém conseguiria cadastrar o próprio celular.
-
-   Decisão do grupo:
-     - FIXO:    exatamente 8 dígitos, igual ao enunciado.
-     - CELULAR: aceita 8 OU 9. Quem testar com o formato do
-                enunciado continua passando, e número de verdade
-                também passa. O começo "(+55)XX-" não muda.
-
-   Se o professor perguntar, é essa a explicação. */
+// telefone fixo: (+55)XX-XXXXXXXX
 function validarTelefone(telefone) {
     return /^\(\+55\)\d{2}-\d{8}$/.test(telefone);
 }
 
-/* {8,9} = "de 8 a 9 vezes": aceita os dois tamanhos. */
+// celular aceita 8 ou 9 numeros (celular hoje tem 9)
 function validarCelular(telefone) {
     return /^\(\+55\)\d{2}-\d{8,9}$/.test(telefone);
 }
 
-
+// CEP: 8 numeros
 function validarCEP(cep) {
     return /^\d{5}-?\d{3}$/.test(cep);
 }
 
-
-/* -------------------------------------------------------------
-   MÁSCARAS — formatam enquanto a pessoa digita
-
-   Recebem o texto digitado e devolvem o texto formatado.
-   A página chama no evento 'input' de cada campo.
-   ------------------------------------------------------------- */
-
+// mascara do CPF: 000.000.000-00
 function mascaraCPF(valor) {
     const n = valor.replace(/\D/g, '').slice(0, 11);
 
@@ -189,60 +121,32 @@ function mascaraCPF(valor) {
     return n;
 }
 
-
+// mascara do CEP: 00000-000
 function mascaraCEP(valor) {
     const n = valor.replace(/\D/g, '').slice(0, 8);
     return n.length > 5 ? n.slice(0, 5) + '-' + n.slice(5) : n;
 }
 
-
-/* (+55)XX-XXXXXXXX
-
-   ATENÇÃO — a armadilha desta máscara: ela roda a CADA tecla, e
-   recebe o que JÁ ESTÁ no campo, com o "(+55)" que ela mesma
-   colocou na tecla anterior. Se a gente só tirar os não-números,
-   esse 55 do prefixo vira DDD:
-
-       campo: "(+55)21"  ->  números: "5521"  ->  "(+55)55-21"   (errado!)
-
-   Por isso o PRIMEIRO passo é arrancar o prefixo "(+55)" (ou o
-   que sobrou dele, se a pessoa apagou um pedaço com o Backspace).
-   A regra só vale quando o texto começa com "(+": quem digita
-   números soltos ("21999...") ou cola "(55) 9999-8888" (DDD 55,
-   do RS) não perde nada. */
-/* O segundo parâmetro diz quantos dígitos o número pode ter
-   depois do DDD: 8 no fixo (o padrão) e 9 no celular. Se ninguém
-   passar nada, vale o "= 8" — isso se chama valor padrão. */
+// mascara do telefone (+55)XX-XXXXXXXX
 function mascaraTelefone(valor, digitosDoNumero = 8) {
-    const limite = 2 + digitosDoNumero;     // DDD (2) + número
+    const limite = 2 + digitosDoNumero;
 
+    // tira o (+55) antes, senao o 55 vira DDD
     const semPrefixo = valor.replace(/^\(\+5{0,2}\)?/, '');
     let n = semPrefixo.replace(/\D/g, '');
 
-    // Colou com o código do país sem parênteses ("+55 21 ...")?
-    // Aí sobram números DEMAIS começando com 55: tiramos o 55.
     if (n.length > limite && n.startsWith('55')) {
         n = n.slice(2);
     }
 
-    n = n.slice(0, limite);                 // corta o que passar do limite
+    n = n.slice(0, limite);
 
     if (n.length === 0) return '';
     if (n.length <= 2) return '(+55)' + n;
     return '(+55)' + n.slice(0, 2) + '-' + n.slice(2);
 }
 
-
-/* -------------------------------------------------------------
-   CEP → ENDEREÇO (API ViaCEP)
-
-   fetch() pede os dados a outro site. A resposta demora, então
-   a função é ASYNC: quem chama usa "await" para esperar.
-
-   Devolve um objeto com o endereço, ou null se não achou.
-   Quem mostra a mensagem de erro é a página.
-   ------------------------------------------------------------- */
-
+// busca o endereco na API do ViaCEP
 async function buscarEnderecoPorCep(cepDigitado) {
     const cep = cepDigitado.replace(/\D/g, '');
 
@@ -251,10 +155,11 @@ async function buscarEnderecoPorCep(cepDigitado) {
     }
 
     try {
+        // await espera a resposta da API chegar
         const resposta = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
         const dados = await resposta.json();
 
-        // O ViaCEP responde { erro: true } quando o CEP não existe.
+        // CEP que nao existe
         if (dados.erro) {
             return null;
         }
@@ -265,8 +170,8 @@ async function buscarEnderecoPorCep(cepDigitado) {
             cidade: dados.localidade,
             uf: dados.uf
         };
+    // sem internet ou ViaCEP fora do ar
     } catch (erro) {
-        // Sem internet, ou o ViaCEP fora do ar.
         throw new Error('sem-conexao');
     }
 }

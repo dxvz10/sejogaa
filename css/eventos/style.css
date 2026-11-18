@@ -1,31 +1,12 @@
-/* =========================================================
-   EVENTOS — o que o calendário, a página Eventos e o perfil
-   têm em comum: o fundo da página, os cards de evento, o botão
-   "Adicionar ao calendário" e a busca com filtros.
-
-   Carregado DEPOIS do css/style.css e ANTES do CSS específico
-   de cada página. Todas as cores vêm das variáveis do style.css
-   — por isso o tema claro funciona aqui sem nenhuma regra extra.
-   ========================================================= */
-
-
-/* ===== FUNDO DA PÁGINA ===== */
-
+/* paginas internas (eventos, calendario, perfil) */
 .conteudo {
     min-height: calc(100vh - 170px);
     padding: 64px 5%;
 
-    /* position + isolation: o ::before abaixo fica preso DENTRO
-       desta área (z-index: -1 relativo a ela), em vez de cair
-       para trás da página inteira. */
     position: relative;
     isolation: isolate;
 }
 
-/* A foto do grupo no estilo do DS: só no TOPO da página, em preto
-   e branco (grayscale) e bem apagada (opacity). A mask-image é um
-   gradiente de "visível" para "invisível": a foto some aos poucos
-   e, dali para baixo, aparece a grade da página. */
 .conteudo::before {
     content: "";
     position: absolute;
@@ -42,14 +23,11 @@
     pointer-events: none;
 }
 
-/* Título da página no estilo "herói" do DS: etiqueta com bolinha
-   verde em cima, título grande em caixa alta. Chamava-se .titulo,
-   mas esse nome já é usado no título dos cards da home. */
 .titulo-pagina {
     max-width: 1100px;
     margin: 0 auto 48px;
     display: flex;
-    flex-direction: column-reverse;   /* o <p> aparece EM CIMA do h1 */
+    flex-direction: column-reverse;
     gap: 16px;
 }
 
@@ -71,7 +49,6 @@
     line-height: 1.6;
 }
 
-/* A bolinha verde "ao vivo" (a animação pulsar está no style.css). */
 .titulo-pagina p::before {
     content: "";
     flex-shrink: 0;
@@ -82,15 +59,11 @@
     animation: pulsar 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-
-/* ===== SEÇÃO DE CARDS ===== */
-
 .eventos {
     max-width: 1100px;
     margin: 64px auto;
 }
 
-/* Cabeçalho de seção do DS: título pequeno e linha embaixo. */
 .eventos > h2 {
     font-size: 24px;
     font-weight: 400;
@@ -99,24 +72,13 @@
     border-bottom: 1px solid var(--borda);
 }
 
-/* 300px: 3 colunas nos 1100px da seção — os 6 destaques formam
-   duas linhas certinhas de 3. Em telas menores, o auto-fill vai
-   tirando colunas sozinho.
-
-   min(300px, 100%): se a tela tiver MENOS de 300px livres (celular
-   com o texto em 130%), a coluna encolhe para caber, em vez de
-   estourar a tela. */
 .cards-eventos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: 16px;
 }
 
-
-/* ===== CARD ===== */
-/* O card do DS: fundo #111, borda fina, cantos retos. No hover a
-   borda acende em verde ("Border Glow") — sem pular para cima. */
-
+/* cards de evento */
 .card {
     display: flex;
     flex-direction: column;
@@ -145,8 +107,6 @@
     font-size: 13px;
 }
 
-/* margin-top: auto empurra o rodapé do card para BAIXO. Com cards
-   de alturas diferentes na mesma linha, os preços ficam alinhados. */
 .card .rodape-card {
     display: flex;
     align-items: center;
@@ -156,10 +116,7 @@
     padding-top: 16px;
 }
 
-
-/* ===== BOTÃO "ADICIONAR AO CALENDÁRIO" ===== */
-/* "Outline CTA" do DS: contorno fino; no hover, verde cheio. */
-
+/* botao de adicionar na agenda */
 .botao-agenda {
     width: 100%;
     margin-top: 16px;
@@ -182,8 +139,6 @@
     color: var(--sobre-sinal);
 }
 
-/* Depois de adicionado, preenchido: dá para ver de longe quais
-   eventos já estão na agenda. */
 .botao-agenda.na-agenda {
     background-color: var(--sinal);
     border-color: var(--sinal);
@@ -196,10 +151,6 @@
     color: var(--fundo);
 }
 
-
-/* ===== CONVITE PARA VISITANTES ===== */
-/* O "bloco verde" do DS: fundo neon, texto preto. */
-
 .cta-visitante {
     position: relative;
     overflow: hidden;
@@ -211,7 +162,6 @@
     color: var(--sobre-sinal);
 }
 
-/* O brilho desfocado no canto, igual ao do contato na home. */
 .cta-visitante::before {
     content: "";
     position: absolute;
@@ -249,9 +199,6 @@
     flex-wrap: wrap;
 }
 
-/* Em cima do verde, os botões precisam de preto:
-   - Entrar: contorno preto; no hover, preto cheio com letra verde.
-   - Criar conta: preto cheio; no hover, branco. */
 .cta-visitante .botao-entrar {
     border-color: var(--sobre-sinal);
     color: var(--sobre-sinal);
@@ -273,10 +220,7 @@
     color: #000000;
 }
 
-
-/* ===== BUSCA E FILTROS ===== */
-
-/* Painel escuro: a grade da página continua aparecendo em volta. */
+/* busca e filtros */
 .secao-busca {
     max-width: 1100px;
     margin: 64px auto;
@@ -309,9 +253,8 @@
     color: var(--texto-apagado);
 }
 
-/* Campo sublinhado do DS, um pouco maior: é a busca principal. */
 .busca-topo input {
-    flex: 1 1 260px;          /* cresce, mas nunca abaixo de 260px */
+    flex: 1 1 260px;
     min-width: 0;
     padding: 10px 0;
     border: none;
@@ -335,10 +278,6 @@
     color: var(--sinal-texto);
 }
 
-/* A lista na coluna 1 e os filtros na 2, independente da ordem no
-   HTML. grid-row: 1 é essencial: só com a coluna, o navegador
-   jogaria a lista para a linha de baixo (ele preenche na ordem do
-   HTML e não volta atrás). */
 .busca-layout {
     display: grid;
     grid-template-columns: 1fr 250px;
@@ -377,7 +316,6 @@
     font-weight: 700;
 }
 
-/* "Link sublinhado" do DS. */
 .limpar-filtros {
     border: none;
     border-bottom: 1px solid currentColor;
@@ -401,7 +339,6 @@
     margin: 0 0 18px;
 }
 
-/* Rótulo do grupo = "kicker" verde do DS. */
 .grupo-filtro legend {
     font-size: 10px;
     font-weight: bold;
@@ -426,7 +363,7 @@
 }
 
 .grupo-filtro input[type="checkbox"] {
-    accent-color: var(--sinal);    /* a caixa marcada no verde da marca */
+    accent-color: var(--sinal);
     cursor: pointer;
 }
 
@@ -460,7 +397,7 @@
 }
 
 .sem-resultado {
-    grid-column: 1 / -1;       /* ocupa a largura toda da grade */
+    grid-column: 1 / -1;
     padding: 40px 12px;
     text-align: center;
     color: var(--texto-suave);
@@ -468,11 +405,7 @@
     border-radius: var(--raio);
 }
 
-
-/* ===== CELULAR ===== */
-
 @media (max-width: 800px) {
-    /* Uma coluna só: os filtros sobem para cima da lista. */
     .busca-layout {
         grid-template-columns: 1fr;
     }

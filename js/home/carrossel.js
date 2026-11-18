@@ -8,6 +8,7 @@ let indiceAtual = 0;
 let temporizador;
 let esperandoParar;
 
+// centraliza o card atual
 function atualizarCarrosel() {
     cards.forEach(function(card, i) {
         card.classList.toggle('ativo', i === indiceAtual);
@@ -15,8 +16,6 @@ function atualizarCarrosel() {
 
     const card = cards[indiceAtual];
 
-    // Nenhum evento aberto = nenhum card. Sem esta trava, o
-    // card.offsetLeft abaixo quebraria o arquivo inteiro.
     if (!card) {
         return;
     }
@@ -29,8 +28,7 @@ function atualizarCarrosel() {
     });
 }
 
-// ===== ROLAGEM AUTOMATICA =====
-
+// passa sozinho
 function avancarAutomatico() {
     indiceAtual = (indiceAtual + 1) % cards.length;
     atualizarCarrosel()
@@ -50,8 +48,7 @@ function reiniciarAutomatico(){
     iniciarAutomatico();
 }
 
-// ===== EVENTOS =====
-
+// setas
 setaDireita.addEventListener('click', function() {
     indiceAtual = Math.min(indiceAtual + 1, cards.length -1);
     atualizarCarrosel();
@@ -66,15 +63,13 @@ setaEsquerda.addEventListener('click', function() {
 
 atualizarCarrosel();
 
-// ===== PAUSA ENQUANTO MOUSE/TECLADO ESTÁ NOS CARDS =====
-
+// para quando o mouse esta em cima
 carrossel.addEventListener('mouseenter', pararAutomatico);
 carrossel.addEventListener('mouseleave', iniciarAutomatico);
 carrossel.addEventListener('focusin', pararAutomatico);
 carrossel.addEventListener('focusout', iniciarAutomatico);
 
-// ===== CORRIGE SINCRONIZAÇÃO ENTRE CARDS =====
-
+// arruma o indice quando a pessoa arrasta com o dedo
 function sincronizarIndice() {
     const centroDoTrilho = trilho.scrollLeft + trilho.offsetWidth / 2;
 
@@ -94,7 +89,7 @@ function sincronizarIndice() {
 
     if (maisPerto !== indiceAtual) {
         indiceAtual = maisPerto;
-        
+
         cards.forEach(function (card, i) {
             card.classList.toggle('ativo', i === indiceAtual);
         });

@@ -1,9 +1,4 @@
-/* =========================================================
-   LOGIN — estilos exclusivos da login.html
-   Mesmo visual do cadastro (caixa escura, campos sublinhados,
-   botão verde), numa caixa mais estreita.
-   ========================================================= */
-
+/* pagina de login */
 .cabecalho {
     justify-content: center;
 }
@@ -16,8 +11,6 @@
     justify-content: center;
     padding: 64px 24px;
 
-    /* Foto em preto e branco sob o véu escuro (explicado no
-       css/cadastro/style.css — é a mesma técnica). */
     background-color: var(--fundo);
     background-image: linear-gradient(var(--veu), var(--veu)),
                       url("../../assets/backgrounds/fundo-sobre.jpg");
@@ -67,7 +60,6 @@
     margin-top: 16px;
 }
 
-/* Campo sublinhado do DS. */
 .caixa-login input {
     padding: 8px 0;
     background-color: transparent;
@@ -89,7 +81,6 @@
     opacity: 0.7;
 }
 
-/* Botão "Primary" do DS. */
 .caixa-login button {
     margin-top: 28px;
     background-color: var(--sinal);
@@ -118,7 +109,6 @@
     color: var(--texto-suave);
 }
 
-/* "Link sublinhado" do DS. */
 .login-rodape a {
     color: var(--texto-forte);
     font-weight: bold;
@@ -138,7 +128,7 @@
     color: var(--sobre-sinal);
 }
 
-/* ===== CELULAR ===== */
+/* celular */
 @media (max-width: 767px) {
     .secao-login {
         min-height: auto;

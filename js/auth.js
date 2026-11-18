@@ -1,32 +1,13 @@
-/* =============================================================
-   SEJOGA — CONTAS E SESSÃO
-
-   Cadastro, login, logout e a proteção das páginas.
-
-   ⚠ Proteção só de INTERFACE. Sem servidor, qualquer pessoa pode
-   abrir o DevTools e mexer no localStorage. E a senha fica em
-   texto puro — num sistema real ela ficaria num servidor,
-   guardada com hash (bcrypt, por exemplo). O enunciado pede
-   simulação 100% no navegador; vale saber explicar a diferença.
-   ============================================================= */
-
-
-/* -------------------------------------------------------------
-   USUÁRIOS CADASTRADOS
-   ------------------------------------------------------------- */
-
+// lista de usuarios cadastrados
 function obterUsuarios() {
     return lerDoArmazenamento(CHAVES.usuarios, []);
 }
-
 
 function salvarUsuarios(lista) {
     return gravarNoArmazenamento(CHAVES.usuarios, lista);
 }
 
-
-/* find() percorre a lista e devolve o PRIMEIRO item que passa no
-   teste — ou undefined se nenhum passar. */
+// procura o usuario pelo login
 function buscarUsuario(login) {
     const alvo = login.toLowerCase();
 
@@ -35,10 +16,7 @@ function buscarUsuario(login) {
     });
 }
 
-
-/* Verifica se já existe alguém com aquele valor num campo.
-   O "ignorarLogin" serve para o perfil: quando a pessoa edita o
-   próprio e-mail, ela não pode colidir consigo mesma. */
+// ve se ja tem alguem com esse login, cpf ou email
 function valorJaCadastrado(campo, valor, ignorarLogin) {
     const alvo = String(valor).toLowerCase();
 
@@ -50,7 +28,7 @@ function valorJaCadastrado(campo, valor, ignorarLogin) {
     });
 }
 
-
+// cadastra um usuario novo (se nao for repetido)
 function cadastrarUsuario(dados) {
     if (valorJaCadastrado('login', dados.login)) {
         return { ok: false, campo: 'login', erro: 'Este login já está em uso. Escolha outro.' };
@@ -76,12 +54,10 @@ function cadastrarUsuario(dados) {
     return { ok: true, usuario: usuario };
 }
 
-
-/* Atualiza os dados de quem está logado (tela de perfil). */
+// atualiza os dados do usuario (tela de perfil)
 function atualizarUsuario(login, novosDados) {
     const lista = obterUsuarios();
 
-    // findIndex é o find() que devolve a POSIÇÃO, ou -1.
     const posicao = lista.findIndex(function (usuario) {
         return usuario.login === login;
     });
@@ -90,7 +66,6 @@ function atualizarUsuario(login, novosDados) {
         return false;
     }
 
-    // Object.assign copia os campos novos por cima dos antigos.
     lista[posicao] = Object.assign({}, lista[posicao], novosDados);
 
     if (!salvarUsuarios(lista)) {
@@ -101,15 +76,10 @@ function atualizarUsuario(login, novosDados) {
     return true;
 }
 
-
-/* -------------------------------------------------------------
-   SESSÃO — quem está logado agora
-   ------------------------------------------------------------- */
-
+// sessao = quem esta logado agora
 function obterSessao() {
     const sessao = lerDoArmazenamento(CHAVES.sessao, null);
 
-    // Uma sessão sem login é lixo (ou foi mexida à mão).
     if (!sessao || typeof sessao.login !== 'string') {
         return null;
     }
@@ -117,21 +87,17 @@ function obterSessao() {
     return sessao;
 }
 
-
 function usuarioLogado() {
     return obterSessao() !== null;
 }
 
-
-/* O cadastro completo de quem está logado (com foto, endereço...).
-   A sessão guarda só o essencial; o resto vem daqui. */
+// dados completos de quem esta logado
 function usuarioAtual() {
     const sessao = obterSessao();
     return sessao ? (buscarUsuario(sessao.login) || sessao) : null;
 }
 
-
-/* Só o necessário: login e nome. NUNCA a senha. */
+// salva so login e nome na sessao (nunca a senha)
 function gravarSessao(usuario) {
     gravarNoArmazenamento(CHAVES.sessao, {
         login: usuario.login,
@@ -139,46 +105,32 @@ function gravarSessao(usuario) {
     });
 }
 
-
+// login: procura o usuario e compara a senha
 function entrar(login, senha) {
     const usuario = buscarUsuario(login);
 
-    /* A mesma mensagem para "login não existe" e "senha errada".
-       Se fossem diferentes, alguém mal-intencionado descobriria
-       quais logins existem só testando. */
+    // mesma mensagem pros dois casos pra nao entregar quais logins existem
     if (!usuario || usuario.senha !== senha) {
         return { ok: false, erro: 'Login ou senha incorretos.' };
     }
 
     gravarSessao(usuario);
 
-    /* sessionStorage é o primo do localStorage que se apaga ao
-       fechar a aba. Serve de "recado para a próxima página":
-       mostre o resumo da semana UMA vez, logo depois do login. */
     try {
         sessionStorage.setItem('portalEventos_mostrarSemana', '1');
     } catch (erro) {
-        // Navegação privada pode bloquear; o login continua valendo.
     }
 
     return { ok: true, usuario: usuario };
 }
 
-
+// logout: apaga a sessao e volta pro inicio
 function sair() {
     apagarDoArmazenamento(CHAVES.sessao);
     window.location.href = 'index.html';
 }
 
-
-/* -------------------------------------------------------------
-   O CONVITE "FAÇA LOGIN OU CADASTRE-SE"
-
-   Antes cada página precisava ter esse modal escrito no HTML — e
-   a que esquecia quebrava o auth.js inteiro. Agora ele é criado
-   aqui, uma vez, em qualquer página que precisar.
-   ------------------------------------------------------------- */
-
+// cria o modal de "entre para continuar"
 function garantirModalConta() {
     if (document.getElementById('modal-conta')) {
         return;
@@ -206,7 +158,6 @@ function garantirModalConta() {
     const linkEntrar = criarElemento('a', 'botao-entrar', 'Entrar');
     const linkCadastro = criarElemento('a', 'botao-cadastro', 'Cadastrar');
 
-    // Depois do login, a pessoa volta para onde estava.
     linkEntrar.href = 'login.html?voltar=' + encodeURIComponent(paginaAtual());
     linkCadastro.href = 'cadastro.html';
 
@@ -221,10 +172,7 @@ function garantirModalConta() {
     document.body.appendChild(modal);
 }
 
-
-/* destino: para onde ir depois do login. Se a pessoa clicou em
-   "Futebol" na home, depois de entrar ela deve cair na página de
-   eventos já filtrada — e não voltar para a home. */
+// abre o modal pedindo login
 function pedirLogin(destino) {
     garantirModalConta();
 
@@ -234,22 +182,13 @@ function pedirLogin(destino) {
     abrirModal('modal-conta');
 }
 
-
-/* "calendario.html", "eventos.html?categoria=festa"... */
+// nome da pagina atual (pra voltar depois do login)
 function paginaAtual() {
     const caminho = window.location.pathname.split('/').pop() || 'index.html';
     return caminho + window.location.search;
 }
 
-
-/* -------------------------------------------------------------
-   LINKS PROTEGIDOS — data-precisa-login
-
-   Um listener só, no documento inteiro. Cobre também os links
-   criados depois por JavaScript (os cartões de categoria, por
-   exemplo), coisa que um forEach no carregamento não faria.
-   ------------------------------------------------------------- */
-
+// links com data-precisa-login abrem o modal se a pessoa nao estiver logada
 document.addEventListener('click', function (evento) {
     const link = evento.target.closest('[data-precisa-login]');
 
@@ -259,46 +198,26 @@ document.addEventListener('click', function (evento) {
 
     evento.preventDefault();
 
-    // getAttribute('href') devolve o endereço como está escrito
-    // ("eventos.html?categoria=festa"); link.href devolveria o
-    // endereço completo, com "http://..." na frente.
     pedirLogin(link.getAttribute('href'));
 });
 
-
-/* -------------------------------------------------------------
-   PÁGINAS INTEIRAS PROTEGIDAS
-
-   <html data-pagina="restrita">  → só entra logado
-   <html data-pagina="visitante"> → login e cadastro: quem já está
-                                    logado não tem o que fazer ali
-
-   O CSS esconde o <main> das páginas restritas até este código
-   confirmar a sessão — assim o conteúdo não "pisca" antes do
-   redirecionamento.
-   ------------------------------------------------------------- */
-
+// protege as paginas restritas (so funciona na tela, sem servidor nao e seguranca de verdade)
 (function verificarAcessoDaPagina() {
     const tipo = document.documentElement.dataset.pagina;
 
     if (tipo === 'restrita') {
-        /* FALHA CRÍTICA DE AUTENTICAÇÃO: existe uma sessão gravada,
-           mas ela está corrompida ou aponta para uma conta que não
-           existe mais (alguém mexeu no localStorage pelo DevTools,
-           ou a conta foi apagada). Não dá para confiar nela: apagamos
-           e mandamos para a página de erro personalizada. */
         const temSessaoGravada = localStorage.getItem(CHAVES.sessao) !== null;
         const sessao = obterSessao();
 
+        // sessao com problema: desloga e mostra o erro
         if (temSessaoGravada && (!sessao || !buscarUsuario(sessao.login))) {
             apagarDoArmazenamento(CHAVES.sessao);
             window.location.replace('404.html?tipo=auth');
             return;
         }
 
+        // nao esta logado: vai pro login
         if (!usuarioLogado()) {
-            // replace() não deixa esta página no histórico: o botão
-            // "voltar" do navegador não traz a pessoa de volta aqui.
             window.location.replace('login.html?voltar=' + encodeURIComponent(paginaAtual()));
             return;
         }
@@ -309,6 +228,3 @@ document.addEventListener('click', function (evento) {
         window.location.replace('index.html');
     }
 })();
-/* Esse "(function () { ... })();" é uma função que roda na hora
-   em que é lida. Serve para não deixar variáveis soltas no
-   arquivo — tudo que ela cria some quando ela termina. */

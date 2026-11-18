@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- data-pagina="restrita": só entra quem está logado -->
+<!-- pagina restrita: so abre logado (auth.js) -->
 <html lang="pt-BR" data-pagina="restrita">
 
 <head>
@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SeJoga - Meu perfil</title>
 
-    <!-- Fontes do design system: Unbounded (títulos) e Space Mono (texto).
-         preconnect abre a conexão com o Google antes, para carregar mais rápido. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@400;700;900&display=swap">
@@ -23,19 +21,18 @@
 
 <body>
 
+    <!-- cabecalho -->
     <header class="cabecalho">
 
         <a href="index.html" class="logo">
             <img src="assets/logo/logo.png" alt="Logo do SeJoga">
         </a>
 
+        <!-- menu -->
         <nav class="menu" aria-label="Principal">
             <ul class="menu">
                 <li><a href="index.html">Início</a></li>
                 <li><a href="calendario.html">Calendário</a></li>
-                <!-- Submenu de categorias: abre com o mouse em cima (:hover) ou
-                     com o Tab (:focus-within). Cada link já chega na página
-                     Eventos com o filtro daquela categoria marcado. -->
                 <li class="menu-com-submenu">
                     <a href="eventos.html" data-precisa-login aria-haspopup="true">Eventos</a>
                     <ul class="submenu" aria-label="Categorias">
@@ -57,7 +54,6 @@
 
     </header>
 
-
     <main class="conteudo">
 
         <section class="titulo-pagina">
@@ -65,10 +61,8 @@
             <p>Seus dados, sua senha e os eventos da sua agenda.</p>
         </section>
 
-
         <div class="perfil-layout">
 
-            <!-- ===== MEUS DADOS ===== -->
             <section class="caixa-perfil" aria-labelledby="titulo-dados">
 
                 <div class="perfil-cartao">
@@ -106,7 +100,6 @@
                                 <small class="erro-campo" id="erro-data-nascimento"></small>
                             </div>
                             <div>
-                                <!-- O CPF identifica a pessoa: não se troca pelo perfil. -->
                                 <label for="cpf-exibicao">CPF</label>
                                 <input type="text" id="cpf-exibicao" readonly aria-describedby="dica-cpf">
                                 <small class="dica-campo" id="dica-cpf">Não pode ser alterado.</small>
@@ -177,8 +170,6 @@
                 </form>
             </section>
 
-
-            <!-- ===== SENHA ===== -->
             <section class="caixa-perfil caixa-senha" aria-labelledby="titulo-senha">
                 <h2 id="titulo-senha">Alterar senha</h2>
 
@@ -203,10 +194,7 @@
 
         </div>
 
-
-        <!-- ===== MINHA AGENDA =====
-             id="agenda": o link "Minha agenda" do menu aponta para
-             perfil.html#agenda, e o navegador rola até aqui sozinho. -->
+        <!-- minha agenda -->
         <section class="eventos agenda" id="agenda" aria-labelledby="titulo-agenda">
             <h2 id="titulo-agenda">Minha agenda</h2>
 
@@ -216,7 +204,7 @@
 
     </main>
 
-
+    <!-- rodape -->
     <footer class="rodape">
         <div class="rodape-conteudo">
             <div class="rodape-coluna">
@@ -255,7 +243,7 @@
         </div>
     </footer>
 
-
+    <!-- scripts (o storage vem primeiro porque os outros usam ele) -->
     <script src="js/storage.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/validacoes.js"></script>

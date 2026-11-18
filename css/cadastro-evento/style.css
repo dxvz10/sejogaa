@@ -1,42 +1,16 @@
-/* =========================================================
-   CADASTRO DE EVENTO — estilos exclusivos da cadastro-evento.html
-
-   Carregado DEPOIS de:
-     css/style.css           (cores, cabeçalho, rodapé, tema claro)
-     css/eventos/style.css   (fundo com foto, título da página)
-     css/cadastro/style.css  (caixa escura, fieldsets, campos)
-   Quando duas regras empatam, vale a que vem por último: a daqui.
-   ========================================================= */
-
-
-/* O css/cadastro/style.css centraliza a logo (a tela de cadastro de
-   usuário só tem a logo no topo). Aqui o cabeçalho é o completo,
-   então voltamos a espalhar: logo na esquerda, usuário na direita. */
+/* cadastro de evento */
 .cabecalho {
     justify-content: space-between;
 }
 
-
-/* ===== CAIXA DO FORMULÁRIO ===== */
-
-/* margin auto nas laterais = o navegador divide o espaço que sobra
-   igualmente dos dois lados, e a caixa fica no meio. Só funciona
-   porque a caixa tem largura máxima (560px, no css/cadastro). */
 .caixa-cadastro {
     margin: 0 auto;
 }
 
-/* O título da página fica alinhado com a caixa, não com a tela. */
 .titulo-pagina {
     max-width: 560px;
 }
 
-
-/* ===== SELECT E TEXTAREA ===== */
-
-/* O css/cadastro só estiliza "input" (o cadastro de usuário não tem
-   lista nem caixa de texto grande). Aqui copiamos o mesmo "campo
-   sublinhado" do DS, para os três ficarem iguais. */
 .caixa-cadastro select,
 .caixa-cadastro textarea {
     width: 100%;
@@ -56,9 +30,6 @@
     border-bottom-color: var(--sinal);
 }
 
-/* A setinha do select: tiramos a do navegador (appearance: none,
-   que muda de cara em cada um) e desenhamos uma em SVG, cinza, que
-   aparece nos dois temas. */
 .caixa-cadastro select {
     appearance: none;
     -webkit-appearance: none;
@@ -70,20 +41,13 @@
     cursor: pointer;
 }
 
-/* A lista que abre usa as cores do sistema; forçamos as nossas
-   para as opções não ficarem brancas no tema escuro. */
 .caixa-cadastro select option {
     background-color: var(--faixa);
     color: var(--texto);
 }
 
-/* A pessoa pode esticar a descrição só para baixo; esticar para o
-   lado quebraria o layout no celular. */
 .caixa-cadastro textarea {
     resize: vertical;
     min-height: 110px;
     line-height: 1.6;
 }
-
-/* Campo com erro: a regra única do css/style.css já pinta input,
-   select e textarea com aria-invalid — nada a repetir aqui. */
